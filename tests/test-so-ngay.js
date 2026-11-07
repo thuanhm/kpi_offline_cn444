@@ -1,0 +1,28 @@
+/* Gộp số theo ngày (so_ngay) theo từng ô khi nhiều máy cùng sửa một ngày. node test-so-ngay.js <thư mục js> */
+const vm = require('vm'), fs = require('fs'), path = require('path'); const JS = process.argv[2]; let fail = 0;
+const ok = (c, m) => { if (!c) { fail++; console.log('  ✗ ' + m); } else console.log('  ✓ ' + m); };
+const ls = {}, sb = { localStorage: { getItem: (k) => (k in ls ? ls[k] : null), setItem: (k, v) => { ls[k] = String(v); }, removeItem: (k) => { delete ls[k]; } }, sessionStorage: { getItem: () => null, setItem() {}, removeItem() {} }, document: { hidden: false, getElementById: () => null, addEventListener() {} }, console, crypto: require('crypto').webcrypto, TextEncoder, btoa, atob, setTimeout, clearTimeout, setInterval: () => 0, clearInterval() {} };
+sb.window = sb; vm.createContext(sb); ['config.js', 'cong-thuc.js', 'engine.js', 'ui.js', 'store.js'].forEach((f) => vm.runInContext(fs.readFileSync(path.join(JS, f), 'utf8'), sb));
+const S = sb.STORE; S.load(); const st = S.state, D = '2026-11-05', copy = (o) => JSON.parse(JSON.stringify(o));
+const other = (day) => { const o = copy(st); o.so_ngay = { [D]: day }; return o; };
+const reset = (d) => { st.so_ngay = d ? { [D]: copy(d) } : {}; };
+console.log('1. Hai máy ghi hai chỉ tiêu khác nhau trong cùng ngày');
+reset({ t: 100, v: { A: 1 }, tv: { A: 100 } }); let doi = S.merge(other({ t: 200, v: { B: 2 }, tv: { B: 200 } }), true);
+ok(st.so_ngay[D].v.A === 1 && st.so_ngay[D].v.B === 2 && st.so_ngay[D].t === 200, 'giữ cả A và B (trước đây mất A)'); ok(doi > 0, 'báo có thay đổi');
+console.log('2. Gộp lại lần nữa không đổi gì (ổn định)'); const snap = JSON.stringify(st.so_ngay[D]); S.merge(other(copy(st.so_ngay[D])), true); ok(JSON.stringify(st.so_ngay[D]) === snap, 'kết quả không đổi');
+console.log('3. Cùng một ô: bản ghi sau thắng');
+reset({ t: 100, v: { A: 1 }, tv: { A: 100 } }); S.merge(other({ t: 150, v: { A: 9 }, tv: { A: 150 } }), true); ok(st.so_ngay[D].v.A === 9, 'ô A lấy bản mới (9)');
+reset({ t: 300, v: { A: 1 }, tv: { A: 300 } }); S.merge(other({ t: 150, v: { A: 9 }, tv: { A: 150 } }), true); ok(st.so_ngay[D].v.A === 1, 'bản cũ hơn không đè (giữ 1)');
+console.log('4. Tệp bản cũ (không có tv) — ô của máy này không bị mất');
+reset({ t: 100, v: { A: 1 }, tv: { A: 100 } }); S.merge(other({ t: 500, v: { B: 2 } }), true); ok(st.so_ngay[D].v.A === 1 && st.so_ngay[D].v.B === 2, 'A và B cùng còn');
+console.log('5. Xoá cả ngày');
+reset({ t: 100, v: { A: 1 }, tv: { A: 100 } }); S.merge(other({ t: 400, v: {}, tx: 400 }), true); ok(Object.keys(st.so_ngay[D].v).length === 0 && st.so_ngay[D].tx === 400, 'lệnh xoá mới hơn: A bị xoá');
+reset({ t: 100, v: { A: 1 }, tv: { A: 100 } }); S.merge(other({ t: 400, v: {} }), true); ok(Object.keys(st.so_ngay[D].v).length === 0, 'ngày rỗng do bản cũ ghi cũng được coi là xoá');
+reset({ t: 600, v: { A: 1 }, tv: { A: 600 }, tx: 400 }); S.merge(other({ t: 400, v: {}, tx: 400 }), true); ok(st.so_ngay[D].v.A === 1, 'ô ghi SAU lần xoá vẫn giữ');
+reset({ t: 100, v: { A: 1 }, tv: { A: 100 } }); S.xoaNgay(D); ok(st.so_ngay[D].tx > 0 && Object.keys(st.so_ngay[D].v).length === 0, 'xoaNgay đặt mốc tx');
+console.log('6. Ngày mới chỉ có ở máy khác'); reset(null); S.merge(other({ t: 10, v: { A: 1 }, tv: { A: 10 } }), true); ok(st.so_ngay[D] && st.so_ngay[D].v.A === 1, 'nhận ngày mới');
+console.log('7. Đổi mã đơn vị / chỉ tiêu: ô và giờ ghi đi theo mã mới');
+const u0 = S.model().units[0].ma, c0 = S.model().inds[0].ma; reset({ t: 100, v: { [c0 + '|' + u0]: 5 }, tv: { [c0 + '|' + u0]: 100 } });
+S.doiMaDonVi(u0, 'DV_MOI'); ok(st.so_ngay[D].v[c0 + '|DV_MOI'] === 5 && st.so_ngay[D].tv[c0 + '|DV_MOI'] === 100 && !(c0 + '|' + u0 in st.so_ngay[D].tv), 'đổi mã đơn vị: v và tv cùng chuyển');
+S.doiMaChiTieu(c0, 'CT_MOI'); ok(st.so_ngay[D].v['CT_MOI|DV_MOI'] === 5 && st.so_ngay[D].tv['CT_MOI|DV_MOI'] === 100, 'đổi mã chỉ tiêu: v và tv cùng chuyển');
+console.log(fail ? 'THẤT BẠI ' + fail : 'TẤT CẢ ĐẠT'); process.exit(fail ? 1 : 0);

@@ -1,0 +1,15 @@
+Chạy kiểm thử (cần Node.js):
+  node tests\test-nen.js        <đường dẫn>\App\js      (đăng nhập, xoá người dùng, đổi mã)
+  node tests\test-genie.js     <đường dẫn>\App\js      (xuất prompt gửi Genie)
+  node tests\test-bgd.js       <đường dẫn>\App\js      (thẻ điểm Ban giám đốc)
+  node tests\test-khoa.js       <đường dẫn>\App\js      (khoá kỳ, hành động khắc phục)
+  node tests\test-phantich.js   <đường dẫn>\App\js      (dự báo, phân rã, cứu điểm, mô phỏng, kiểm tra số)
+  node tests\test-dongbo.js     <đường dẫn>\App\js      (đồng bộ nhiều máy)
+  node tests\test-saoluu.js     <đường dẫn>\App\js      (sao lưu ra máy)
+  node tests\test-icons.js      <đường dẫn>\App\js
+  node tests\test-baocao.js     <đường dẫn>\App\js
+  node tests\test-baocao2.js    <đường dẫn>\App          (lưu ý: thư mục App, không phải js)
+Mỗi bài in "TẤT CẢ ĐẠT" khi thành công.
+  node tests\test-office.js     <đường dẫn>\App         (xuất PowerPoint/Word, Excel có màu)
+  powershell -ExecutionPolicy Bypass -File tests\smoke-man-hinh.ps1   (duyệt 23 màn hình bằng Edge; thất bại nếu có "Lỗi hiển thị")
+  node tests\test-so-ngay.js    <đường dẫn>\App\js      (gộp số theo ngày nhiều máy)

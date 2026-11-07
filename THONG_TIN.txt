@@ -1,0 +1,8 @@
+SAO LƯU KPI — VietinBank Chi nhánh Bắc Nghệ An
+
+Cập nhật lúc : 07/11/2026 19:20:28 (người ghi: admin, máy M15TD8K)
+Số liệu      : 53 ô số · 11 đơn vị · 20 chỉ tiêu
+Ứng dụng     : KPI các phòng, năm theo dõi 2026
+
+Khôi phục: mở ứng dụng → Dữ liệu & cài đặt → "Khôi phục (thay toàn bộ)" → chọn KPI_MOI_NHAT.json (hoặc tệp theo ngày trong thư mục tháng).
+Lịch giữ: mỗi ngày tối đa 4 bản (trước 10h / 10h–13h / 13h–16h / từ 16h) · tháng này giữ bản cuối mỗi ngày · tháng đã qua giữ 2 bản (ngày 15 và cuối tháng) · mọi năm đều giữ.

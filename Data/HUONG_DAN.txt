@@ -1,0 +1,9 @@
+THƯ MỤC DATA_QT — DỮ LIỆU DÙNG CHUNG KPI CÁC PHÒNG (CN BẮC NGHỆ AN)
+=====================================================================
+- Chép NGUYÊN thư mục này lên ổ mạng nội bộ (VD Z:\KPI\Data). Mọi máy dùng ứng dụng cần quyền ĐỌC;
+  máy nhập số (quản trị) cần quyền ĐỌC + GHI.
+- Không đặt trong thư mục đang đồng bộ Google Drive/OneDrive (dễ sinh bản sao xung đột).
+- Ứng dụng tự tạo tệp KPI_CHI_NHANH.json ở đây. Không sửa tay tệp này.
+- Nhiều máy cùng nhập: ứng dụng đọc lại tệp trước khi ghi và gộp theo từng ô số; các máy khác tự cập nhật sau ~20 giây.
+- Sao lưu: chép tệp KPI_CHI_NHANH.json ra nơi khác định kỳ, hoặc dùng nút "Tải bản sao lưu" trong ứng dụng.
+- BAO_CAO_THO\: thả file báo cáo thô để ứng dụng tự nạp (xem BAO_CAO_THO\HUONG_DAN.txt). NAP_TU_DONG\: sổ đã nạp + khoá — ứng dụng tự tạo.

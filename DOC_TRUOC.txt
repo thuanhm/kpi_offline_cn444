@@ -1,0 +1,155 @@
+KPI CÁC PHÒNG — VIETINBANK CHI NHÁNH BẮC NGHỆ AN · phiên bản 2.11.5 (07/11/2026)
+Theo dõi chỉ tiêu & chấm điểm KPI cho từng Phòng/PGD và toàn chi nhánh. Chạy offline, sử dụng nội bộ.
+==========================================================================================
+
+GÓI NÀY GỒM
+  App\    ứng dụng — mở App\index.html bằng Google Chrome hoặc Microsoft Edge bản mới
+  Data\     thư mục dữ liệu dùng chung — chép lên ổ mạng nội bộ (xem Data\HUONG_DAN.txt)
+
+CÀI ĐẶT (làm 1 lần)
+  1) Chép Data lên ổ mạng mà Ban giám đốc, phòng Tổng hợp và các phòng/PGD cùng truy cập được.
+  2) Chép App vào từng máy (hoặc để cạnh Data trên ổ chung) → mở index.html.
+  3) Bấm "Chế độ xem" (góc trên phải) → đăng nhập admin / 1111 → ứng dụng BẮT BUỘC đổi mật khẩu ngay (từ 6 ký tự, không dùng 1111) → vào "Dữ liệu & cài đặt":
+     kiểm tra kiểm tra tên chi nhánh, ngưỡng đánh giá; bấm "Chọn thư mục Data" → Cho phép.
+  4) "Danh mục & trọng số": sửa danh sách phòng/PGD, khối, chỉ tiêu và trọng số theo văn bản giao KPI.
+     DANH MỤC VÀ TRỌNG SỐ ĐI KÈM CHỈ LÀ MẪU — cần chỉnh theo thực tế trước khi dùng.
+  5) Bấm "Xoá dữ liệu mẫu" trên dải vàng → nhập số thật (Nhập kế hoạch & thực hiện).
+  Máy chỉ xem: mở index.html → số đã lưu hiện ngay; bấm chuột hoặc phím bất kỳ lần đầu để tự kết nối lại thư mục chung (hoặc bấm "Kết nối lại" trên thanh/dải thông báo).
+  Khi Chrome/Edge hỏi quyền, chọn "Cho phép mỗi lần truy cập" (Allow on every visit) để các lần sau tự động kết nối mà không hỏi nữa.
+
+ĐẶC ĐIỂM CHÍNH
+  - Đối tượng chấm điểm: từng PHÒNG/PGD (trọng số theo khối KHDN · KHCN · PGD · Dịch vụ & hỗ trợ)
+    và TOÀN CHI NHÁNH (khối CN); tập trung vào chỉ tiêu.
+  - Quy tắc chấm: KH/TH lũy kế, %HT tối đa, chỉ tiêu càng thấp càng tốt,
+    nhập trực tiếp %, chỉ tiêu quản trị (không chấm điểm), thiếu số = 0 điểm.
+  - Chức năng: xếp hạng theo điểm quy đổi thang 100; ma trận %HT phòng × chỉ tiêu; thẻ điểm từng đơn vị
+    (in A4, ghi nhận xét/giải pháp); theo dõi 1 chỉ tiêu qua các phòng (tỷ trọng, chênh lệch KH CN với
+    tổng KH đã phân giao); cảnh báo điều hành; nhận định tự sinh cho giao ban; phân bổ KH năm theo tháng;
+    dán thẳng vùng số từ Excel; xuất báo cáo Excel nhiều trang.
+  - Hiệu năng: thư viện lớn (Excel, biểu đồ, PowerPoint, Word, ảnh) chỉ nạp khi cần;
+    kết quả KPI tính một lần và dùng lại (toàn bộ xếp hạng + cảnh báo + xu hướng ≈ 2–3 ms).
+  - Đồng bộ nhiều máy qua Data gộp theo TỪNG Ô SỐ (ô sửa sau thắng), không ghi đè cả tệp.
+
+MỚI Ở 2.1.0 — TÍNH CHỈ TIÊU TỪ DỮ LIỆU THÔ
+  - Nạp file báo cáo thô (Excel/CSV) → công thức kiểu PivotTable gom theo PHÒNG/PGD → ghi thẳng vào KH/TH của kỳ.
+  - Hàm: Tổng · Đếm dòng · Đếm không trùng (VD số CIF mỗi phòng) · Trung bình · Lớn/Nhỏ nhất · Tỷ lệ % (VD nợ xấu = dư nợ nhóm 3-5 / tổng dư nợ).
+  - Lọc dòng: bằng/khác, bắt đầu bằng, chứa, thuộc danh sách, >, ≥, <, ≤, có giá trị, để trống.
+  - Trừ mốc cho chỉ tiêu tăng trưởng: trừ số T12 năm trước của một chỉ tiêu, hoặc số gốc nhập tay từng phòng.
+  - Nhận diện loại file bằng cột đặc trưng để không chạy nhầm (BCCV và BCNV đều có cột "Du BQ nam").
+  - Mã phòng trong file (Ma Phong ban (PS)…) gán 1 lần, lưu ở Danh mục › Phòng/PGD › "Mã trong dữ liệu thô".
+  - Có sẵn 6 công thức MẪU theo cấu trúc BCCV/BCNV (dư nợ BQ, Δ dư nợ BQ, tỷ lệ nợ xấu, nguồn vốn BQ,
+    Δ nguồn vốn BQ, Δ CASA BQ). Tên cột, mã CN 444, quy ước CASA = mã sản phẩm bắt đầu bằng 1 là GIẢ ĐỊNH
+    — chạy thử với file thật và sửa lại nếu khác.
+  - Dữ liệu thô chỉ đọc trong trình duyệt, không lưu, không gửi đi; chỉ lưu công thức và kết quả theo phòng.
+
+MỚI Ở 2.2.0 — NẠP TỰ ĐỘNG TỪ THƯ MỤC + DIỄN BIẾN THEO NGÀY
+  - Thả file báo cáo thô vào Data\BAO_CAO_THO (và tuỳ chọn 1 thư mục phụ trên máy, VD Downloads). Máy quản trị đang mở
+    ứng dụng tự quét mỗi phút; nút ⚡ trên thanh trên báo số file chờ duyệt.
+  - File mới/đổi (theo tên + dung lượng + giờ sửa) → tự chọn công thức đúng loại file → kỳ lấy theo cột "Ngày báo cáo".
+  - Chế độ mặc định "Hỏi trước": xem kết quả rồi bấm Ghi/Bỏ qua. Có thể đổi sang "Tự ghi".
+  - Mỗi lần nạp lưu số theo ngày (menu "Diễn biến theo ngày"); file NGÀY CUỐI THÁNG tự chốt thành số thực hiện tháng
+    (hoặc tuỳ chọn: luôn cập nhật theo ngày mới nhất). Ô đã sửa tay sau lần ghi tự động được giữ nguyên.
+  - Mỗi lúc chỉ 1 máy nạp (khoá tự hết hạn 3 phút). Sổ đã nạp: Data\NAP_TU_DONG\DA_NAP.json, có nút "Nạp lại".
+  - Quyền truy cập thư mục: số trên máy hiện ngay; lần bấm chuột/phím đầu tiên tự xin lại quyền (cả thư mục Data và thư mục phụ Downloads). Chọn "Cho phép mỗi lần truy cập" để trình duyệt tự nhớ vĩnh viễn. Nếu từ chối, ứng dụng không hỏi lặp lại; trên dải thông báo vẫn có nút "Kết nối lại".
+
+MỚI Ở 2.3.0 — ĐIỀU CHỈNH SỐ LIỆU THỦ CÔNG (menu Điều chỉnh số liệu)
+  - Cộng/trừ số thực hiện (thường là Dư nợ BQ, Nguồn vốn BQ, CASA BQ) sau khi tính từ file thô, có lý do + căn cứ văn bản.
+  - Nhập trên 1 bảng: dòng Toàn chi nhánh + mọi phòng/PGD, mỗi dòng 1 ô +/−, số sau điều chỉnh tính ngay; dán được cả cột từ Excel;
+    lý do chung cho cả lần nhập hoặc lý do riêng từng dòng; lưu một lần.
+  - Cộng/trừ cho từng đơn vị: phòng/PGD hoặc Toàn chi nhánh. Mỗi điều chỉnh chỉ tác động đúng đơn vị đã chọn
+    (Toàn CN là tổng các phòng thì tự gồm điều chỉnh của phòng; Toàn CN có số riêng thì điều chỉnh CN riêng).
+  - Phạm vi: chỉ 1 tháng hoặc từ tháng đó đến hết năm. Điều chỉnh BQ tự áp kèm chỉ tiêu Δ tăng trưởng (bỏ chọn được).
+  - Số gốc giữ nguyên; số dùng tính KPI = số gốc + điều chỉnh → nạp lại file thô KHÔNG mất điều chỉnh.
+    Thẻ điểm / Theo dõi chỉ tiêu ghi chú "gồm đ/c ±…"; Diễn biến theo ngày cũng cộng điều chỉnh của tháng.
+  - Xoá điều chỉnh đồng bộ sang mọi máy; có xuất Excel danh sách điều chỉnh để lưu hồ sơ.
+
+MỚI Ở 2.4.0 — MA TRẬN CHỈ TIÊU THÊM 2 CHẾ ĐỘ
+  - "Thứ hạng": hạng của từng phòng/PGD ở từng chỉ tiêu theo % hoàn thành KH (1 = cao nhất, bằng % thì đồng hạng),
+    tô màu nhóm đầu / giữa / cuối / cuối bảng; dòng tổng: hạng bình quân, số chỉ tiêu top 3 / cuối bảng.
+  - "% KH năm": TH lũy kế ÷ KH cả năm; màu theo tiến độ so với KH lũy kế đến tháng.
+  - Xuất Excel báo cáo thêm 2 sheet HANG_CHI_TIEU và KH_NAM.
+  - Heatmap dùng thang màu chuyển liên tục, chọn được bảng màu: Excel (đỏ–vàng–xanh, mặc định) · ColorBrewer RdYlGn ·
+    Xanh dương đậm nhạt (dễ đọc khi mù màu / in đen trắng). Mỗi máy nhớ lựa chọn.
+
+MỚI Ở 2.5.0 — THEO DÕI DIỄN BIẾN CHỈ TIÊU (chỉ để theo dõi, không chấm điểm)
+  - Theo dõi chỉ tiêu có 3 tab: So sánh kỳ · Diễn biến 12 tháng · Kế hoạch & điểm.
+  - So sánh kỳ: từng phòng/PGD + Toàn CN so tháng trước, so đầu năm (31/12 năm trước), so cùng kỳ năm trước (± và %),
+    tỷ trọng, xếp hạng mức tăng (chọn tiêu chí), biểu đồ mức tăng. Chỉ tiêu lũy kế (NII, thu phí…) hiện phát sinh trong tháng.
+  - Diễn biến 12 tháng: bảng phòng × T1..T12 (số liệu / tăng giảm trong tháng / %HT tô màu), biểu đồ nhiều đường;
+    bấm 1 phòng để so với cùng kỳ năm trước.
+  - Thêm 3 chỉ tiêu theo dõi: Dư nợ cuối kỳ, Nguồn vốn cuối kỳ, CASA cuối kỳ + 3 công thức mẫu đọc cột "So du (quy doi)"
+    của BCCV/BCNV (tự thêm vào dữ liệu cũ). Danh mục chỉ tiêu có cột "Kiểu số" (số dư / lũy kế) để chỉnh nếu tự nhận sai.
+  - Bộ chọn năm ở góc trên luôn có năm trước để nhập/nạp số năm trước phục vụ so sánh.
+
+MỚI Ở 2.9.1 — PROMPT GENIE TỪNG MỤC
+  - Cạnh tiêu đề mỗi ô nhận định (Tình hình chung, Kết quả tích cực, Chỉ tiêu cần quan tâm, Rủi ro biến động), ô Nhận định tổng thể (kết luận) và từng vấn đề trọng tâm có nút "Prompt Genie":
+    bấm là sao chép prompt riêng cho mục đó (yêu cầu chỉ trả về đoạn văn, kèm dự thảo hiện có và số liệu JSON đã lọc theo mục) → dán vào Genie → dán kết quả vào ô tương ứng.
+    Prompt vấn đề sinh nhận xét + gợi ý hướng xử lý để dán vào ô "Hướng xử lý". Trình duyệt không cho sao chép tự động thì hiện ô văn bản để tự chép.
+
+MỚI Ở 2.9.0 — XUẤT PROMPT GỬI GENIE (Báo cáo giao ban)
+  - Nút "Xuất prompt gửi Genie" ở báo cáo giao ban: tạo tệp .txt (UTF-8) gồm 3 phần: (1) yêu cầu viết báo cáo (vai trò, nguyên tắc chống bịa số / chống suy diễn nguyên nhân, văn phong, bố cục I–V),
+    (2) ngữ cảnh người lập đã soạn (nhận định, vấn đề + nguyên nhân đã chọn, hướng xử lý, giải pháp, kiến nghị BGĐ, kết luận; vấn đề đã bác bỏ mặc định không đưa vào),
+    (3) số liệu JSON chụp từ báo cáo (tổng hợp, từng chỉ tiêu KH/TH/%HT/điểm/so kỳ, xu hướng theo tháng, xếp hạng, số theo đơn vị với báo cáo CN, cảnh báo).
+  - Tuỳ chọn: độ dài báo cáo, yêu cầu bổ sung, kèm danh sách bác bỏ; tải tệp hoặc sao chép nội dung. Chỉ gửi vào hệ thống AI nội bộ được phê duyệt. Kiểm thử: tests	est-genie.js.
+
+MỚI Ở 2.8.0 — THẺ ĐIỂM KPI RIÊNG CHO BAN GIÁM ĐỐC
+  - Thiết lập › Ban giám đốc: khai báo thành viên (Giám đốc / Phó giám đốc), phòng/PGD phụ trách, bảng KPI riêng từng người (chỉ tiêu, trọng số, % tối đa, nguồn số).
+  - Nguồn số mỗi chỉ tiêu: "Chi nhánh" (Giám đốc; chỉ tiêu dùng chung của Phó giám đốc) hoặc "Phòng/PGD phụ trách" (cộng hoặc bình quân theo cách tổng hợp của chỉ tiêu).
+    Thiếu số của bất kỳ phòng phụ trách (có áp dụng chỉ tiêu) → chỉ tiêu thiếu số, 0 điểm. Chấm bằng cùng công thức %HT, trần % tối đa, ngưỡng Đạt/Khá/CCT như thẻ điểm phòng.
+  - Có thể đưa "Điểm KPI chi nhánh" vào bảng KPI của từng thành viên như một chỉ tiêu: thực hiện = điểm quy đổi (thang 100) của thẻ điểm toàn chi nhánh, % hoàn thành = điểm ÷ 100, có trọng số và % tối đa riêng.
+  - Thẻ điểm Ban giám đốc: tổng hợp các thành viên, chi tiết từng người, diễn biến 12 tháng, cộng/trừ điểm KPI riêng (khoá kỳ vẫn áp dụng). Mặc định chỉ hiện khi đăng nhập quản trị.
+  - Dữ liệu: trường bgd, bgd_trong_so (thuộc danh mục, gộp theo dm_luc); cộng/trừ điểm lưu trong diem_kpi với dv = BGD:<mã>. Tệp bản cũ không có bgd không xoá khai báo BGĐ khi gộp.
+  Kiểm thử mới: tests	est-bgd.js.
+
+MỚI Ở 2.7.0 — DỰ BÁO · KHOÁ KỲ · KIỂM TRA SỐ · HÀNH ĐỘNG · ĐIỀU HÀNH
+  Bảo mật & đồng bộ (sửa lỗi nền)
+  - Bỏ lối đăng nhập dự phòng admin/1111. Tài khoản còn mật khẩu mặc định bị buộc đổi ngay sau khi đăng nhập; mật khẩu từ 6 ký tự, không dùng 1111.
+  - Xoá người dùng và đổi mã chỉ tiêu/đơn vị có "dấu vết" (users_xoa, ma_cu) → máy khác gộp dữ liệu vào không làm sống lại người đã xoá hay số liệu mã cũ.
+  Chức năng mới
+  - Dự báo & nguyên nhân: dự báo cuối năm (điểm và từng chỉ tiêu; 3 cách tính, mặc định theo tốc độ 3 tháng gần nhất), phân rã vì sao điểm đổi so với tháng trước,
+    chỉ tiêu cần ưu tiên cải thiện, mô phỏng kịch bản (chỉ trên màn hình, không lưu).
+  - Khoá kỳ (màn Nhập số): chốt số liệu một tháng; sửa phải mở khoá và ghi lý do. Chặn cả nhập, xoá, nạp tự động, điều chỉnh, cộng/trừ điểm. Lệnh khoá đồng bộ giữa các máy;
+    số ghi vào kỳ đã khoá SAU giờ khoá từ máy chưa biết lệnh khoá bị bỏ khi gộp.
+  - Kiểm tra số liệu (quản trị): tiến độ nhập từng đơn vị, số bất thường, ngưỡng chỉnh được. Cảnh báo ngay khi gõ số lạ ở màn Nhập số.
+  - Nội dung cần xử lý: tổng hợp cảnh báo (tiến độ, thiếu/bất thường, dự báo, nhiệm vụ quá hạn, kỳ chưa khoá).
+  - Biện pháp khắc phục: giao nhiệm vụ có người phụ trách, hạn, tự đối chiếu % hoàn thành lúc giao với hiện tại; giao trực tiếp từ vấn đề trong Báo cáo giao ban.
+  - Bảng điều hành BGĐ: một trang (điểm, dự kiến cuối năm, dẫn đầu/cuối bảng, điểm nóng, cảnh báo, hành động) để in hoặc lưu PDF.
+  - Thẻ điểm đơn vị: "In thẻ điểm tất cả phòng" (mỗi phòng một trang, có ô giải trình) và "Excel từng phòng".
+  Kiểm thử: thư mục tests\ (node tests	est-*.js <đường dẫn App\js>; test-baocao2 dùng đường dẫn App).
+  Lưu ý: tệp dữ liệu có thêm các trường khoa_ky, hanh_dong, users_xoa, ma_cu; bản cũ mở tệp mới vẫn chạy (bỏ qua trường lạ) nhưng không tôn trọng khoá kỳ — nên cập nhật mọi máy.
+
+MỚI Ở 2.6.1 — BỘ ICON TABLER + HIỆU ỨNG
+  - Dùng bộ TABLER ICONS (MIT) nhúng sẵn trong js\icons.js — chạy offline: menu bên trái, nút bấm (lập/làm mới/Word/PDF/hoàn thiện/xoá/sao lưu…), nhãn trạng thái Đạt/Khá/Cần cải thiện/Chưa đạt,
+    thông báo (toast) và thẻ chỉ tiêu (icon theo nhóm: tín dụng, huy động, thẻ, bảo hiểm, dịch vụ số, khách hàng, hiệu quả). Giấy phép: App\THIRD_PARTY_LICENSES.txt.
+  - Hiệu ứng nhẹ (chỉ transform/opacity, không dùng kính mờ): vào trang khi đổi màn hình, thẻ nâng lên khi rê chuột, nhấn nút, thanh tiến độ chạy ra, thông báo trượt vào; tự tắt nếu hệ điều hành bật "giảm chuyển động".
+  - Thêm icon mới: sửa bảng ALIAS trong js\icons.js (tên trong ứng dụng → tên icon Tabler) và nhúng nét vẽ tương ứng.
+
+MỚI Ở 2.6.0 — BÁO CÁO GIAO BAN (menu Báo cáo giao ban, cần đăng nhập quản trị)
+  - Lập báo cáo cho TOÀN CHI NHÁNH hoặc từng PHÒNG/PGD; kỳ Tháng / Quý / Năm; so sánh với kỳ liền trước · cùng kỳ năm trước · 31/12 năm trước · không so sánh.
+    Số lũy kế không so với năm trước trừ "cùng kỳ" (số lũy kế tính lại từ 0 mỗi năm).
+  - Số liệu CHỤP vào bản ghi (snapshot) lấy đúng từ thẻ điểm của ứng dụng — không có công thức KPI thứ hai. Bản đã Hoàn thiện không đổi khi số KPI đổi.
+  - Hệ thống chỉ nêu HIỆN TƯỢNG + SỐ LIỆU + CÂU HỎI; nguyên nhân do người lập CHỌN; không dự báo; không đặt ngưỡng mới (dùng ngưỡng Đạt/Khá/Cần cải thiện ở Cài đặt).
+    Dấu hiệu: dưới ngưỡng · ảnh hưởng điểm cao (mất ≥ 10% tổng trọng số) · giảm liên tiếp · số dư giảm so kỳ so · chậm tiến độ năm · thiếu số · phòng/PGD dưới ngưỡng Khá · phân giao kế hoạch chưa đủ.
+  - Các mục: B Nhận định (dự thảo tự soạn, sửa được) · C Bảng KPI · E Vấn đề (đánh giá: đã xác nhận / bác bỏ / cần kiểm tra; chọn nguyên nhân; thêm vấn đề tự phát hiện) · F Giải pháp & kiến nghị BGĐ · G Kết luận · Lịch sử.
+  - Vòng đời: Nháp → Hoàn thiện → Đã thay thế. Bản hoàn thiện không ghi đè được; muốn sửa thì "Mở lại để sửa" (tạo bản mới giữ số đã chốt).
+  - Xem trước · Xuất Word (.docx, offline) · PDF (hộp thoại in → Lưu dưới dạng PDF). Bản nháp lưu trên máy; bản hoàn thiện ghi thêm vào Data\BAO_CAO_GIAO_BAN và máy khác đọc được ("Đồng bộ thư mục chung").
+  - Chỉ tiêu KHÔNG chấm điểm KPI nay gọi là CHỈ TIÊU QUẢN TRỊ (trước đây "tham khảo" / "theo dõi") ở mọi màn hình, Excel xuất và báo cáo; dữ liệu và bản sao lưu cũ vẫn đọc bình thường.
+  - CHƯA CÓ ở bản này: mục D Biểu đồ trong báo cáo (xem trước/Word chưa có biểu đồ), tab "Báo cáo điều hành", sao lưu bản nháp ra thư mục chung.
+
+MỚI Ở 2.5.1 — ĐỒNG BỘ NHIỀU MÁY AN TOÀN HƠN + SAO LƯU RA MÁY
+  - Ghi tệp chung: lần lưu đến lúc đang ghi không còn bị bỏ (tự ghi tiếp); trước khi ghi kiểm tra tệp có bị máy khác ghi xen không → đọc, gộp lại rồi mới ghi;
+    lỗi ghi (tệp đang khoá, mạng chập chờn) tự thử lại; máy nào còn số mà tệp chung chưa có sẽ tự ghi lại ở lần kiểm tra 20 giây kế tiếp.
+  - Sửa lỗi hai máy lệch nhau mãi khi máy khác ghi chèn ngay sau lần ghi của mình.
+  - Số từ máy khác về không còn vẽ lại màn hình làm mất chữ đang gõ dở trong ô — vẽ lại khi rời ô.
+  - Mỗi ô số ghi thêm NGƯỜI NHẬP ("tên_đăng_nhập@mã_máy", nạp tự động là "auto"); rê chuột vào ô ở màn Nhập số để xem. Nên tạo mỗi người một tài khoản (Dữ liệu & cài đặt › Người dùng).
+  - Gộp tệp thiếu danh sách người dùng không còn đè tài khoản admin bằng tài khoản mặc định (mật khẩu 1111).
+  - Hiệu năng: mỗi lần lưu chỉ tạo chuỗi JSON 1 lần (trước 2–3 lần), gộp tệp không sao chép sâu, dải thông báo chỉ vẽ lại khi trạng thái đổi.
+  - SAO LƯU RA MÁY (Dữ liệu & cài đặt › Sao lưu tự động ra máy): máy quản trị chọn 1 lần thư mục trên máy (VD D:\Backup); mỗi lần đăng nhập và khi số liệu đổi
+    (đợi 10 giây yên tĩnh, chỉ ghi khi số liệu thật sự đổi) ghi vào <thư mục>\KPI_CN444: KPI_MOI_NHAT.json, <YYYY-MM>\KPI444_<ngày>_<giờ>_<người>.json, THONG_TIN.txt.
+    Lịch giữ: mỗi ngày tối đa 4 bản · tháng này 1 bản/ngày · tháng đã qua 2 bản (ngày 15 và cuối tháng). Chrome/Edge hỏi lại quyền thư mục mỗi lần mở: dải thông báo có nút "Cấp quyền".
+    Bản sao lưu có chứa mã băm mật khẩu — đặt thư mục ở nơi chỉ quản trị viên truy cập. Khôi phục: Dữ liệu & cài đặt › Khôi phục (thay toàn bộ) › chọn KPI_MOI_NHAT.json.
+
+LƯU Ý
+  - PIN chỉ để tránh sửa nhầm, không phải bảo mật. Phân quyền GHI thư mục Data trên ổ mạng cho đúng người.
+  - Tải bản sao lưu .json cuối mỗi tháng (Dữ liệu & cài đặt → Tải bản sao lưu).
+  - Chỉ tiêu ĐVT "%" nhập đúng con số phần trăm: 1,25 nghĩa là 1,25%; 95 nghĩa là 95%.

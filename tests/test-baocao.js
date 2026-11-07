@@ -1,0 +1,76 @@
+/* Kiểm thử lõi báo cáo giao ban. Chạy: node test-baocao.js <thư mục js> */
+const vm = require('vm'), fs = require('fs'), path = require('path');
+const JS = process.argv[2]; let fail = 0;
+const ok = (c, m) => { if (!c) { fail++; console.log('  ✗ ' + m); } else console.log('  ✓ ' + m); };
+const ls = {}, sb = { localStorage: { getItem: (k) => (k in ls ? ls[k] : null), setItem: (k, v) => { ls[k] = String(v); }, removeItem: (k) => { delete ls[k]; } }, sessionStorage: { getItem: () => null, setItem() {}, removeItem() {} }, document: { hidden: false, getElementById: () => null }, UI: { toast() {} }, console, crypto: require('crypto').webcrypto, TextEncoder, btoa, atob, setTimeout, clearTimeout, setInterval: () => 0, Date, Math, JSON, Promise };
+sb.window = sb; vm.createContext(sb);
+['config.js', 'cong-thuc.js', 'engine.js', 'store.js', 'bao-cao-cau-hoi.js', 'bao-cao-giao-ban.js'].forEach((f) => vm.runInContext(fs.readFileSync(path.join(JS, f), 'utf8'), sb, { filename: f }));
+sb.STORE.load();
+const S = sb.STORE, BC = sb.KPI_BAO_CAO, M = S.model(), nguoi = { username: 'lan', ho_ten: 'Nguyễn Lan', chuc_danh: 'Phòng Tổng hợp' };
+const k = M.kyMoiNhat(2026); console.log('kỳ mới nhất của dữ liệu mẫu: T' + k.thang + '/' + k.nam);
+
+console.log('1. Kỳ');
+const kyT = BC.kyTuLoai(M, 'thang', { nam: 2026, thang: 10 }), kyQ = BC.kyTuLoai(M, 'quy', { nam: 2026, quy: 3 }), kyQ4 = BC.kyTuLoai(M, 'quy', { nam: 2026, quy: 4 }), kyN = BC.kyTuLoai(M, 'nam', { nam: 2026 });
+ok(kyT.thang === 10 && kyT.nhan === 'Tháng 10/2026', 'kỳ tháng');
+ok(kyQ.thang === 9 && kyQ.nhan === 'Quý 3/2026', 'kỳ quý 3 → tháng 9');
+ok(kyQ4.thang === 10 && kyQ4.ghi_chu.some((x) => /chưa đủ tháng/.test(x)), 'quý 4 chưa đủ tháng → lấy T10 + ghi chú: ' + kyQ4.ghi_chu[0]);
+ok(kyN.thang === 10 && kyN.ghi_chu.length > 0, 'kỳ năm chưa kết thúc → ghi chú');
+ok(BC.kySo(kyT, 'lien_truoc').thang === 9 && BC.kySo(BC.kyTuLoai(M, 'thang', { nam: 2026, thang: 1 }), 'lien_truoc').nam === 2025, 'kỳ so liền trước (kể cả qua năm)');
+ok(BC.kySo(kyT, 'cung_ky').nam === 2025 && BC.kySo(kyT, 'dau_nam').thang === 12 && BC.kySo(kyT, 'khong') === null, 'cùng kỳ / đầu năm / không so sánh');
+
+console.log('2. Báo cáo toàn chi nhánh');
+const ks = BC.kySo(kyT, 'lien_truoc'), bc = BC.taoBaoCao({ M, state: S.state, ky: kyT, ks, dv: 'CN', nguoi, luc: '2026-11-07T08:00:00.000Z' });
+const s = bc.snapshot;
+ok(bc.trang_thai === 'nhap' && /^BCGB_20261107_/.test(bc.id) && bc.ngay_chot === '2026-10-31', 'id + trạng thái nháp + ngày chốt cuối tháng: ' + bc.id + ' / ' + bc.ngay_chot);
+ok(s.kpi.length >= 15 && s.tong.so_ct > 0 && s.xep_hang.length === M.units.length, 'snapshot: ' + s.kpi.length + ' chỉ tiêu, ' + s.xep_hang.length + ' đơn vị xếp hạng');
+const c = M.card('CN', 2026, 10);
+ok(Math.abs(s.tong.quy_doi - c.quy_doi) < 1e-9 && s.tong.so_dat === c.so_dat, 'số trong snapshot = Model.card (không công thức thứ hai): quy đổi ' + s.tong.quy_doi);
+const r0 = s.kpi.filter((r) => r.ht !== null && !r.tham_khao)[0], cr = c.rows.filter((r) => r.ma === r0.ma)[0];
+ok(r0.ht === cr.ht && r0.diem === cr.diem, 'từng chỉ tiêu khớp Model.card (' + r0.ma + ' %HT ' + (r0.ht * 100).toFixed(1) + ')');
+ok(Object.keys(s.don_vi).length > 0 && s.don_vi[r0.ma].length >= 8, 'có phân rã theo phòng/PGD cho báo cáo chi nhánh');
+ok(bc.van_de.length > 0 && bc.van_de.every((v) => v.trang_thai === 'chua' && v.hien_tuong && (v.nguon !== 'kpi' || v.cau_hoi.length > 0 && v.goi_y.length > 0)), bc.van_de.length + ' vấn đề, đều chưa đánh giá, có câu hỏi + nguyên nhân gợi ý');
+const muc = bc.van_de.map((v) => v.muc); const thuTu = muc.map((m) => (m === 'cao' ? 0 : m === 'tb' ? 1 : m === 'thap' ? 2 : 3));
+ok(thuTu.every((x, i) => i === 0 || thuTu[i - 1] <= x), 'sắp xếp: cao → trung bình → thấp → chưa phân mức');
+const kpiVd = bc.van_de.filter((v) => v.nguon === 'kpi'); ok(kpiVd.every((v) => v.luat.length > 0 && v.ly_do_chu_y), 'mỗi vấn đề KPI nêu rõ dấu hiệu + lý do');
+ok(kpiVd.every((v) => { const r = s.kpi.filter((x) => x.ma === v.ma_chi_tieu)[0]; return r.ht === null || r.ht < 1 - 1e-9 || v.luat.some((l) => /^xh|tien_do/.test(l)); }), 'chỉ tiêu đã đạt không bị nêu trừ khi có xu hướng xấu');
+console.log('   ' + bc.nhan_dinh.tong_quan.noi_dung);
+
+console.log('3. Báo cáo một phòng/PGD + so sánh không hợp lệ');
+const u = M.units[3].ma, bu = BC.taoBaoCao({ M, state: S.state, ky: kyT, ks: BC.kySo(kyT, 'dau_nam'), dv: u, nguoi });
+ok(bu.dv === u && bu.snapshot.ten_dv === M.units[3].ten && Object.keys(bu.snapshot.don_vi).length === 0, 'báo cáo phòng ' + u + ': không có phân rã đơn vị');
+ok(!bu.van_de.some((v) => v.nguon === 'don_vi' || v.nguon === 'phan_giao'), 'không có vấn đề cấp chi nhánh trong báo cáo phòng');
+const luyKe = bu.snapshot.kpi.filter((r) => r.kieu_so === 'luy_ke' && r.th !== null)[0];
+ok(luyKe && luyKe.so.delta === null && /tính lại từ đầu/.test(luyKe.so.ghi_chu), 'số lũy kế không so với 31/12 năm trước: ' + (luyKe && luyKe.ma));
+const soDu = bu.snapshot.kpi.filter((r) => r.kieu_so === 'so_du' && r.th !== null)[0];
+ok(!soDu || soDu.so.delta !== null || /chưa có số/.test(soDu.so.ghi_chu), 'số dư so được với kỳ so (hoặc báo kỳ so chưa có số)');
+
+console.log('4. Vòng đời + bất biến');
+const v0 = bc.van_de.filter((v) => v.nguon === 'kpi')[0];
+ok(!BC.datDanhGia(v0, { trang_thai: 'xac_nhan' }).ok, 'xác nhận mà chưa chọn nguyên nhân/bối cảnh → bị từ chối');
+ok(!BC.datDanhGia(v0, { trang_thai: 'bac_bo' }).ok && BC.datDanhGia(v0, { trang_thai: 'bac_bo', ly_do_bac_bo: 'Số nhập nhầm' }).ok, 'bác bỏ cần lý do');
+let b2 = JSON.parse(JSON.stringify(bc)); b2.van_de[0] = BC.datDanhGia(b2.van_de[0], { trang_thai: 'xac_nhan', nguyen_nhan: [b2.van_de[0].goi_y[0].id] }).vd;
+b2 = BC.themVanDe(b2, { tieu_de: 'Khách hàng lớn A tất toán', hien_tuong: 'Dự kiến tất toán 50 tỷ.', muc: 'cao' });
+b2.giai_phap.push({ giai_phap: 'Họp rà soát khách hàng lớn', phu_trach: 'P.KHDN', han: '2026-11-20', kien_nghi_bgd: false });
+const kt = BC.kiemTraHoanThien(b2); ok(kt.ok && kt.hoi.length > 0, 'đủ điều kiện hoàn thiện, có cảnh báo vấn đề cao/TB chưa đánh giá');
+const hoan = BC.hoanThien(b2, nguoi, '2026-11-07T09:00:00.000Z');
+ok(hoan.trang_thai === 'hoan_thien' && hoan.hoan_thien_boi === 'Nguyễn Lan', 'hoàn thiện');
+let loiNem = false; try { BC.hoanThien(hoan, nguoi); } catch (e) { loiNem = true; } ok(loiNem, 'không hoàn thiện lần hai');
+const gia = S.state.rec; const dv0 = 'a|DU_NO_BQ|CN|2026|10'; const cu = hoan.snapshot.kpi.filter((r) => r.ma === 'DU_NO_BQ')[0].th;
+S.setMany([{ k: 'a', ct: 'DU_NO_BQ', dv: 'CN', nam: 2026, thang: 10, v: 123456 }], 'sửa số');
+ok(hoan.snapshot.kpi.filter((r) => r.ma === 'DU_NO_BQ')[0].th === cu, 'bản hoàn thiện KHÔNG đổi khi số KPI đổi (snapshot)');
+const nhapLai = BC.lamMoiSo(b2, { M: S.model(), state: S.state, luc: '2026-11-07T10:00:00.000Z', boi: 'lan' });
+ok(nhapLai.snapshot.kpi.filter((r) => r.ma === 'DU_NO_BQ')[0].th !== cu, 'bản nháp làm mới số theo dữ liệu hiện hành');
+ok(nhapLai.van_de.filter((v) => v.nguon === 'nguoi_lap').length === 1 && nhapLai.van_de.some((v) => v.trang_thai === 'xac_nhan'), 'làm mới giữ vấn đề người lập thêm + đánh giá đã làm');
+let loi2 = false; try { BC.lamMoiSo(hoan, { M: S.model(), state: S.state }); } catch (e) { loi2 = true; } ok(loi2, 'không làm mới bản đã hoàn thiện');
+const mo = BC.moLai(hoan, nguoi, '2026-11-08T08:00:00.000Z'); ok(mo.trang_thai === 'nhap' && mo.id !== hoan.id && mo.phien_ban_cua === hoan.id && mo.snapshot.tong.quy_doi === hoan.snapshot.tong.quy_doi, 'mở lại = bản mới, giữ số đã chốt');
+ok(BC.danhDauThayThe(hoan, mo.id).trang_thai === 'thay_the', 'đánh dấu bản cũ đã thay thế');
+
+console.log('5. Tài liệu (Xem trước / Word / In)');
+const blocks = BC.taiLieu(hoan), loai = new Set(blocks.map((b) => b.t));
+ok(['dau', 'tieu_de', 'h1', 'h2', 'p', 'ds', 'bang', 'ky'].every((t) => loai.has(t)), 'đủ loại khối: ' + [...loai].join(','));
+const bang = blocks.filter((b) => b.t === 'bang')[0]; ok(bang.dong.every((d) => d.nhom ? d.o.length === 1 : d.o.length === bang.cot.length), 'bảng KPI: mọi dòng đủ ' + bang.cot.length + ' cột');
+const txt = JSON.stringify(blocks); ok(/Khách hàng lớn A tất toán/.test(txt) && /Họp rà soát/.test(txt) && !/BẢN NHÁP/.test(txt) && blocks[0].nhap === false, 'có vấn đề bổ sung + giải pháp; bản hoàn thiện không có chữ nháp');
+ok(BC.taiLieu(b2)[0].nhap === true, 'bản nháp đánh dấu BẢN NHÁP');
+const bx = JSON.parse(JSON.stringify(hoan)); bx.ket_luan.chon = { B: false, C: 'khong', F: false, phu_luc: false }; const t2 = BC.taiLieu(bx);
+ok(!t2.some((b) => b.t === 'bang') && !t2.some((b) => b.t === 'h1' && /Nhận định tổng quan/.test(b.text)), 'tắt mục B/C/F theo lựa chọn "Đưa vào bản chính thức"');
+console.log(fail ? '\n' + fail + ' LỖI' : '\nTẤT CẢ ĐẠT'); process.exit(fail ? 1 : 0);

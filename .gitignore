@@ -1,0 +1,16 @@
+# Dữ liệu vận hành thật của chi nhánh — KHÔNG đưa lên git
+/Data/*
+!/Data/HUONG_DAN.txt
+/[0-9][0-9][0-9][0-9]-[0-9][0-9]/
+/KPI_MOI_NHAT.json
+/VI_DU_DU_LIEU_THO/
+*.bak.json
+
+# Cấu hình riêng của máy / tệp tạm
+.claude/settings.local.json
+App/_t.html
+App/_t2.html
+App/_smoke.html
+node_modules/
+*.log
+Thumbs.db

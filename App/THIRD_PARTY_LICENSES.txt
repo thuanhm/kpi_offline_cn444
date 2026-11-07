@@ -1,0 +1,42 @@
+GIẤY PHÉP PHẦN MỀM BÊN THỨ BA — KPI các phòng (CN Bắc Nghệ An)
+==================================================================
+
+1) TABLER ICONS — bộ icon trong App\js\icons.js (phiên bản 3.34.0, kiểu "outline"; https://tabler.io/icons)
+
+MIT License
+
+Copyright (c) 2020-2024 Paweł Kuna
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+2) Thư viện đi kèm trong App\lib\: SheetJS (xlsx.full.min.js) và Chart.js (chart.umd.min.js) — xem thông báo giấy phép ở đầu mỗi tệp.
+
+
+Plus Jakarta Sans (assets/fonts/pjs) — SIL Open Font License 1.1, Copyright 2020 The Plus Jakarta Sans Project Authors (https://github.com/tokotype/PlusJakartaSans). Toàn văn: assets/fonts/pjs/OFL.txt
+
+
+Thư viện bổ sung (phiên bản 2.10.0) — đều giấy phép MIT, đặt trong App\lib\, chạy offline:
+  - PptxGenJS 3.12.0 (pptxgen.bundle.js, đã gồm JSZip) — Copyright Brent Ely (gitbrent/PptxGenJS)
+  - xlsx-js-style 1.2.0 (xlsx-js-style.bundle.js, trên nền SheetJS 0.18.5) — Copyright gitbrent và SheetJS LLC
+  - chartjs-plugin-annotation 3.1.0 — Copyright Chart.js Contributors
+  - chartjs-plugin-datalabels 2.2.0 — Copyright Chart.js Contributors
+  - SortableJS 1.15.6 (Sortable.min.js) — Copyright Lebedev Konstantin và cộng sự
+  - docx 9.5.0 (docx.umd.js) — Copyright Dolan Miu
+  - SnapDOM 3.7.1 (snapdom.js; gói @zumer/snapdom) — Copyright Juan Martín Muda / Zumerlab
+Toàn văn MIT: như phần Tabler Icons ở trên (cấp phép sử dụng, sao chép, sửa đổi, phân phối miễn phí; không bảo hành).
