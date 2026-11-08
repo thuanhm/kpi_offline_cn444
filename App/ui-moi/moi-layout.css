@@ -74,7 +74,7 @@ body.ui-moi::before { display: none; }                      /* bỏ dải màu c
 .moi-stats4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--gap); margin: var(--space-2) 0 var(--space-3); }
 .moi-tq .a-side, .moi-bgd .a-mid, .moi-bgd .a-right { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
 .moi-grp { margin: var(--space-3) 0 0; padding: var(--space-1) var(--space-2); font-size: 12px; font-weight: 700; color: var(--brand-blue); background: var(--brand-blue-tint); border-radius: var(--radius-sm); }
-.moi-bl-head { display: grid; grid-template-columns: minmax(130px, 1.2fr) minmax(120px, 1.6fr) minmax(90px, auto) 76px minmax(110px, auto); gap: var(--space-3); padding: 0 var(--space-2) var(--space-2); border-bottom: 1px solid var(--line); font-weight: 600; }
+.moi-bl-head { display: grid; grid-template-columns: minmax(130px, 1.2fr) minmax(120px, 1.6fr) 160px 76px 118px; gap: var(--space-3); padding: 0 var(--space-2) var(--space-2); border-bottom: 1px solid var(--line); font-weight: 600; }
 .moi-drill { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6); padding: var(--space-3); margin-bottom: var(--space-3); background: var(--surface-page); border-radius: var(--radius-sm); } .moi-drill .vtb-hero-num { font-size: 40px; } .moi-drill-bar { min-width: 240px; flex: 1; }
 .moi-ind-head { margin-bottom: var(--space-1); } .moi-ind-t { margin: 2px 0 var(--space-2); font-size: 20px; }
 
@@ -90,7 +90,7 @@ body.ui-moi::before { display: none; }                      /* bỏ dải màu c
 .moi-act b { font-weight: 600; } .moi-act small { display: block; color: var(--ink-muted); font-size: 12px; }
 .moi-tasks { list-style: none; margin: 0; padding: 0; } .moi-tasks li { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-2) 0; border-bottom: 1px solid var(--line); } .moi-tasks b { font-weight: 600; } .moi-tasks small { display: block; color: var(--ink-2); font-size: 12px; } .moi-tasks .vtb-chip { flex: none; }
 .moi-stage-only { display: none; }
-.moi-a-risk .vtb-bullet { grid-template-columns: minmax(90px, 1.1fr) minmax(60px, 1fr) auto; } .moi-a-risk .vtb-bl-gap, .moi-a-risk .vtb-bl-tier { display: none; } .moi-a-risk .vtb-bl-name small { white-space: normal; }
+.moi-a-risk .vtb-bullet { grid-template-columns: minmax(90px, 1.1fr) minmax(60px, 1fr) 96px; } .moi-a-risk .vtb-bl-gap, .moi-a-risk .vtb-bl-tier { display: none; } .moi-a-risk .vtb-bl-name small { white-space: normal; }
 .moi-bgd .a-rank .vtb-rk-head, .moi-bgd .a-rank .vtb-rk-row { grid-template-columns: 46px minmax(78px, .9fr) minmax(80px, 1.5fr) 64px 56px 118px; gap: var(--space-2); } .moi-bgd .a-rank .vtb-spark { display: none; }
 .a-fresh { padding: var(--space-3) var(--space-4); background: var(--surface-card); border: 1px solid var(--line); border-radius: var(--radius-md); }
 .moi-mx-wrap { max-height: 70vh; } .moi-mx-grp td { padding: 12px 8px 4px; font-size: var(--fs-body, 14px); font-weight: 800; color: var(--brand-blue); text-transform: none; letter-spacing: 0; background: var(--surface-card); }

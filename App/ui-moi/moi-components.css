@@ -71,7 +71,7 @@
 .vtb-warn { display: block; font-size: var(--fs-cap); color: var(--ink-2); }
 
 /* BulletRow */
-.vtb-bullet { display: grid; grid-template-columns: minmax(130px, 1.2fr) minmax(120px, 1.6fr) minmax(90px, auto) 76px minmax(110px, auto); gap: var(--space-3); align-items: center; padding: var(--space-2); min-height: var(--tap-min); border-bottom: 1px solid var(--line); cursor: pointer; border-radius: var(--radius-sm); }
+.vtb-bullet { display: grid; grid-template-columns: minmax(130px, 1.2fr) minmax(120px, 1.6fr) 160px 76px 118px; gap: var(--space-3); align-items: center; padding: var(--space-2); min-height: var(--tap-min); border-bottom: 1px solid var(--line); cursor: pointer; border-radius: var(--radius-sm); }
 .vtb-bullet:hover, .vtb-bullet.is-active { background: var(--brand-blue-tint); } .vtb-bullet.is-active { box-shadow: inset 0 0 0 1px var(--brand-blue); }
 .vtb-bl-name { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; } .vtb-bl-name small { color: var(--ink-muted); font-size: var(--fs-cap); }
 .vtb-bl-bar { position: relative; height: calc(var(--fs-body) * .75); background: var(--surface-sunken); border-radius: var(--radius-pill); }
