@@ -1,0 +1,35 @@
+### A. Màu trạng thái PA-A — 4 mức có thứ tự (Đạt, Khá, Cần cải thiện, Chưa đạt)
+  [PASS] Lightness band         all 4 inside L 0.43–0.77
+  [PASS] Chroma floor           all 4 >= 0.1
+  [PASS] CVD separation         worst adjacent #ec835a↔#6da7ec ΔE 20.5 (protan) · tritan 20.9
+  [PASS] Normal-vision floor    worst adjacent #b02a2a↔#ec835a ΔE 22.3 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#6da7ec",2.5],["#ec835a",2.64]]
+
+  → ALL CHECKS PASS  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+
+### B. PA-A + GAP — 5 màu đổ (GAP là xám trung tính có chủ đích: 'chroma floor' không áp dụng cho nghĩa 'không có số')
+  [PASS] Lightness band         all 5 inside L 0.43–0.77
+  [FAIL] Chroma floor           below floor (reads gray): [["#8996ab",0.035]]
+  [PASS] CVD separation         worst adjacent #8996ab↔#b02a2a ΔE 19.5 (deutan) · tritan 20.9
+  [PASS] Normal-vision floor    worst adjacent #b02a2a↔#ec835a ΔE 22.3 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#6da7ec",2.5],["#ec835a",2.64],["#8996ab",2.99]]
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+
+### C. Chuỗi danh mục (series-1..4)
+  [PASS] Lightness band         all 4 inside L 0.43–0.77
+  [PASS] Chroma floor           all 4 >= 0.1
+  [PASS] CVD separation         worst adjacent #1baf7a↔#eb6834 ΔE 9.2 (deutan) · tritan 18.0
+  [PASS] Normal-vision floor    worst adjacent #1baf7a↔#eb6834 ΔE 27.6 (normal)
+  [WARN] Contrast vs surface    below 3:1 — relief required (visible labels or table view): [["#1baf7a",2.82]]
+
+  → ALL CHECKS PASS  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)
+
+### D. Chuỗi xu hướng: xanh thương hiệu + xám trung tính (series-neutral = line-strong)
+  [PASS] Lightness band         all 2 inside L 0.43–0.77
+  [FAIL] Chroma floor           below floor (reads gray): [["#7d8aa0",0.036]]
+  [PASS] CVD separation         worst adjacent #7d8aa0↔#005993 ΔE 17.2 (protan) · tritan 16.8
+  [PASS] Normal-vision floor    worst adjacent #7d8aa0↔#005993 ΔE 19.8 (normal)
+  [PASS] Contrast vs surface    all 2 >= 3:1
+
+  → FAILED — fix the marked checks  (CVD in the 6–8 floor band is legal ONLY with secondary encoding: direct labels, gaps, or texture)

@@ -1,0 +1,21 @@
+ma,ten_ngan,ten,dvt,nhom,huong,kieu,toi_da,ts_goc,hien_tq,thu_tu
+TOI,TOI,Tổng thu nhập hoạt động (TOI),Tỷ đồng,Hiệu quả kinh doanh,cao_tot,luy_ke,1.3,8,1,1
+TOI_TT,Tăng trưởng TOI,Tốc độ tăng trưởng TOI so cùng kỳ,%,Hiệu quả kinh doanh,cao_tot,ty_le_luy_ke,1.3,4,1,2
+NII,NII,Thu nhập lãi thuần (NII),Tỷ đồng,Hiệu quả kinh doanh,cao_tot,luy_ke,1.3,8,1,3
+DV,Thu thuần DV,Thu thuần từ hoạt động dịch vụ,Tỷ đồng,Hiệu quả kinh doanh,cao_tot,luy_ke,1.3,6,1,4
+LNTT,LNTT,Lợi nhuận trước thuế,Tỷ đồng,Hiệu quả kinh doanh,cao_tot,luy_ke,1.3,6,0,5
+DUNO_CK,Dư nợ,Dư nợ tín dụng cuối kỳ,Tỷ đồng,Tín dụng,cao_tot,so_du,1.3,6,1,6
+DUNO_BQ,Dư nợ BQ,Dư nợ tín dụng bình quân,Tỷ đồng,Tín dụng,cao_tot,so_du,1.3,4,0,7
+TT_DUNO,Tăng trưởng dư nợ,Tăng trưởng dư nợ so đầu năm,%,Tín dụng,cao_tot,ty_le_luy_ke,1.3,4,0,8
+NPL,Nợ xấu,Tỷ lệ nợ xấu (càng thấp càng tốt),%,Tín dụng,thap_tot,ty_le,1.3,6,1,9
+THU_NO,Thu nợ đã xử lý,Thu hồi nợ đã xử lý rủi ro,Tỷ đồng,Tín dụng,cao_tot,luy_ke,1.3,4,0,10
+HDV_CK,Huy động vốn,Huy động vốn cuối kỳ,Tỷ đồng,Huy động vốn,cao_tot,so_du,1.3,6,1,11
+HDV_BQ,HĐV BQ,Huy động vốn bình quân,Tỷ đồng,Huy động vốn,cao_tot,so_du,1.3,4,0,12
+CASA,CASA,Số dư tiền gửi không kỳ hạn (CASA),Tỷ đồng,Huy động vốn,cao_tot,so_du,1.3,6,1,13
+CASA_TL,Tỷ lệ CASA,Tỷ lệ CASA trên tổng huy động,%,Huy động vốn,cao_tot,ty_le,1.3,4,0,14
+TG_KHCN,Tiền gửi KHCN,Tiền gửi khách hàng cá nhân,Tỷ đồng,Huy động vốn,cao_tot,so_du,1.3,4,0,15
+THE,Thẻ phát hành,Số thẻ phát hành mới,Nghìn thẻ,Dịch vụ & chất lượng,cao_tot,luy_ke,1.3,4,0,16
+KH_MOI,KH số mới,Khách hàng mới sử dụng ngân hàng số,Nghìn KH,Dịch vụ & chất lượng,cao_tot,luy_ke,1.3,4,0,17
+BANCAS,Bancassurance,Doanh thu bảo hiểm qua ngân hàng,Tỷ đồng,Dịch vụ & chất lượng,cao_tot,luy_ke,1.3,4,0,18
+CX,Hài lòng KH (CX),Chỉ số hài lòng khách hàng (khảo sát quý),%,Dịch vụ & chất lượng,cao_tot,ty_le,1,4,0,19
+TUAN_THU,Tuân thủ quy trình,Tỷ lệ tuân thủ quy trình (kiểm tra quý),%,Dịch vụ & chất lượng,cao_tot,ty_le,1,4,0,20

@@ -1,0 +1,19 @@
+{
+  "title": "Sample · Số liệu bất thường",
+  "description": "Số liệu bất thường giả lập của kỳ 10. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+  "source": {
+    "kind": "file",
+    "url": "/_blob/71f31d9798935f1118e0bb33f675c2ba",
+    "name": "bat_thuong.csv",
+    "format": "csv"
+  },
+  "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+  },
+  "fixed": true,
+  "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+  }
+}

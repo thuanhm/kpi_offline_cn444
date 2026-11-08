@@ -1,0 +1,9 @@
+id,thang,muc,loai,text,dv,ct
+CB01,10,3,KPI chưa đạt,"Tỷ lệ nợ xấu toàn CN 1,92% so trần 1,2% (hoàn thành 63%).",,NPL
+CB02,10,3,Đơn vị điểm thấp,"P.HT-2 đạt 71,4 điểm, thấp nhất toàn chi nhánh (giảm 1,2 điểm so kỳ trước).",DV12,
+CB03,10,2,Đơn vị điểm thấp,"P.HT-1 đạt 72,5 điểm, dưới mức Khá.",DV11,
+CB04,10,2,Nguy cơ không đạt KH năm,Tiền gửi KHCN dự kiến chỉ đạt khoảng 61% kế hoạch năm theo xu hướng hiện tại.,,TG_KHCN
+CB05,10,2,Số liệu bất thường,PGD-4: số dư CASA giảm mạnh bất thường so với tháng trước — cần rà soát số liệu hoặc nguyên nhân.,DV09,CASA
+CB06,10,2,Thiếu số liệu,"3 ô thực hiện chưa nhập: PGD-2 (Dư nợ BQ), P.KHDN-3 (CASA), P.HT-1 (Thẻ phát hành).",,
+CB07,10,1,Chưa khoá kỳ,Kỳ T10/2026 chưa khoá số liệu.,,
+CB08,10,1,Số liệu theo quý,Hài lòng KH (CX) và Tuân thủ quy trình chỉ có số cuối quý — kỳ này hiển thị GAP.,,CX

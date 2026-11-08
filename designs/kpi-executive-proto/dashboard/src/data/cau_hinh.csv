@@ -1,0 +1,6 @@
+key,value,mo_ta
+nguong.dat,1,"Ngưỡng Đạt (tỷ lệ hoàn thành, 1 = 100%)."
+nguong.kha,0.8,Ngưỡng Khá.
+nguong.cct,0.7,Ngưỡng Cần cải thiện; dưới ngưỡng này là Chưa đạt.
+nguong.diem_cao,90,D7: ngưỡng điểm (thang 100) để đếm đơn vị nổi bật — thay hằng số 90. Mặc định 90.
+chi_nhanh,VietinBank Chi nhánh Bắc Nghệ An,Tên hiển thị.

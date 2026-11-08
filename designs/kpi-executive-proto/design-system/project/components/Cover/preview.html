@@ -1,0 +1,21 @@
+<!-- @dsCard height=288 -->
+<!doctype html><html lang="vi"><head><meta charset="utf-8"><style>body{margin:0;background:var(--surface-page)}svg{display:block;width:960px;height:288px}
+.ground{fill:var(--surface-page)}.brand{fill:var(--brand-blue)}.red{fill:var(--brand-red)}.ink{fill:var(--ink)}.kha{fill:var(--tier-kha)}.cct{fill:var(--tier-cct)}.dat{fill:var(--tier-dat)}.tint{fill:var(--brand-blue-tint)}.chua{fill:var(--tier-chua)}.gap{fill:var(--tier-gap)}
+.tile{rx:var(--radius-md)}.pill{rx:6px}.name{font:700 68px/0.95 var(--font-sans);fill:var(--ink);letter-spacing:-.02em}.tag{font:500 14px var(--font-sans);fill:var(--ink-muted)}</style></head><body>
+<svg viewBox="0 0 960 288" role="img" aria-label="VietinBank KPI">
+<!-- Khối màu: brand-blue 232×168, ink 240×104 (tràn mép trên-phải), brand-red 96×96, tier-kha 136×96, tier-cct 112×112, brand-blue-tint 112×112, tier-dat 240×72 (bội của space-1..space-12).
+     Bố cục: mô-đun lệch, bước 8px, tràn mép trên và phải, không có hàng ô bằng nhau.
+     Hoạ tiết: hàng "dải trạng thái" — 5 viên thuốc bo 6px (radius-sm) màu Đạt/Khá/CCT/Chưa đạt/GAP trong khối ink, chính là TierBar của hệ thống: dấu hiệu riêng của dashboard KPI này.
+     Bước/bo góc dùng: space-1 (4), space-2 (8), space-12 (48), radius-sm (6), radius-md (10). -->
+<rect class="ground" width="960" height="288"/>
+<rect class="tile brand" x="480" y="0" width="232" height="168"/>
+<rect class="tile ink" x="720" y="0" width="240" height="104"/>
+<rect class="pill dat" x="740" y="44" width="70" height="16"/><rect class="pill kha" x="814" y="44" width="52" height="16"/><rect class="pill cct" x="870" y="44" width="30" height="16"/><rect class="pill chua" x="904" y="44" width="22" height="16"/><rect class="pill gap" x="930" y="44" width="14" height="16"/>
+<rect class="tile red" x="720" y="112" width="96" height="96"/>
+<rect class="tile kha" x="824" y="112" width="136" height="96"/>
+<rect class="tile cct" x="480" y="176" width="112" height="112"/>
+<rect class="tile tint" x="600" y="176" width="112" height="112"/>
+<rect class="tile dat" x="720" y="216" width="240" height="72"/>
+<text class="name" x="32" y="150">VietinBank</text><text class="name" x="32" y="214">KPI</text>
+<text class="tag" x="32" y="248">Một hệ trạng thái cho mọi màn hình KPI.</text>
+</svg></body></html>

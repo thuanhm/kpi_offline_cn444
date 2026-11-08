@@ -1,0 +1,43 @@
+{
+  "v": 3,
+  "layout": "files",
+  "createdOnFiles": {
+    "v": 1,
+    "at": "2026-11-08T04:50:40Z"
+  },
+  "title": "VietinBank KPI",
+  "namespace": "VTB",
+  "libraries": [],
+  "sections": {},
+  "groups": [
+    "Logos"
+  ],
+  "assetGroups": {
+    "Logos": {
+      "name": "Logos",
+      "tile": "l",
+      "order": [
+        "logo-vietinbank.png"
+      ],
+      "files": {
+        "logo-vietinbank.png": {
+          "name": "logo-vietinbank.png",
+          "blob": "df42ac400cc0ea819f1797b110854a65",
+          "size": 19100,
+          "type": "image/png"
+        }
+      }
+    }
+  },
+  "blobs": {},
+  "docs": {
+    "readme": "project/README.md",
+    "sections": []
+  },
+  "lastChange": {
+    "by": "Claude Code",
+    "via": "Claude Code",
+    "at": "2026-11-08T04:50:40Z",
+    "note": "Prototype giai đoạn 1: token, thành phần, brand book."
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "title": "Sample · Nhiệm vụ đề xuất",
+  "description": "Vấn đề, đề xuất hành động, đơn vị, người phụ trách (vai trò giả), hạn. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+  "source": {
+    "kind": "file",
+    "url": "/_blob/6a255581a72ae5b7203238435942a843",
+    "name": "hanh_dong.csv",
+    "format": "csv"
+  },
+  "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+  },
+  "fixed": true,
+  "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+  }
+}

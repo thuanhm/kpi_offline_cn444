@@ -1,0 +1,613 @@
+{
+ "at": "2026-11-08T04:51:27.122Z",
+ "total": 101,
+ "failed": 0,
+ "results": [
+  {
+   "group": "Kích thước",
+   "name": "1920×1080 · tong-quan: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 1920 / cửa sổ 1920"
+  },
+  {
+   "group": "Kích thước",
+   "name": "1920×1080 · tong-quan: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "1920×1080 · tong-quan: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "1920×1080 · dieu-hanh: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 1920 / cửa sổ 1920"
+  },
+  {
+   "group": "Kích thước",
+   "name": "1920×1080 · dieu-hanh: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "1920×1080 · dieu-hanh: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "1440×900 · tong-quan: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 1440 / cửa sổ 1440"
+  },
+  {
+   "group": "Kích thước",
+   "name": "1440×900 · tong-quan: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "1440×900 · tong-quan: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "1440×900 · dieu-hanh: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 1440 / cửa sổ 1440"
+  },
+  {
+   "group": "Kích thước",
+   "name": "1440×900 · dieu-hanh: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "1440×900 · dieu-hanh: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "1366×768 · tong-quan: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 1366 / cửa sổ 1366"
+  },
+  {
+   "group": "Kích thước",
+   "name": "1366×768 · tong-quan: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "1366×768 · tong-quan: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "1366×768 · dieu-hanh: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 1366 / cửa sổ 1366"
+  },
+  {
+   "group": "Kích thước",
+   "name": "1366×768 · dieu-hanh: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "1366×768 · dieu-hanh: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "1024×768 · tong-quan: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 1024 / cửa sổ 1024"
+  },
+  {
+   "group": "Kích thước",
+   "name": "1024×768 · tong-quan: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "1024×768 · tong-quan: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "1024×768 · dieu-hanh: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 1024 / cửa sổ 1024"
+  },
+  {
+   "group": "Kích thước",
+   "name": "1024×768 · dieu-hanh: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "1024×768 · dieu-hanh: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "768×1024 · tong-quan: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 768 / cửa sổ 768"
+  },
+  {
+   "group": "Kích thước",
+   "name": "768×1024 · tong-quan: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "768×1024 · tong-quan: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "768×1024 · dieu-hanh: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 768 / cửa sổ 768"
+  },
+  {
+   "group": "Kích thước",
+   "name": "768×1024 · dieu-hanh: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "768×1024 · dieu-hanh: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "390×844 · tong-quan: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 390 / cửa sổ 390"
+  },
+  {
+   "group": "Kích thước",
+   "name": "390×844 · tong-quan: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "390×844 · tong-quan: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Kích thước",
+   "name": "390×844 · dieu-hanh: không tràn ngang",
+   "ok": true,
+   "detail": "scrollWidth 390 / cửa sổ 390"
+  },
+  {
+   "group": "Kích thước",
+   "name": "390×844 · dieu-hanh: mọi khối đã được vẽ (không còn \"—\")",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Console",
+   "name": "390×844 · dieu-hanh: không lỗi/cảnh báo console",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1920×1080: khung 16:9 nằm gọn trong cửa sổ",
+   "ok": true,
+   "detail": "tỷ lệ 1.778"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1920×1080: không thẻ nào bị cắt nội dung",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1920×1080: đủ 12 đơn vị trong bảng xếp hạng, hàng cuối còn trong thẻ",
+   "ok": true,
+   "detail": "12 hàng"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1920×1080: không tràn ngang",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1440×900: khung 16:9 nằm gọn trong cửa sổ",
+   "ok": true,
+   "detail": "tỷ lệ 1.778"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1440×900: không thẻ nào bị cắt nội dung",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1440×900: đủ 12 đơn vị trong bảng xếp hạng, hàng cuối còn trong thẻ",
+   "ok": true,
+   "detail": "12 hàng"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1440×900: không tràn ngang",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1280×720: khung 16:9 nằm gọn trong cửa sổ",
+   "ok": true,
+   "detail": "tỷ lệ 1.778"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1280×720: không thẻ nào bị cắt nội dung",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1280×720: đủ 12 đơn vị trong bảng xếp hạng, hàng cuối còn trong thẻ",
+   "ok": true,
+   "detail": "12 hàng"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1280×720: không tràn ngang",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1000×700: khung 16:9 nằm gọn trong cửa sổ",
+   "ok": true,
+   "detail": "tỷ lệ 1.778"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1000×700: không thẻ nào bị cắt nội dung",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1000×700: đủ 12 đơn vị trong bảng xếp hạng, hàng cuối còn trong thẻ",
+   "ok": true,
+   "detail": "12 hàng"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "tong-quan @1000×700: không tràn ngang",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1920×1080: khung 16:9 nằm gọn trong cửa sổ",
+   "ok": true,
+   "detail": "tỷ lệ 1.778"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1920×1080: không thẻ nào bị cắt nội dung",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1920×1080: đủ 12 đơn vị trong bảng xếp hạng, hàng cuối còn trong thẻ",
+   "ok": true,
+   "detail": "12 hàng"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1920×1080: không tràn ngang",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1440×900: khung 16:9 nằm gọn trong cửa sổ",
+   "ok": true,
+   "detail": "tỷ lệ 1.778"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1440×900: không thẻ nào bị cắt nội dung",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1440×900: đủ 12 đơn vị trong bảng xếp hạng, hàng cuối còn trong thẻ",
+   "ok": true,
+   "detail": "12 hàng"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1440×900: không tràn ngang",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1280×720: khung 16:9 nằm gọn trong cửa sổ",
+   "ok": true,
+   "detail": "tỷ lệ 1.778"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1280×720: không thẻ nào bị cắt nội dung",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1280×720: đủ 12 đơn vị trong bảng xếp hạng, hàng cuối còn trong thẻ",
+   "ok": true,
+   "detail": "12 hàng"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1280×720: không tràn ngang",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1000×700: khung 16:9 nằm gọn trong cửa sổ",
+   "ok": true,
+   "detail": "tỷ lệ 1.778"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1000×700: không thẻ nào bị cắt nội dung",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1000×700: đủ 12 đơn vị trong bảng xếp hạng, hàng cuối còn trong thẻ",
+   "ok": true,
+   "detail": "12 hàng"
+  },
+  {
+   "group": "Trình chiếu",
+   "name": "dieu-hanh @1000×700: không tràn ngang",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Tương tác",
+   "name": "Mặc định mở Tổng quan chi nhánh",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Tương tác",
+   "name": "Bấm tab → chuyển sang Điều hành BGĐ",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Tương tác",
+   "name": "Chọn kỳ báo cáo T5 → điểm KPI đổi so với T10",
+   "ok": true,
+   "detail": "T10 93,8 → T5 92,2"
+  },
+  {
+   "group": "D8",
+   "name": "Kỳ không có dữ liệu dự kiến: KHÔNG vẽ đường dự kiến và có thông báo",
+   "ok": true,
+   "detail": "{\"dashed\":false,\"has\":false,\"msg\":true}"
+  },
+  {
+   "group": "D8",
+   "name": "Đường dự kiến: nét ĐỨT + nhãn \"DỰ KIẾN\" + chú giải; đường thực tế nét LIỀN",
+   "ok": true,
+   "detail": "{\"dashed\":true,\"label\":true,\"legend\":true,\"solid\":1}"
+  },
+  {
+   "group": "Tương tác",
+   "name": "Lọc theo khối KHDN → danh sách xếp hạng thu hẹp",
+   "ok": true,
+   "detail": "12 → 3"
+  },
+  {
+   "group": "Tương tác",
+   "name": "Drill-down: bấm đơn vị → xuống chỉ tiêu của đơn vị đó",
+   "ok": true,
+   "detail": "{\"scope\":\"· P.HT-2 · T10/2026\",\"rows\":6,\"sum\":true}"
+  },
+  {
+   "group": "Tương tác",
+   "name": "Drill-down: bấm chỉ tiêu → biểu đồ so sánh KH/TH đổi theo",
+   "ok": true,
+   "detail": "· Thẻ phát hành · P.HT-2"
+  },
+  {
+   "group": "Tương tác",
+   "name": "Bấm thẻ KPI (NII) → chi tiết chỉ tiêu đổi",
+   "ok": true,
+   "detail": "· NII · Toàn CN"
+  },
+  {
+   "group": "Tương tác",
+   "name": "Bấm \"Trình chiếu\" → vào chế độ trình chiếu",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Tương tác",
+   "name": "Trình chiếu: phím → chuyển màn hình",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Tương tác",
+   "name": "Phím Esc thoát trình chiếu",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Tương tác",
+   "name": "Nút \"Thoát trình chiếu\" thoát được",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Truy cập",
+   "name": "Mọi biểu đồ (13) có nút chuyển sang dạng bảng và bảng có dữ liệu",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Truy cập",
+   "name": "Bấm \"Bảng\" → hiển thị bảng thay cho biểu đồ",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Màu",
+   "name": "Mọi chip trạng thái (41) có biểu tượng + nhãn chữ",
+   "ok": true,
+   "detail": "cct,chua,dat,gap,kha"
+  },
+  {
+   "group": "Màu",
+   "name": "Màu trạng thái PA-A đúng giá trị phê duyệt (#1c5cab, #6da7ec, #ec835a, #b02a2a, #8996ab) ở mọi thành phần",
+   "ok": true,
+   "detail": "{\"dat\":\"rgb(28, 92, 171)\",\"kha\":\"rgb(109, 167, 236)\",\"cct\":\"rgb(236, 131, 90)\",\"chua\":\"rgb(176, 42, 42)\",\"gap\":\"rgb(137, 150, 171)\"}"
+  },
+  {
+   "group": "Màu",
+   "name": "Màu thương hiệu #005993 và #d71249 được giữ nguyên",
+   "ok": true,
+   "detail": "{\"blue\":\"#005993\",\"red\":\"#d71249\"}"
+  },
+  {
+   "group": "Thiết kế",
+   "name": "Không dùng gradient",
+   "ok": true,
+   "detail": "gradient: 0"
+  },
+  {
+   "group": "Thiết kế",
+   "name": "Không dùng hiệu ứng 3D",
+   "ok": true,
+   "detail": "3D: 0"
+  },
+  {
+   "group": "Thiết kế",
+   "name": "Không dùng animation / keyframes",
+   "ok": true,
+   "detail": "animation: 0"
+  },
+  {
+   "group": "Thiết kế",
+   "name": "Biểu đồ là SVG phẳng (không canvas/filter)",
+   "ok": true,
+   "detail": "0"
+  },
+  {
+   "group": "Typography",
+   "name": "Plus Jakarta Sans được nạp và hỗ trợ tiếng Việt (ặ ờ ỹ)",
+   "ok": true,
+   "detail": "{\"loaded\":[\"Plus Jakarta Sans 400\",\"Plus Jakarta Sans 400\",\"Plus Jakarta Sans 400\",\"Plus Jakarta Sans 500\"],\"sample\":true}"
+  },
+  {
+   "group": "Typography",
+   "name": "Chữ HTML không nhỏ hơn 12px",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Bàn phím",
+   "name": "Tab đi qua tab màn hình, ô chọn, nút, thẻ KPI, hàng xếp hạng",
+   "ok": true,
+   "detail": "BUTTON, SELECT, DIV[button], circle[img]"
+  },
+  {
+   "group": "Bàn phím",
+   "name": "Mọi phần tử nhận focus đều có vòng focus nhìn thấy (outline)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Bàn phím",
+   "name": "Enter trên hàng xếp hạng kích hoạt drill-down",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Bàn phím",
+   "name": "Vùng bấm tối thiểu 28px (nút, thẻ, hàng)",
+   "ok": true,
+   "detail": ""
+  },
+  {
+   "group": "Truy cập",
+   "name": "Mọi biểu đồ SVG có aria-label mô tả",
+   "ok": true,
+   "detail": "0 thiếu"
+  },
+  {
+   "group": "Truy cập",
+   "name": "Điểm dữ liệu biểu đồ truy cập được bằng bàn phím và có nhãn (tooltip không là cách duy nhất)",
+   "ok": true,
+   "detail": "{\"n\":49,\"tab\":49}"
+  },
+  {
+   "group": "Truy cập",
+   "name": "Trang khai báo ngôn ngữ vi",
+   "ok": true,
+   "detail": "vi"
+  },
+  {
+   "group": "D7",
+   "name": "Ô \"Đơn vị ≥ N điểm\" lấy N từ cấu hình nguong (mặc định 90) và đếm đúng",
+   "ok": true,
+   "detail": "Đơn vị ≥ 90 điểm7/12ngưỡng cấu hình nguong"
+  },
+  {
+   "group": "In ấn",
+   "name": "Màn Điều hành in ra A4 ngang đúng 1 trang",
+   "ok": true,
+   "detail": "1 trang; 199 KB"
+  }
+ ]
+}

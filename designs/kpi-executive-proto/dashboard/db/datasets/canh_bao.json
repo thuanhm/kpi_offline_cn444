@@ -1,0 +1,19 @@
+{
+  "title": "Sample · Cảnh báo kỳ 10",
+  "description": "Cảnh báo điều hành giả lập, sinh từ số liệu mẫu. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+  "source": {
+    "kind": "file",
+    "url": "/_blob/0aa694078125bed1e027da5069f8140f",
+    "name": "canh_bao.csv",
+    "format": "csv"
+  },
+  "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+  },
+  "fixed": true,
+  "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+  }
+}

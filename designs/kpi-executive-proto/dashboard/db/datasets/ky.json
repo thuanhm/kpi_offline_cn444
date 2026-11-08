@@ -1,0 +1,19 @@
+{
+  "title": "Sample · Kỳ báo cáo",
+  "description": "Các kỳ T1–T10/2026, ngày lập, thời điểm cập nhật, trạng thái khoá kỳ. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+  "source": {
+    "kind": "file",
+    "url": "/_blob/11f965a416de54caf2730088cb7e02a2",
+    "name": "ky.csv",
+    "format": "csv"
+  },
+  "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+  },
+  "fixed": true,
+  "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+  }
+}

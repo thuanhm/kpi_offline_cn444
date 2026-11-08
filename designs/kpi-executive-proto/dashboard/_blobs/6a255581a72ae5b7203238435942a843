@@ -1,0 +1,9 @@
+id,thang,van_de,de_xuat,dv,ct,nguoi,han,trang_thai,muc
+HD01,10,Nợ xấu vượt trần kế hoạch,Rà soát nhóm nợ 2 sắp chuyển nhóm; lập kế hoạch thu hồi từng khoản trên 5 tỷ đồng.,DV08,NPL,Trưởng PGD-3 (mẫu),2026-11-05,dang_lam,3
+HD02,10,Tiền gửi KHCN thấp so kế hoạch,Chạy chương trình giữ chân tiền gửi tất toán đến hạn trong quý IV; giao chỉ tiêu theo PGD.,DV04,TG_KHCN,Trưởng P.KHCN-1 (mẫu),2026-11-20,moi,3
+HD03,10,Số dư CASA tụt bất thường,Đối chiếu số liệu CASA kỳ T10 của PGD-4; xác nhận nguyên nhân và cập nhật.,DV09,CASA,Kiểm soát viên (mẫu),2026-11-04,moi,2
+HD04,10,Lợi nhuận trước thuế dưới kế hoạch,Rà soát chi phí hoạt động và chi phí dự phòng; đề xuất điều chỉnh cuối năm.,,LNTT,Phụ trách Kế toán (mẫu),2026-11-25,moi,2
+HD05,10,Đơn vị có điểm thấp nhất,Họp rà soát kế hoạch hành động với P.HT-2; theo dõi tuần.,DV12,,Phó giám đốc phụ trách (mẫu),2026-11-15,dang_lam,3
+HD06,10,Bancassurance thấp,Tăng cường bán chéo bảo hiểm cho khách hàng vay mới; thi đua theo tuần.,,BANCAS,Trưởng P.KHCN-2 (mẫu),2026-11-30,moi,1
+HD07,10,Chưa nhập đủ số liệu,Bổ sung 3 ô thực hiện còn thiếu để khoá kỳ T10.,,,Quản trị số liệu (mẫu),2026-11-03,dang_lam,1
+HD08,10,Thu hồi nợ đã xử lý,Phân công thu hồi các hồ sơ có tài sản bảo đảm; báo cáo hằng tuần.,DV01,THU_NO,Trưởng P.KHDN-1 (mẫu),2026-10-28,xong,2

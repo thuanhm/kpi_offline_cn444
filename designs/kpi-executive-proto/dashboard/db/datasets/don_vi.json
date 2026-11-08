@@ -1,0 +1,19 @@
+{
+  "title": "Sample · Danh sách đơn vị",
+  "description": "12 phòng/PGD giả lập và dòng Toàn CN. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+  "source": {
+    "kind": "file",
+    "url": "/_blob/dca4759697c1085678b74246581e7683",
+    "name": "don_vi.csv",
+    "format": "csv"
+  },
+  "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+  },
+  "fixed": true,
+  "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+  }
+}

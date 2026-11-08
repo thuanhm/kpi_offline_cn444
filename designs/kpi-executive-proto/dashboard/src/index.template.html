@@ -1,0 +1,184 @@
+<meta name="dash-one-writer">
+<title>Dashboard KPI điều hành · VietinBank Bắc Nghệ An</title>
+<link rel="stylesheet" href="tokens.css">
+<link rel="stylesheet" href="fonts.css">
+<link rel="stylesheet" href="bundle.css">
+<link rel="stylesheet" href="styles.css">
+
+<div id="vtb-root" class="vtb-scope vtb-app">
+  <div class="stage">
+    <header class="appbar">
+      <div class="brand-strip" aria-hidden="true"><i class="s-blue"></i><i class="s-red"></i></div>
+      <div class="appbar-row">
+        <div class="brand">
+          <img class="logo" src="{{LOGO}}" alt="VietinBank" width="132" height="35">
+          <div class="brand-t"><span class="brand-n">Chi nhánh Bắc Nghệ An</span><span class="brand-s">Dashboard KPI điều hành</span></div>
+        </div>
+        <nav class="tabs" aria-label="Chọn màn hình">
+          <button type="button" class="tab" data-man="tong-quan" aria-pressed="true">Tổng quan chi nhánh</button>
+          <button type="button" class="tab" data-man="dieu-hanh" aria-pressed="false">Điều hành Ban giám đốc</button>
+        </nav>
+        <div class="appbar-ctl">
+          <label class="ctl"><span>Kỳ báo cáo</span><select class="dash-select" id="sel-ky" data-draw="chon-ky" data-source="ky" aria-label="Kỳ báo cáo"></select></label>
+          <label class="ctl ctl-dv"><span>Đơn vị</span><select class="dash-select" id="sel-dv" data-draw="chon-dv" data-source="don_vi" aria-label="Lọc theo đơn vị"></select></label>
+          <span class="upd" data-draw="cap-nhat" data-source="ky">—</span>
+          <span class="mock-badge">DỮ LIỆU GIẢ LẬP</span>
+          <button type="button" class="btn btn-present" id="btn-present">Trình chiếu</button>
+          <button type="button" class="btn btn-exit" id="btn-exit-present">Thoát trình chiếu (Esc)</button>
+        </div>
+      </div>
+    </header>
+
+    <div class="mockbar" role="note"><b>DỮ LIỆU GIẢ LẬP.</b> Toàn bộ số liệu trong prototype được sinh ngẫu nhiên có seed cố định để minh hoạ giao diện; không phải số liệu thật của chi nhánh. Quy tắc tính điểm chỉ là minh hoạ, chưa phải công thức KPI của hệ thống.</div>
+
+    <main class="screens" id="screens">
+
+      <!-- ===================== MÀN HÌNH 1: TỔNG QUAN CHI NHÁNH ===================== -->
+      <section id="screen-tong-quan" class="screen" aria-labelledby="h-tq">
+        <h1 id="h-tq" class="vtb-sr">Tổng quan chi nhánh</h1>
+        <div class="grid tq">
+          <article class="card c3 a-hero" aria-label="Điểm KPI toàn chi nhánh">
+            <div data-draw="tq-hero" data-source="tong_cn ky">—</div>
+            <div class="sep"></div>
+            <div class="vtb-label">Phân bố chỉ tiêu theo mức</div>
+            <div class="mt-s" data-draw="tq-tierbar" data-source="tong_cn">—</div>
+          </article>
+
+          <div class="c9 a-topright">
+            <div class="kpis a-kpis" data-draw="tq-kpis" data-source="ct_cn cfg">—</div>
+            <div class="stats-row" data-draw="tq-stats" data-source="tong_cn canh_bao cfg cau_hinh">—</div>
+          </div>
+
+          <article class="card c7 a-rank" data-view-card>
+            <div class="card-head"><h2>Xếp hạng phòng/PGD</h2>
+              <div class="head-ctl">
+                <div class="pills" role="group" aria-label="Lọc theo khối">
+                  <button type="button" class="pill" data-khoi="" aria-pressed="true">Tất cả</button>
+                  <button type="button" class="pill" data-khoi="KHDN" aria-pressed="false">KHDN</button>
+                  <button type="button" class="pill" data-khoi="KHCN" aria-pressed="false">KHCN</button>
+                  <button type="button" class="pill" data-khoi="PGD" aria-pressed="false">PGD</button>
+                  <button type="button" class="pill" data-khoi="HT" aria-pressed="false">Hỗ trợ</button>
+                </div>
+                <div class="seg" role="group" aria-label="Kiểu hiển thị xếp hạng"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div>
+              </div>
+            </div>
+            <p class="vtb-caption sub">Bấm một đơn vị để xem chi tiết các chỉ tiêu bên dưới. Hai vạch dọc trên mỗi thanh là ngưỡng Khá và ngưỡng Đạt.</p>
+            <div data-draw="tq-rank" data-source="xep_hang">—</div>
+          </article>
+
+          <div class="c5 a-side">
+            <article class="card a-trend" data-view-card>
+              <div class="card-head"><h2>Diễn biến điểm KPI toàn chi nhánh</h2>
+                <div class="seg" role="group" aria-label="Kiểu hiển thị xu hướng"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div></div>
+              <div data-draw="tq-trend" data-source="tong_cn cfg">—</div>
+            </article>
+            <article class="card a-alerts">
+              <div class="card-head"><h2>Cảnh báo điều hành</h2></div>
+              <h3 class="h3">Đơn vị có kết quả thấp</h3>
+              <div data-draw="tq-alert-dv" data-source="xep_hang cfg">—</div>
+              <h3 class="h3">KPI chưa đạt và nguy cơ không hoàn thành</h3>
+              <div data-draw="tq-alert-kpi" data-source="ct_cn cfg">—</div>
+              <h3 class="h3 is-secondary">Vấn đề cần điều hành</h3>
+              <div class="is-secondary" data-draw="tq-alert-van-de" data-source="canh_bao hd_tt">—</div>
+            </article>
+          </div>
+
+          <article class="card c12 a-bullets is-secondary" id="tq-bullets" data-view-card>
+            <div class="card-head"><h2>Tỷ lệ hoàn thành kế hoạch theo chỉ tiêu <span class="scope" data-draw="tq-scope" data-source="don_vi">—</span></h2>
+              <div class="head-ctl"><button type="button" class="btn sm" id="btn-clear-dv">Về toàn chi nhánh</button>
+                <div class="seg" role="group" aria-label="Kiểu hiển thị chỉ tiêu"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div></div></div>
+            <div data-draw="tq-drill" data-source="xep_hang">—</div>
+            <div class="bl-head vtb-caption" aria-hidden="true"><span>Chỉ tiêu</span><span>% hoàn thành (vạch đen = mức kế hoạch)</span><span class="vtb-r">Thực hiện / KH</span><span class="vtb-r">GAP</span><span>Mức</span></div>
+            <div data-draw="tq-bullets" data-source="ct_cn kq don_vi chi_tieu ket_qua">—</div>
+          </article>
+
+          <article class="card c6 a-compare is-secondary" data-view-card>
+            <div class="card-head"><h2>Thực hiện so với kế hoạch <span class="scope" data-draw="tq-compare-name" data-source="chi_tieu">—</span></h2>
+              <div class="seg" role="group" aria-label="Kiểu hiển thị so sánh"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div></div>
+            <div data-draw="tq-compare" data-source="kq chi_tieu">—</div>
+          </article>
+          <article class="card c6 a-growth is-secondary" data-view-card>
+            <div class="card-head"><h2>Xu hướng tăng trưởng theo tháng <span class="scope" data-draw="tq-growth-name" data-source="chi_tieu">—</span></h2>
+              <div class="seg" role="group" aria-label="Kiểu hiển thị tăng trưởng"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div></div>
+            <div data-draw="tq-growth" data-source="ct_cn">—</div>
+          </article>
+
+          <article class="card c12 a-nd is-secondary">
+            <div class="card-head"><h2>Nhận định điều hành</h2><button type="button" class="btn sm" id="btn-copy-nd">Sao chép</button></div>
+            <p class="nd" id="nd-text" data-draw="tq-nhan-dinh" data-source="tong_cn ct_cn xep_hang">—</p>
+            <p class="vtb-caption">Đoạn văn tự sinh từ số liệu giả lập; dùng làm khung cho báo cáo giao ban.</p>
+          </article>
+        </div>
+      </section>
+
+      <!-- ===================== MÀN HÌNH 2: ĐIỀU HÀNH BAN GIÁM ĐỐC ===================== -->
+      <section id="screen-dieu-hanh" class="screen" aria-labelledby="h-dh" hidden>
+        <h1 id="h-dh" class="vtb-sr">Điều hành Ban giám đốc</h1>
+        <div class="grid bgd">
+          <article class="card c12 a-3q" aria-label="Ba câu hỏi điều hành">
+            <div class="q3">
+              <div class="q"><div class="q-t"><span class="q-n" aria-hidden="true">1</span>Chi nhánh đang ở đâu so với kế hoạch?</div><p class="q-a" data-draw="bgd-q1" data-source="tong_cn ct_cn">—</p></div>
+              <div class="q"><div class="q-t"><span class="q-n" aria-hidden="true">2</span>Đơn vị và chỉ tiêu nào đang kéo giảm kết quả?</div><p class="q-a" data-draw="bgd-q2" data-source="xep_hang ct_cn">—</p></div>
+              <div class="q"><div class="q-t"><span class="q-n" aria-hidden="true">3</span>Cần tập trung chỉ đạo việc gì tiếp theo?</div><p class="q-a" data-draw="bgd-q3" data-source="hd_tt">—</p></div>
+            </div>
+          </article>
+
+          <div class="c12 a-kpis4 kpis4" data-draw="bgd-kpis" data-source="tong_cn hd_tt canh_bao cfg">—</div>
+
+          <article class="card c5 a-rank" data-view-card>
+            <div class="card-head"><h2>Xếp hạng toàn bộ đơn vị</h2>
+              <div class="seg" role="group" aria-label="Kiểu hiển thị xếp hạng"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div></div>
+            <div data-draw="bgd-rank" data-source="xep_hang">—</div>
+          </article>
+
+          <div class="c4 a-mid">
+            <article class="card a-loss" data-view-card>
+              <div class="card-head"><h2>Chỉ tiêu mất điểm nhiều nhất</h2>
+                <div class="seg" role="group" aria-label="Kiểu hiển thị chỉ tiêu mất điểm"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div></div>
+              <div data-draw="bgd-loss" data-source="ct_cn">—</div>
+            </article>
+            <article class="card a-focus" data-view-card>
+              <div class="card-head"><h2>Đơn vị cần tập trung chỉ đạo</h2>
+                <div class="seg" role="group" aria-label="Kiểu hiển thị đơn vị cần chỉ đạo"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div></div>
+              <p class="vtb-caption sub">GAP = số điểm còn thiếu so với mức Đạt.</p>
+              <div data-draw="bgd-focus" data-source="xep_hang mat_diem">—</div>
+            </article>
+          </div>
+
+          <div class="c3 a-right">
+            <article class="card a-risk" data-view-card>
+              <div class="card-head"><h2>Nguy cơ không đạt KH năm</h2>
+                <div class="seg" role="group" aria-label="Kiểu hiển thị nguy cơ"><button type="button" data-view="chart" aria-pressed="true">Biểu đồ</button><button type="button" data-view="table" aria-pressed="false">Bảng</button></div></div>
+              <div data-draw="bgd-risk" data-source="ct_cn cfg du_bao">—</div>
+            </article>
+            <article class="card a-tasks stage-only">
+              <div class="card-head"><h2>Nhiệm vụ cần xử lý</h2></div>
+              <div data-draw="bgd-tasks" data-source="hd_tt don_vi">—</div>
+            </article>
+          </div>
+
+          <article class="card c12 a-actions">
+            <div class="card-head"><h2>Vấn đề và đề xuất hành động điều hành</h2></div>
+            <div data-draw="bgd-actions" data-source="hd_tt hanh_dong">—</div>
+          </article>
+
+          <article class="card c12 a-growthtb is-secondary">
+            <div class="card-head"><h2>Phân tích chỉ tiêu tăng trưởng</h2></div>
+            <div data-draw="bgd-growth" data-source="ct_cn moc_cn">—</div>
+          </article>
+
+          <article class="card c12 a-matrix is-secondary">
+            <div class="card-head"><h2>Ma trận trạng thái: đơn vị × chỉ tiêu chính</h2><span class="vtb-caption">Mỗi ô: biểu tượng + % hoàn thành kế hoạch</span></div>
+            <div data-draw="bgd-matrix" data-source="kq don_vi chi_tieu">—</div>
+          </article>
+
+          <footer class="c12 a-fresh" data-draw="bgd-fresh" data-source="ky kq bat_thuong">—</footer>
+        </div>
+      </section>
+    </main>
+  </div>
+</div>
+
+<script src="vtb.js"></script>
+<script src="calcs.js"></script>
+<script src="app.js"></script>

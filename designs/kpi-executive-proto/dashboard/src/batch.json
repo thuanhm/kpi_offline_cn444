@@ -1,0 +1,392 @@
+[
+ {
+  "op": "set",
+  "path": "datasets/cau_hinh",
+  "data": {
+   "title": "Sample · Cấu hình ngưỡng",
+   "description": "Ngưỡng Đạt/Khá/CCT và nguong.diem_cao = 90 (D7). Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/5b5fb88bf08e7b542288473a2cf1613e",
+    "name": "cau_hinh.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/ket_qua",
+  "data": {
+   "title": "Sample · Kết quả theo tháng",
+   "description": "Kế hoạch, thực hiện, %HT, điểm, mất điểm theo đơn vị × chỉ tiêu × tháng (T1–T10/2026). Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/2796d26416db8af9a8970012a916d24b",
+    "name": "ket_qua.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/don_vi",
+  "data": {
+   "title": "Sample · Danh sách đơn vị",
+   "description": "12 phòng/PGD giả lập và dòng Toàn CN. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/dca4759697c1085678b74246581e7683",
+    "name": "don_vi.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/chi_tieu",
+  "data": {
+   "title": "Sample · Danh mục chỉ tiêu",
+   "description": "20 chỉ tiêu giả lập: nhóm, hướng, đơn vị tính. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/5b490cece3c8ce3673cf30748f59c2c5",
+    "name": "chi_tieu.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/ky",
+  "data": {
+   "title": "Sample · Kỳ báo cáo",
+   "description": "Các kỳ T1–T10/2026, ngày lập, thời điểm cập nhật, trạng thái khoá kỳ. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/11f965a416de54caf2730088cb7e02a2",
+    "name": "ky.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/du_bao",
+  "data": {
+   "title": "Sample · Dữ liệu dự kiến",
+   "description": "Dữ liệu DỰ KIẾN đầu vào (chỉ có cho T10/2026). Không phải số thực tế. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/6c12450b8b4b535caa87c0f52232ea51",
+    "name": "du_bao.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/moc_cn",
+  "data": {
+   "title": "Sample · Mốc tăng trưởng CN",
+   "description": "Mốc cùng kỳ năm trước và đầu năm của chi nhánh (giả lập). Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/faeb49d524ba2b1bce1ba93886faf702",
+    "name": "moc_cn.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/canh_bao",
+  "data": {
+   "title": "Sample · Cảnh báo kỳ 10",
+   "description": "Cảnh báo điều hành giả lập, sinh từ số liệu mẫu. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/0aa694078125bed1e027da5069f8140f",
+    "name": "canh_bao.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/hanh_dong",
+  "data": {
+   "title": "Sample · Nhiệm vụ đề xuất",
+   "description": "Vấn đề, đề xuất hành động, đơn vị, người phụ trách (vai trò giả), hạn. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/6a255581a72ae5b7203238435942a843",
+    "name": "hanh_dong.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "datasets/bat_thuong",
+  "data": {
+   "title": "Sample · Số liệu bất thường",
+   "description": "Số liệu bất thường giả lập của kỳ 10. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+   "source": {
+    "kind": "file",
+    "url": "/_blob/71f31d9798935f1118e0bb33f675c2ba",
+    "name": "bat_thuong.csv",
+    "format": "csv"
+   },
+   "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+   },
+   "fixed": true,
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "dash/meta",
+  "data": {
+   "title": "Dashboard KPI điều hành VietinBank Bắc Nghệ An (dữ liệu giả lập)"
+  }
+ },
+ {
+  "op": "set",
+  "path": "dash/params",
+  "data": {
+   "ky": "10",
+   "dv": "",
+   "ct": "TOI",
+   "khoi": "",
+   "man": "tong-quan",
+   "tc": "0"
+  }
+ },
+ {
+  "op": "set",
+  "path": "dash/look",
+  "data": {
+   "system": {
+    "name": "VietinBank KPI",
+    "url": "designs/kpi-executive-proto/design-system"
+   },
+   "light": {
+    "ground": "#f4f6fa",
+    "card": "#ffffff",
+    "text": "#15233b",
+    "muted": "#5a6881",
+    "border": "#e3e9f2",
+    "good": "#1c5cab",
+    "warning": "#c04616",
+    "bad": "#b02a2a",
+    "charts": [
+     "#005993",
+     "#eb6834",
+     "#1baf7a",
+     "#6250d6"
+    ]
+   },
+   "corners": "10px",
+   "sizes": {
+    "caption": "12px",
+    "body": "14px",
+    "heading": "16px",
+    "title": "20px"
+   },
+   "fonts": {
+    "text": "'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif",
+    "display": "'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "files/index.html",
+  "data": {
+   "text": {
+    "$file": "src/index.html"
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "files/tokens.css",
+  "data": {
+   "text": {
+    "$file": "src/tokens.css"
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "files/fonts.css",
+  "data": {
+   "text": {
+    "$file": "src/fonts.css"
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "files/bundle.css",
+  "data": {
+   "text": {
+    "$file": "src/bundle.css"
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "files/styles.css",
+  "data": {
+   "text": {
+    "$file": "src/styles.css"
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "files/vtb.js",
+  "data": {
+   "text": {
+    "$file": "src/vtb.js"
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "files/calcs.js",
+  "data": {
+   "text": {
+    "$file": "src/calcs.js"
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ },
+ {
+  "op": "set",
+  "path": "files/app.js",
+  "data": {
+   "text": {
+    "$file": "src/app.js"
+   },
+   "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+   }
+  }
+ }
+]

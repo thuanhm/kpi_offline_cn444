@@ -1,0 +1,19 @@
+{
+  "title": "Sample · Mốc tăng trưởng CN",
+  "description": "Mốc cùng kỳ năm trước và đầu năm của chi nhánh (giả lập). Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+  "source": {
+    "kind": "file",
+    "url": "/_blob/faeb49d524ba2b1bce1ba93886faf702",
+    "name": "moc_cn.csv",
+    "format": "csv"
+  },
+  "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+  },
+  "fixed": true,
+  "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+  }
+}

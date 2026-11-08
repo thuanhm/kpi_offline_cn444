@@ -1,0 +1,33 @@
+{
+  "system": {
+    "name": "VietinBank KPI",
+    "url": "designs/kpi-executive-proto/design-system"
+  },
+  "light": {
+    "ground": "#f4f6fa",
+    "card": "#ffffff",
+    "text": "#15233b",
+    "muted": "#5a6881",
+    "border": "#e3e9f2",
+    "good": "#1c5cab",
+    "warning": "#c04616",
+    "bad": "#b02a2a",
+    "charts": [
+      "#005993",
+      "#eb6834",
+      "#1baf7a",
+      "#6250d6"
+    ]
+  },
+  "corners": "10px",
+  "sizes": {
+    "caption": "12px",
+    "body": "14px",
+    "heading": "16px",
+    "title": "20px"
+  },
+  "fonts": {
+    "text": "'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif",
+    "display": "'Plus Jakarta Sans', 'Segoe UI', system-ui, sans-serif"
+  }
+}

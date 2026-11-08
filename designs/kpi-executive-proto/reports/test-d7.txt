@@ -1,0 +1,27 @@
+Kết quả test D7 + phân loại: 25 đạt, 0 lỗi
+
+✓ D7: thiếu khoá nguong.diem_cao → mặc định 90 (bảo toàn hành vi cũ)
+✓ D7: khoá rỗng hoặc không phải số → mặc định 90
+✓ D7: dataset mẫu có nguong.diem_cao = 90
+✓ D7: điểm THẤP hơn ngưỡng (89,99) không được tính
+✓ D7: điểm BẰNG ngưỡng (90) được tính (>=)
+✓ D7: điểm CAO hơn ngưỡng (90,01) được tính
+✓ D7: ba trường hợp cùng lúc → đếm đúng 2 (90 và 90,01)
+✓ D7: đổi nguong = 85 → 89,99 giờ được tính (đọc từ cấu hình, không hằng số)
+✓ D7: đổi nguong = 95 → không đơn vị nào đạt
+✓ D7: nhãn hiển thị lấy từ cùng nguồn (diem_cao trong kết quả)
+✓ D7: với nguong = 90, dv_cao trùng khít quy tắc cũ (>= 90 hằng số) ở mọi kỳ của dữ liệu mẫu
+✓ D7: kết quả xếp hạng / điểm KHÔNG đổi khi chỉ đổi nguong.diem_cao (không ảnh hưởng công thức)
+✓ Mức: ht = 1,0000 → Đạt (biên bằng)
+✓ Mức: ht = 0,9999 → Khá
+✓ Mức: ht = 0,8 → Khá (biên bằng)
+✓ Mức: ht = 0,7999 → Cần cải thiện
+✓ Mức: ht = 0,7 → Cần cải thiện (biên bằng)
+✓ Mức: ht = 0,6999 → Chưa đạt
+✓ Mức: ht trống → GAP (không bị coi là 0%)
+✓ Dữ liệu: 12 đơn vị, 20 chỉ tiêu, 10 kỳ
+✓ Dữ liệu: kỳ 10 phủ đủ 5 mức ở cấp chi nhánh
+✓ Dữ liệu: có đơn vị điểm cao, trung bình, thấp
+✓ D8: dự kiến chỉ có ở kỳ có dữ liệu đầu vào (kỳ 10); các kỳ khác = null, không tự tạo
+✓ Xếp hạng: hạng 1..12 liên tục mỗi kỳ, không trùng
+✓ GAP: dòng thiếu số không bị tính điểm / mất điểm

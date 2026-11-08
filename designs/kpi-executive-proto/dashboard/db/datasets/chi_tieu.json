@@ -1,0 +1,19 @@
+{
+  "title": "Sample · Danh mục chỉ tiêu",
+  "description": "20 chỉ tiêu giả lập: nhóm, hướng, đơn vị tính. Dữ liệu GIẢ LẬP, sinh bằng tools/gen-data.mjs (seed 20261108); không phải số liệu thật của chi nhánh.",
+  "source": {
+    "kind": "file",
+    "url": "/_blob/5b490cece3c8ce3673cf30748f59c2c5",
+    "name": "chi_tieu.csv",
+    "format": "csv"
+  },
+  "updated": {
+    "at": "2026-11-08T04:50:40Z",
+    "by": "Claude Code"
+  },
+  "fixed": true,
+  "edit": {
+    "via": "claude",
+    "at": "2026-11-08T04:50:40Z"
+  }
+}

@@ -1,0 +1,125 @@
+{
+ "total": 17,
+ "failed": 0,
+ "rows": [
+  {
+   "name": "AttentionList",
+   "ok": true,
+   "bytes": 1611,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "BulletRow",
+   "ok": true,
+   "bytes": 2856,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "ColumnDiverge",
+   "ok": true,
+   "bytes": 3769,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "Cover",
+   "ok": true,
+   "bytes": 1633,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "DataFreshness",
+   "ok": true,
+   "bytes": 594,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "DataTable",
+   "ok": true,
+   "bytes": 410,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "DeltaBadge",
+   "ok": true,
+   "bytes": 587,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "HeroFigure",
+   "ok": true,
+   "bytes": 1224,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "KpiCard",
+   "ok": true,
+   "bytes": 4259,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "LossBars",
+   "ok": true,
+   "bytes": 2254,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "RankBars",
+   "ok": true,
+   "bytes": 6470,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "Sparkline",
+   "ok": true,
+   "bytes": 453,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "StateMatrix",
+   "ok": true,
+   "bytes": 3170,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "StatTile",
+   "ok": true,
+   "bytes": 454,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "TierBar",
+   "ok": true,
+   "bytes": 2631,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "TierChip",
+   "ok": true,
+   "bytes": 2495,
+   "overflow": false,
+   "logs": []
+  },
+  {
+   "name": "TrendLine",
+   "ok": true,
+   "bytes": 8525,
+   "overflow": false,
+   "logs": []
+  }
+ ]
+}
