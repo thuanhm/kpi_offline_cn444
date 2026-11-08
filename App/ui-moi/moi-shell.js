@@ -5,7 +5,8 @@
   var H = root.MOI_UI, V = root.VTB, D = root.MOI_DATA, CN = root.KPI_CFG.MA_CN, orig = null, rsT = null;
   var $ = function (id) { return document.getElementById(id); };
   var esc = V.esc;
-  var STAGE_OK = { 'tong-quan': 1, 'dieu-hanh': 1 };
+  var STAGE_OK = { 'tong-quan': 1, 'dieu-hanh': 1, 'ma-tran': 1 };
+  var STAGE_MAN = ['tong-quan', 'dieu-hanh', 'ma-tran'];
 
   function vaoKhung() {
     if (document.body.classList.contains('ui-moi')) return;
@@ -62,12 +63,12 @@
   /* ---------- Presentation Mode (khung 16:9, tham chiếu 1920×1080) ---------- */
   function setScale() { var r = $('moi-stage-root'); if (!r) return; r.style.setProperty('--s', String(Math.max(0.2, Math.min(window.innerWidth / 1920, window.innerHeight / 1080)))); }
   function renderStage(A) {
-    var man = A.moi_stage_man === 'dieu-hanh' ? 'dieu-hanh' : 'tong-quan', M = STORE.model(), ky = A.ky, co = M.thangCoSo(ky.nam);
+    var man = STAGE_MAN.indexOf(A.moi_stage_man) >= 0 ? A.moi_stage_man : 'tong-quan', M = STORE.model(), ky = A.ky, co = M.thangCoSo(ky.nam);
     var r = $('moi-stage-root'); if (!r) { r = document.createElement('div'); r.id = 'moi-stage-root'; document.body.appendChild(r); }
     r.className = 'moi-stage-root vtb-scope is-stage';
     var tOpts = ''; for (var t = 1; t <= 12; t++) tOpts += '<option value="' + t + '"' + (t === ky.thang ? ' selected' : '') + '>Tháng ' + t + (co.indexOf(t) >= 0 ? '' : ' (chưa có TH)') + '</option>';
     r.innerHTML = '<div class="moi-stage"><header class="moi-st-head"><div class="moi-st-brand"><img src="assets/logo-vietinbank.png" alt="VietinBank" width="132" height="35"><span class="moi-brand-t"><b>' + esc(String(STORE.state.settings.ten_chi_nhanh || '').replace(/^VietinBank\s*/i, '')) + '</b><small>Dashboard KPI điều hành</small></span></div>' +
-      '<nav class="moi-st-tabs" aria-label="Chọn màn hình trình chiếu"><button type="button" data-st="tong-quan" aria-pressed="' + (man === 'tong-quan') + '">Tổng quan chi nhánh</button><button type="button" data-st="dieu-hanh" aria-pressed="' + (man === 'dieu-hanh') + '">Điều hành Ban giám đốc</button></nav><div class="moi-grow"></div>' +
+      '<nav class="moi-st-tabs" aria-label="Chọn màn hình trình chiếu"><button type="button" data-st="tong-quan" aria-pressed="' + (man === 'tong-quan') + '">Tổng quan chi nhánh</button><button type="button" data-st="dieu-hanh" aria-pressed="' + (man === 'dieu-hanh') + '">Điều hành Ban giám đốc</button><button type="button" data-st="ma-tran" aria-pressed="' + (man === 'ma-tran') + '">Ma trận chỉ tiêu</button></nav><div class="moi-grow"></div>' +
       (STORE.state.du_lieu_mau ? '<span class="moi-mock">DỮ LIỆU MẪU</span>' : '') + '<label class="moi-fl inline"><span>Kỳ</span><select id="moi-st-thang" class="moi-sel" aria-label="Tháng">' + tOpts + '</select></label>' +
       '<button type="button" class="moi-btn" data-act="stage-exit">Thoát trình chiếu (Esc)</button></header><div class="moi-st-body">' + H.VIEWS[man].html(A, true) + '</div></div>';
     document.body.classList.add('moi-presenting'); setScale();
@@ -85,7 +86,7 @@
     if ((b = t.closest('[data-st]'))) { A.moi_stage_man = b.getAttribute('data-st'); A.render(); return; }
     if ((b = t.closest('[data-act]'))) {
       var a = b.getAttribute('data-act');
-      if (a === 'stage') { A.moi_tc = true; A.moi_stage_man = route === 'dieu-hanh' ? 'dieu-hanh' : 'tong-quan'; A.render(); }
+      if (a === 'stage') { A.moi_tc = true; A.moi_stage_man = STAGE_MAN.indexOf(route) >= 0 ? route : 'tong-quan'; A.render(); }
       else if (a === 'stage-exit') { thoatStage(A); A.render(); }
       else if (a === 'copy-nd') { var tx = $('moi-nd'); if (tx && navigator.clipboard) navigator.clipboard.writeText(tx.textContent).then(function () { UI.toast('Đã sao chép nhận định.', 'ok'); }, function () {}); }
       else if (a === 've-cn') { A.moi_dv = null; A.render(); }
@@ -108,6 +109,7 @@
     if ((b = t.closest('[data-dv]'))) {
       var dv = b.getAttribute('data-dv');
       if (route === 'tong-quan' && !st) { A.moi_dv = A.moi_dv === dv ? null : dv; A.render(); var el2 = $('moi-bullets'); if (el2 && el2.scrollIntoView) setTimeout(function () { el2.scrollIntoView({ block: 'start' }); }, 30); }
+      else if (st && A.moi_stage_man === 'ma-tran') { thoatStage(A); APP.go('phong', dv); }
       else if (st || route === 'dieu-hanh') { thoatStage(A); A.moi_dv = dv; APP.go('tong-quan'); if (location.hash === '#/tong-quan') A.render(); }
       else APP.go('phong', dv);
     }
@@ -116,7 +118,7 @@
     if (!document.body.classList.contains('ui-moi') || !$('moi-stage-root')) return;
     var A = root.APP;
     if (e.key === 'Escape') { thoatStage(A); A.render(); }
-    else if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && !/INPUT|SELECT|TEXTAREA/.test(e.target.tagName)) { A.moi_stage_man = A.moi_stage_man === 'dieu-hanh' ? 'tong-quan' : 'dieu-hanh'; A.render(); }
+    else if ((e.key === 'ArrowRight' || e.key === 'ArrowLeft') && !/INPUT|SELECT|TEXTAREA/.test(e.target.tagName) && !(e.target.closest && e.target.closest('.vtb-cb'))) { var ix = Math.max(0, STAGE_MAN.indexOf(A.moi_stage_man)), nx = (ix + (e.key === 'ArrowRight' ? 1 : STAGE_MAN.length - 1)) % STAGE_MAN.length; A.moi_stage_man = STAGE_MAN[nx]; A.render(); }
   });
   window.addEventListener('resize', function () {
     if (!document.body.classList.contains('ui-moi')) return; clearTimeout(rsT);

@@ -91,3 +91,7 @@ Lỗi nằm ở **bộ test** (không phải ứng dụng) và đã sửa test c
 - Chưa chạy trên dữ liệu thật (không được phép) — cần nghiệm thu trên bản sao.
 - 15 màn quản trị/nhập liệu trong vỏ mới chỉ được kiểm tra mở được, không lỗi và không tràn ngang; luồng nhập liệu của chúng không đổi so với giao diện cũ nhưng chưa được kiểm thử lại từng thao tác trong vỏ mới.
 - Các chức năng xuất Excel/Word/PowerPoint dùng nguyên mã cũ; chỉ kiểm tra bằng 12 bộ Node sẵn có (không kiểm tra thao tác bấm nút xuất trong vỏ mới).
+
+## 9. Bổ sung: Ma trận chỉ tiêu (giao diện mới)
+
+Chi tiết trong `MATRIX_UPGRADE_REPORT.md`. Kết quả: 14 bộ Node đạt (có thêm 8 kiểm tra ma trận trong `test-moi-data.js`, 60 tổ hợp kỳ × bộ lọc); `browser-ma-tran.mjs` **69/69**; `browser-dual-ui.mjs` vẫn **65/65**. Smoke PowerShell: tình trạng như mục 6, không đổi.

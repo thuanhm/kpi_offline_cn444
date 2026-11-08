@@ -1,0 +1,120 @@
+/* MA TRẬN CHỈ TIÊU — bảng màu trạng thái, lọc nhanh, phát hiện KPI yếu. Mọi quy tắc nằm dưới .moi-mx nên không ảnh hưởng màn hình khác.
+ * Bảng màu: nền/chữ theo đề xuất nghiệm thu; riêng chữ GAP đậm hơn đề xuất (#64748B → #5B6B80) để đạt WCAG AA 4,5:1 (đề xuất chỉ đạt 4,05:1). */
+.moi-mx {
+  --mx-dat-bg: #dceaf7; --mx-dat-ink: #07539a; --mx-dat-ln: #8fb6dc;
+  --mx-kha-bg: #edf3fa; --mx-kha-ink: #35658f; --mx-kha-ln: #c3d3e4;
+  --mx-cct-bg: #fff0d9; --mx-cct-ink: #a95708; --mx-cct-ln: #ecc182;
+  --mx-chua-bg: #fce2e2; --mx-chua-ink: #b4232d; --mx-chua-ln: #eaa2a6;
+  --mx-gap-bg: #e9edf2; --mx-gap-ink: #5b6b80; --mx-gap-ln: #c4ccd8;
+  --mx-dim-bg: #f3f5f9; --mx-dim-ink: #5a6881;
+  display: flex; flex-direction: column; gap: var(--space-3);
+}
+/* --- ô, chip lọc, huy hiệu: cùng một bảng màu và biểu tượng --- */
+.moi-mx .vtb-t-dat { color: var(--mx-dat-ink); } .moi-mx .vtb-t-kha { color: var(--mx-kha-ink); } .moi-mx .vtb-t-cct { color: var(--mx-cct-ink); } .moi-mx .vtb-t-chua { color: var(--mx-chua-ink); } .moi-mx .vtb-t-gap { color: var(--mx-gap-ink); }
+.moi-mx .vtb-cell.vtb-t-dat, .moi-mx .vtb-mxf.vtb-t-dat { background: var(--mx-dat-bg); } .moi-mx .vtb-cell.vtb-t-kha, .moi-mx .vtb-mxf.vtb-t-kha { background: var(--mx-kha-bg); }
+.moi-mx .vtb-cell.vtb-t-cct, .moi-mx .vtb-mxf.vtb-t-cct { background: var(--mx-cct-bg); } .moi-mx .vtb-cell.vtb-t-chua, .moi-mx .vtb-mxf.vtb-t-chua { background: var(--mx-chua-bg); } .moi-mx .vtb-cell.vtb-t-gap, .moi-mx .vtb-mxf.vtb-t-gap { background: var(--mx-gap-bg); }
+.moi-mx .vtb-t-dat { --on-fill: #fff; } .moi-mx .vtb-t-chua { --on-fill: #fff; }
+/* Đạt (đặc, chữ đậm hơn, viền nhận diện) tách khỏi Khá (rỗng, nền nhạt hơn) ngay cả khi in đen trắng */
+.moi-mx .vtb-cell.vtb-t-dat { box-shadow: inset 0 0 0 1px var(--mx-dat-ln); } .moi-mx .vtb-cell.vtb-t-kha { box-shadow: inset 0 0 0 1px var(--mx-kha-ln); }
+.moi-mx .vtb-cell.vtb-t-cct { box-shadow: inset 0 0 0 1px var(--mx-cct-ln); } .moi-mx .vtb-cell.vtb-t-chua { box-shadow: inset 0 0 0 1px var(--mx-chua-ln); } .moi-mx .vtb-cell.vtb-t-gap { box-shadow: inset 0 0 0 1px var(--mx-gap-ln); }
+.moi-mx .vtb-cell.vtb-t-chua .vtb-cv, .moi-mx .vtb-cell.vtb-t-cct .vtb-cv { font-weight: 800; }
+.moi-mx .vtb-matrix td { height: 36px; } .moi-mx .vtb-cell { padding: 0 !important; font-size: 13px; }
+.moi-mx .vtb-cb { display: flex; align-items: center; justify-content: center; gap: 6px; min-height: 34px; padding: 0 6px; cursor: pointer; border-radius: 4px; }
+.moi-mx .vtb-cb .vtb-ic, .moi-mx .vtb-wk .vtb-ic, .moi-mx .vtb-mxf .vtb-ic { width: 16px; height: 16px; flex: none; margin: 0; }
+.moi-mx .vtb-cv { font-weight: 700; font-variant-numeric: tabular-nums; }
+.moi-mx .vtb-cell:not(.vtb-ft):hover .vtb-cb { box-shadow: inset 0 0 0 2px currentColor; }
+.moi-mx .vtb-cb:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: -3px; background: rgba(255, 255, 255, .55); }
+.moi-mx .vtb-ft { cursor: default; } .moi-mx .vtb-ft .vtb-cv { min-height: 30px; display: flex; align-items: center; justify-content: center; }
+/* ô GAP khác ô "không áp dụng": GAP có nền xám + biểu tượng nét đứt; "·" chỉ là dấu chấm trên nền trắng */
+.moi-mx .vtb-na { color: var(--ink-muted); background: transparent; font-weight: 400; }
+/* --- chế độ không phải trạng thái: thang một tông tím (độ lớn / vị trí), không dùng màu trạng thái --- */
+.moi-mx .vtb-rk-0, .moi-mx .vtb-ls-0 { background: var(--surface-card); color: var(--ink-2); } .moi-mx .vtb-ls-0 .vtb-cv { font-weight: 600; color: var(--ink-muted); }
+.moi-mx .vtb-rk-1 { background: #bdb1ee; color: #1f1858; box-shadow: inset 0 0 0 2px #6250d6; } .moi-mx .vtb-rk-2 { background: #d9d2f6; color: #231c5c; }
+.moi-mx .vtb-rk-3 { background: #ece8fb; color: #2a2368; } .moi-mx .vtb-rk-4 { background: #f7f5fd; color: #3a3475; }
+.moi-mx .vtb-ls-1 { background: #ece8fb; color: #2a2368; } .moi-mx .vtb-ls-2 { background: #d9d2f6; color: #231c5c; } .moi-mx .vtb-ls-3 { background: #bdb1ee; color: #1f1858; box-shadow: inset 0 0 0 2px #6250d6; }
+.moi-mx .moi-mx-scale span { padding: 3px 10px; border-radius: 4px; font-weight: 600; }
+.moi-mx .moi-mx-scale .vtb-rk-1, .moi-mx .moi-mx-scale .vtb-ls-3 { box-shadow: inset 0 0 0 2px #6250d6; } .moi-mx .moi-mx-scale .vtb-ls-0 { box-shadow: inset 0 0 0 1px var(--line-strong); }
+/* --- lọc trạng thái: ô không khớp được làm mờ nhưng vẫn đọc được; ô khớp có viền nổi --- */
+.moi-mx[data-f="dat"] .vtb-cell[data-tier]:not([data-tier="dat"]):not(.vtb-ft), .moi-mx[data-f="kha"] .vtb-cell[data-tier]:not([data-tier="kha"]):not(.vtb-ft), .moi-mx[data-f="cct"] .vtb-cell[data-tier]:not([data-tier="cct"]):not(.vtb-ft),
+.moi-mx[data-f="chua"] .vtb-cell[data-tier]:not([data-tier="chua"]):not(.vtb-ft), .moi-mx[data-f="gap"] .vtb-cell[data-tier]:not([data-tier="gap"]):not(.vtb-ft) { background: var(--mx-dim-bg); color: var(--mx-dim-ink); box-shadow: none; }
+.moi-mx[data-f="dat"] .vtb-cell[data-tier]:not([data-tier="dat"]) .vtb-ic, .moi-mx[data-f="kha"] .vtb-cell[data-tier]:not([data-tier="kha"]) .vtb-ic, .moi-mx[data-f="cct"] .vtb-cell[data-tier]:not([data-tier="cct"]) .vtb-ic,
+.moi-mx[data-f="chua"] .vtb-cell[data-tier]:not([data-tier="chua"]) .vtb-ic, .moi-mx[data-f="gap"] .vtb-cell[data-tier]:not([data-tier="gap"]) .vtb-ic { opacity: .55; }
+.moi-mx[data-f="dat"] .vtb-cell[data-tier="dat"] .vtb-cb, .moi-mx[data-f="kha"] .vtb-cell[data-tier="kha"] .vtb-cb, .moi-mx[data-f="cct"] .vtb-cell[data-tier="cct"] .vtb-cb,
+.moi-mx[data-f="chua"] .vtb-cell[data-tier="chua"] .vtb-cb, .moi-mx[data-f="gap"] .vtb-cell[data-tier="gap"] .vtb-cb { box-shadow: inset 0 0 0 2px currentColor; }
+/* --- dải đếm trạng thái / bộ lọc nhanh --- */
+.moi-mx-strip { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-3) var(--space-6); padding: var(--space-3) var(--space-4); background: var(--surface-card); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.moi-mx-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.moi-mx .vtb-mxf { display: inline-flex; align-items: center; gap: 6px; min-height: 36px; padding: 0 12px; border: 1.5px solid transparent; border-radius: var(--radius-sm); font: 600 13px var(--font-sans); cursor: pointer; color: var(--ink); background: var(--surface-sunken); }
+.moi-mx .vtb-mxf b { font-size: 16px; font-variant-numeric: tabular-nums; margin-left: 2px; }
+.moi-mx .vtb-mxf.vtb-t-dat { border-color: var(--mx-dat-ln); } .moi-mx .vtb-mxf.vtb-t-kha { border-color: var(--mx-kha-ln); } .moi-mx .vtb-mxf.vtb-t-cct { border-color: var(--mx-cct-ln); } .moi-mx .vtb-mxf.vtb-t-chua { border-color: var(--mx-chua-ln); } .moi-mx .vtb-mxf.vtb-t-gap { border-color: var(--mx-gap-ln); }
+.moi-mx .vtb-mxf:not(.is-static):hover { box-shadow: 0 0 0 2px currentColor; } .moi-mx .vtb-mxf:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.moi-mx .vtb-mxf[aria-pressed="true"] { box-shadow: 0 0 0 2px var(--surface-card), 0 0 0 4px currentColor; }
+.moi-mx .vtb-mxf[data-mxf="all"] { color: var(--ink); } .moi-mx .vtb-mxf[data-mxf="all"][aria-pressed="true"] { box-shadow: 0 0 0 2px var(--surface-card), 0 0 0 4px var(--brand-blue); }
+.moi-mx .vtb-mxf.is-static { cursor: default; }
+.moi-mx-rate { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; } .moi-mx-rate b { font-size: 22px; color: var(--mx-chua-ink); font-variant-numeric: tabular-nums; }
+.moi-mx-hint, .moi-mx-applied, .moi-mx-note { margin: 0; } .moi-mx-applied b { color: var(--ink); }
+.moi-mx-filters { align-items: flex-end; }
+/* --- đơn vị / chỉ tiêu cần chú ý --- */
+.moi-mx-ins { background: var(--surface-card); border: 1px solid var(--line); border-radius: var(--radius-md); padding: var(--space-2) var(--space-4); }
+.moi-mx-ins summary { cursor: pointer; font-weight: 700; font-size: var(--fs-body); padding: var(--space-1) 0; } .moi-mx-ins summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.moi-mx-ins-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-2) var(--space-6); } .moi-mx-h { margin: var(--space-1) 0; font-weight: 700; color: var(--ink-2); }
+.moi-mx-ins .vtb-att { margin: 0; padding: 0; list-style: none; } .moi-mx-ins .vtb-att-i { display: flex; align-items: center; gap: var(--space-3); padding: 4px 6px; border-radius: 4px; cursor: pointer; }
+.moi-mx-ins .vtb-att-i:hover { background: var(--surface-sunken); } .moi-mx-ins .vtb-att-i:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 0; }
+.vtb-mx-nm { flex: 1 1 auto; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-weight: 600; }
+.vtb-wk { display: inline-flex; gap: 8px; justify-content: center; font-size: 12px; font-weight: 700; } .vtb-wk > span { display: inline-flex; align-items: center; gap: 3px; } .vtb-wk .vtb-ic { width: 13px !important; height: 13px !important; }
+.moi-mx .vtb-matrix thead th .vtb-wk { margin-top: 2px; }
+@media (max-width: 900px) { .moi-mx-ins-grid { grid-template-columns: minmax(0, 1fr); } }
+/* --- bố cục bảng --- */
+.moi-mx .moi-mx-wrap { max-height: min(76vh, 880px); }
+.moi-mx .vtb-matrix thead th { min-width: 96px; z-index: 2; } .moi-mx .vtb-matrix .vtb-sticky { min-width: 170px; max-width: 240px; }
+.moi-mx .vtb-matrix th.vtb-sticky a { display: inline-block; padding: 6px 0; line-height: 1.25; } .moi-mx .vtb-matrix .vtb-sticky small { color: var(--ink-muted); font-weight: 500; }
+.moi-mx .vtb-matrix tfoot th.vtb-sticky small { display: block; font-size: 11px; }
+.moi-mx .vtb-matrix tfoot td, .moi-mx .vtb-matrix tfoot th { position: sticky; bottom: 0; z-index: 2; background: var(--surface-card); border-top: 1px solid var(--line); }
+.moi-mx .vtb-matrix tfoot .vtb-cell.vtb-t-dat { background: var(--mx-dat-bg); } .moi-mx .vtb-matrix tfoot .vtb-cell.vtb-t-kha { background: var(--mx-kha-bg); } .moi-mx .vtb-matrix tfoot .vtb-cell.vtb-t-cct { background: var(--mx-cct-bg); } .moi-mx .vtb-matrix tfoot .vtb-cell.vtb-t-chua { background: var(--mx-chua-bg); } .moi-mx .vtb-matrix tfoot .vtb-cell.vtb-t-gap { background: var(--mx-gap-bg); }
+/* Cột Toàn chi nhánh: kết quả tổng hợp, có khung riêng và nhãn */
+.moi-mx .vtb-mx-cn { border-left: 3px solid var(--brand-blue) !important; border-right: 3px solid var(--brand-blue) !important; }
+.moi-mx .vtb-matrix thead th.vtb-mx-cn { background: var(--brand-blue-tint); border-top: 3px solid var(--brand-blue); color: var(--brand-blue-dark); }
+.moi-mx .vtb-matrix tfoot .vtb-mx-cn { border-bottom: 3px solid var(--brand-blue); }
+.moi-mx .vtb-cn-tag { color: var(--brand-blue-dark) !important; font-weight: 700 !important; }
+.moi-mx .vtb-matrix thead th.vtb-mx-cn a { color: var(--brand-blue-dark); }
+/* --- Presentation Mode (khung 1920×1080) --- */
+.moi-stage .moi-mx { height: 100%; gap: var(--space-2); }
+.moi-stage .moi-mx-bar .moi-pill, .moi-stage .moi-mx-bar .moi-btn { min-height: 40px; font-size: 17px; }
+.moi-stage .moi-mx-filters .moi-fl span { font-size: 14px; } .moi-stage .moi-mx-filters .moi-sel { min-height: 40px; font-size: 16px; }
+.moi-stage .moi-mx-applied, .moi-stage .moi-mx-note, .moi-stage .moi-mx-ins, .moi-stage .moi-mx-hint { display: none; }
+.moi-stage .moi-mx-strip { padding: var(--space-2) var(--space-4); }
+.moi-stage .moi-mx .vtb-mxf { min-height: 46px; padding: 0 18px; font-size: 20px; } .moi-stage .moi-mx .vtb-mxf b { font-size: 24px; } .moi-stage .moi-mx .vtb-mxf .vtb-ic { width: 22px; height: 22px; }
+.moi-stage .moi-mx-rate b { font-size: 30px; } .moi-stage .moi-mx-rate .vtb-caption { font-size: 15px; }
+.moi-stage .moi-mx > .moi-card { flex: 1 1 0; min-height: 0; padding: 0; } .moi-stage .moi-mx .moi-mx-wrap { max-height: none; height: 100%; }
+.moi-stage .moi-mx .vtb-matrix { font-size: 16px; } .moi-stage .moi-mx .vtb-matrix td { height: 26px; } .moi-stage .moi-mx .vtb-cb { min-height: 25px; gap: 6px; } .moi-stage .moi-mx .vtb-cell { font-size: 16px; }
+.moi-stage .moi-mx .vtb-cb .vtb-ic { width: 18px; height: 18px; } .moi-stage .moi-mx .vtb-matrix .vtb-sticky { min-width: 240px; font-size: 16px; } .moi-stage .moi-mx .vtb-matrix th.vtb-sticky a { padding: 2px 0; }
+.moi-stage .moi-mx .vtb-matrix thead th { font-size: 15px; } .moi-stage .moi-mx .vtb-matrix thead th small { font-size: 13px; } .moi-stage .moi-mx .moi-mx-grp td { font-size: 13px; padding: 4px 8px 1px; }
+.moi-stage .moi-mx .vtb-wk { font-size: 14px; }
+@media print { .moi-mx-bar, .moi-mx-filters, .moi-mx-ins { display: none !important; } .moi-mx .moi-mx-wrap { max-height: none; } }
+
+/* gọn đầu trang */
+.moi-mx-bar { align-items: flex-end; gap: var(--space-2) var(--space-3); } .moi-mx-bar .moi-pills { align-self: flex-end; }
+.moi-mx .moi-fl { font-size: 11px; } .moi-mx .moi-fl .moi-sel { min-height: 32px; font-size: 13px; max-width: 190px; }
+.moi-mx-ins .vtb-att { display: flex; flex-wrap: wrap; gap: 6px; } .moi-mx-ins .vtb-att-i { border: 1px solid var(--line); background: var(--surface-card); padding: 3px 10px; max-width: 100%; }
+.moi-mx-ins .vtb-mx-nm { flex: none; max-width: 200px; } .moi-mx-ins .vtb-att-i small { color: var(--ink-muted); font-size: 11px; }
+.moi-mx-ins { padding: 2px var(--space-4) var(--space-2); } .moi-mx-ins-grid { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.moi-mx .vtb-matrix .vtb-sticky small { display: inline; margin-left: 4px; }
+.moi-mx .vtb-matrix tfoot th.vtb-sticky small { display: block; margin-left: 0; }
+.moi-stage .moi-mx-bar .moi-sel { min-height: 40px; font-size: 16px; } .moi-stage .moi-mx-bar .moi-fl { font-size: 13px; }
+.moi-mx-ins .vtb-att-i { flex: 0 0 auto; width: auto; } .moi-mx-arow { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); flex-wrap: wrap; } .moi-mx-arow .moi-btn { min-height: 30px; font-size: 12px; }
+
+.moi-mx-clear-st { display: none; } .moi-stage .moi-mx-clear-st { display: inline-flex; align-items: center; } .moi-stage .moi-mx-arow { display: none; }
+.moi-stage .moi-st-tabs button { white-space: nowrap; padding: 0 var(--space-4); font-size: 18px; } .moi-stage .moi-st-brand .moi-brand-t b { white-space: nowrap; }
+.moi-stage .moi-mx .vtb-matrix td { height: 24px; } .moi-stage .moi-mx .vtb-cb { min-height: 23px; } .moi-stage .moi-mx { gap: 6px; }
+.moi-stage .moi-mx .moi-fl .moi-sel { max-width: none; }
+.moi-stage .moi-mx[data-f="all"] .vtb-cell.vtb-t-chua { box-shadow: inset 0 0 0 2px var(--mx-chua-ink); } .moi-stage .moi-mx[data-f="all"] .vtb-cell.vtb-t-cct { box-shadow: inset 0 0 0 2px var(--mx-cct-ink); }
+.moi-mx-ins .vtb-att { flex-direction: row; } .moi-mx-ins .vtb-att-i { border-bottom: 1px solid var(--line); }
+.moi-mx .vtb-matrix thead th.vtb-mx-cn { min-width: 112px; }
+.moi-mx .vtb-matrix thead th { min-width: 88px; } .moi-mx .vtb-matrix .vtb-sticky { min-width: 150px; }
+.moi-stage .moi-mx .vtb-matrix .vtb-sticky { min-width: 240px; } .moi-stage .moi-mx .vtb-matrix thead th { min-width: 0; }
+.moi-mx .vtb-mxf.vtb-t-dat { color: var(--mx-dat-ink); } .moi-mx .vtb-mxf.vtb-t-kha { color: var(--mx-kha-ink); } .moi-mx .vtb-mxf.vtb-t-cct { color: var(--mx-cct-ink); } .moi-mx .vtb-mxf.vtb-t-chua { color: var(--mx-chua-ink); } .moi-mx .vtb-mxf.vtb-t-gap { color: var(--mx-gap-ink); }
+.moi-mx-arow { gap: 4px var(--space-4); } .moi-mx-arow .moi-mx-hint { flex: 1 1 320px; } .moi-mx-rate { white-space: nowrap; } .moi-mx-rate b { font-size: 20px; }
+.moi-mx-bar .moi-fl .moi-sel { max-width: 150px; } .moi-mx-bar { gap: var(--space-2); } .moi-mx-strip { padding: var(--space-2) var(--space-3); gap: var(--space-2) var(--space-4); }
+.moi-stage .moi-mx-hint { display: none; }
+#mx-sort { max-width: 200px; }
+.moi-mx .vtb-ft .vtb-cv { gap: 6px; } .moi-mx .vtb-ft .vtb-ic { width: 16px; height: 16px; opacity: 1 !important; }

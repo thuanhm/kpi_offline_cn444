@@ -43,4 +43,41 @@ ok(!/>=\s*90\b|\b90\b/.test(src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/\/\/.*
 ok(!/computeKpi|\.quy_doi\s*=|Math\.min\(/.test(src.replace(/\/\*[\s\S]*?\*\//g, '')), 'moi-data.js không tự tính điểm / %HT (không gọi computeKpi, không gán quy_doi)');
 const nocode = (f) => fs.readFileSync(path.join(MOI, f), 'utf8');
 ok(!/QUY_DOI|trong_so\s*\*|th\s*\/\s*kh/.test(nocode('moi-views.js') + nocode('moi-views2.js')), 'các màn hình mới không chứa công thức điểm (th/kh, trọng số × …)');
+/* ---- Ma trận chỉ tiêu: bộ đếm/lọc phải khớp đếm độc lập từ thẻ điểm của engine ---- */
+console.log('Ma trận chỉ tiêu (maTran)');
+const TTc = sb.KPI_CFG.TRANG_THAI, mapT = (tt) => tt === TTc.DAT ? 'dat' : tt === TTc.KHA ? 'kha' : tt === TTc.CCT ? 'cct' : tt === TTc.CHUA_DAT ? 'chua' : 'gap';
+const dem = (M2, nam2, thang2, f) => {   // đếm độc lập, KHÔNG dùng MOI_DATA
+  const c = { dat: 0, kha: 0, cct: 0, chua: 0, gap: 0 }, perU = {};
+  M2.ranking(nam2, thang2).filter((u) => (!f.khoi || u.khoi === f.khoi) && (!f.dv || u.ma === f.dv)).forEach((u) => {
+    u.rows.concat(u.ref).filter((r) => !f.nhom || r.ind.nhom === f.nhom).forEach((r) => { const t = mapT(r.tt); c[t]++; perU[u.ma] = perU[u.ma] || { chua: 0, cct: 0 }; if (t === 'chua' || t === 'cct') perU[u.ma][t]++; });
+  });
+  return { c, perU };
+};
+let badCnt = 0, badRank = 0, badRate = 0, badWeak = 0, nCase = 0, badCn = 0;
+const nhoms = [...new Set(M.inds.map((i) => i.nhom))], khois = [...new Set(M.units.map((u) => u.khoi))];
+M.periods.filter((p) => p.nam === nam).forEach((p) => {
+  const base = M.ranking(nam, p.thang).map((c) => c.ma + ':' + c.hang).join(',');
+  const dv0 = (M.ranking(nam, p.thang)[0] || {}).ma;
+  const cases = [{}, { khoi: khois[0] }, { nhom: nhoms[0] }, { nhom: nhoms[nhoms.length - 1], khoi: khois[khois.length - 1] }, { dv: dv0 }, { sort: 'yeu' }];
+  cases.forEach((f) => {
+    nCase++; const X = D.maTran(M, nam, p.thang, f), ref = dem(M, nam, p.thang, f);
+    if (JSON.stringify(X.counts) !== JSON.stringify(ref.c)) badCnt++;
+    const dg = ref.c.dat + ref.c.kha + ref.c.cct + ref.c.chua; if (X.total !== dg + ref.c.gap || X.danhGia !== dg || (dg ? Math.abs(X.tyLeChua - ref.c.chua / dg) > 1e-12 : X.tyLeChua !== null)) badRate++;
+    X.units.forEach((u) => { const q = ref.perU[u.ma] || { chua: 0, cct: 0 }, g = X.perUnit[u.ma] || { chua: 0, cct: 0 }; if (q.chua !== g.chua || q.cct !== g.cct) badWeak++; });
+    if (Object.keys(X.cells).some((k) => k.split('|')[1] === CN && false) || X.cols[0].ma !== CN || X.units.some((u) => u.ma === CN)) badCn++;
+    const cnt = Object.values(X.cells).filter((x) => x.c.ma !== CN).length; if (cnt !== X.total) badCnt++;
+  });
+  if (M.ranking(nam, p.thang).map((c) => c.ma + ':' + c.hang).join(',') !== base) badRank++;
+  const Y = D.maTran(M, nam, p.thang, { sort: 'yeu' }), Z = D.maTran(M, nam, p.thang, {});
+  if (JSON.stringify(Y.units.map((u) => [u.ma, u.hang]).sort()) !== JSON.stringify(Z.units.map((u) => [u.ma, u.hang]).sort())) badRank++;
+  for (let i = 1; i < Y.units.length; i++) { const a = Y.perUnit[Y.units[i - 1].ma] || { chua: 0, cct: 0 }, b = Y.perUnit[Y.units[i].ma] || { chua: 0, cct: 0 }; if (a.chua < b.chua || (a.chua === b.chua && a.cct < b.cct)) badRank++; }
+});
+ok(nCase >= 60, 'đã thử ≥ 60 tổ hợp kỳ × bộ lọc (' + nCase + ')');
+ok(badCnt === 0, 'bộ đếm trạng thái = đếm độc lập từ thẻ điểm engine ở mọi tổ hợp lọc khối/đơn vị/nhóm; ô "không áp dụng" và cột Toàn chi nhánh không được đếm');
+ok(badRate === 0, 'tổng ô, ô đã có số và tỷ lệ Chưa đạt tính đúng (mẫu số không gồm GAP)');
+ok(badWeak === 0, 'số KPI Chưa đạt / Cần cải thiện của từng đơn vị khớp đếm độc lập');
+ok(badRank === 0, 'sắp cột theo KPI yếu chỉ đổi thứ tự hiển thị: hạng chính thức không đổi và thứ tự đúng quy tắc (Chưa đạt ↓, rồi Cần cải thiện ↓)');
+ok(badCn === 0, 'cột Toàn chi nhánh luôn đứng đầu và không nằm trong danh sách đơn vị');
+const vsrc = fs.readFileSync(path.join(MOI, 'moi-views2.js'), 'utf8'), mxsrc = vsrc.slice(vsrc.indexOf('MA TRẬN CHỈ TIÊU'), vsrc.indexOf('THẺ ĐIỂM ĐƠN VỊ'));
+ok(!/computeKpi|QUY_DOI|\.quy_doi\s*=|th\s*\/\s*kh/.test(mxsrc), 'màn Ma trận không chứa công thức điểm');
 console.log(fail ? '\nCÓ ' + fail + ' LỖI' : '\nTẤT CẢ ĐẠT'); process.exit(fail ? 1 : 0);

@@ -45,7 +45,7 @@ try {
   await go(p, '#/tong-quan'); perf.new_tong_quan_render_ms = med(await renderMs(p));
   await go(p, '#/dieu-hanh'); perf.new_dieu_hanh_render_ms = med(await renderMs(p));
   perf.later_switch_ms = med(await p.eval(`(async () => { const r = []; for (let i = 0; i < 6; i++) { r.push(await new Promise((ok) => { const t = performance.now(); UI_SWITCH.dat(i % 2 ? 'moi' : 'cu').then(() => requestAnimationFrame(() => requestAnimationFrame(() => ok(performance.now() - t)))); })); } return r; })()`));
-  perf.new_ui_asset_kb = Math.round(['ui-moi/moi-tokens.css', 'ui-moi/moi-components.css', 'ui-moi/moi-layout.css', 'ui-moi/moi.css', 'ui-moi/vtb.js', 'ui-moi/moi-data.js', 'ui-moi/moi-views.js', 'ui-moi/moi-views2.js', 'ui-moi/moi-shell.js', 'js/ui-switch.js'].reduce((a, f) => a + fs.statSync(path.join(ROOT, 'App', f)).size, 0) / 1024);
+  perf.new_ui_asset_kb = Math.round(['ui-moi/moi-tokens.css', 'ui-moi/moi-components.css', 'ui-moi/moi-layout.css', 'ui-moi/moi-matrix.css', 'ui-moi/moi.css', 'ui-moi/vtb.js', 'ui-moi/moi-data.js', 'ui-moi/moi-views.js', 'ui-moi/moi-views2.js', 'ui-moi/moi-shell.js', 'js/ui-switch.js'].reduce((a, f) => a + fs.statSync(path.join(ROOT, 'App', f)).size, 0) / 1024);
   await p.close();
   for (const k in perf) perf[k] = Math.round(perf[k] * 10) / 10;
   fs.writeFileSync(path.join(OUT, 'perf.json'), JSON.stringify(perf, null, 1)); console.log(JSON.stringify(perf));

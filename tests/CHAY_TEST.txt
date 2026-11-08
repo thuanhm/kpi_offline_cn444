@@ -23,3 +23,8 @@ Mỗi bài in "TẤT CẢ ĐẠT" khi thành công.
   node tests\screenshots-dual-ui.mjs                      (chụp ảnh bàn giao vào docs\screenshots và đo hiệu năng vào tests\out\perf.json)
   Lưu ý: smoke-man-hinh.ps1 / smoke-bang.ps1 hiện báo "chưa chạy hết (0 lỗi)" trong môi trường kiểm thử này, KỂ CẢ trên bản gốc (commit main) — xem TEST_REPORT.md.
   Các bài .mjs dùng hồ sơ trình duyệt tạm nên KHÔNG đọc/ghi dữ liệu vận hành.
+--- Ma trận chỉ tiêu (giao diện mới) ---
+  node tests\test-moi-data.js  <đường dẫn>\App\js      (đã thêm 60 tổ hợp kỳ × bộ lọc: bộ đếm/tỷ lệ/KPI yếu của ma trận = đếm độc lập từ thẻ điểm engine)
+  node tests\browser-ma-tran.mjs                          (69 kiểm thử trên ứng dụng thật, đánh số theo mục XII: màu, lọc 5 trạng thái, bộ đếm, kết hợp lọc, đổi kỳ/đơn vị,
+                                                            5 chế độ, click/hover/focus, 3 kích thước, Presentation Mode, Legacy, KPI trước/sau)
+  node tests\screenshots-ma-tran.mjs                      (chụp ảnh bàn giao vào docs\screenshots\ma-tran)

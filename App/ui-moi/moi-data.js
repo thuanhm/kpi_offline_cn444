@@ -70,5 +70,40 @@
     return out.sort(function (a, b) { return b.mat - a.mat; });
   }
 
-  root.MOI_DATA = { UU_TIEN: UU_TIEN, isNum: isNum, tierTT: tierTT, tierHt: tierHt, rowVM: rowVM, cardRows: cardRows, rank: rank, kpiChinh: kpiChinh, avgSeries: avgSeries, duBaoCn: duBaoCn, tongQuan: tongQuan, matDonVi: matDonVi };
+  /* ---- Ma trận chỉ tiêu × đơn vị. Chỉ chọn/lọc/đếm các ô đã có của engine; không tính lại điểm, %HT, hạng hay mức.
+   * f = { khoi, dv, nhom, sort }. Hạng luôn là hạng chính thức của M.ranking (lọc cột không xếp lại).
+   * Bộ đếm = các ô ĐƠN VỊ (không tính cột Toàn chi nhánh vì là tổng hợp) sau khi áp bộ lọc khối/đơn vị/nhóm, TRƯỚC bộ lọc trạng thái.
+   * Ô "không áp dụng" (đơn vị không có chỉ tiêu này) không phải một trạng thái và không được đếm. */
+  function maTran(M, nam, thang, f) {
+    f = f || {};
+    var cn = M.card(CN, nam, thang), rk = M.ranking(nam, thang);
+    var units = rk.filter(function (c) { return (!f.khoi || c.khoi === f.khoi) && (!f.dv || c.ma === f.dv); });
+    var inds = M.inds.filter(function (i) { return !f.nhom || i.nhom === f.nhom; });
+    var T = { dat: 0, kha: 0, cct: 0, chua: 0, gap: 0 }, cells = {}, perUnit = {}, perInd = {};
+    function rowOf(c, ma) { return c.rows.concat(c.ref).filter(function (x) { return x.ma === ma; })[0] || null; }
+    inds.forEach(function (ind) {
+      perInd[ind.ma] = { chua: 0, cct: 0, n: 0 };
+      [cn].concat(units).forEach(function (c) {
+        var r = rowOf(c, ind.ma); if (!r) return;
+        var t = tierTT(r.tt); cells[ind.ma + '|' + c.ma] = { r: r, tier: t, ind: ind, c: c };
+        if (c.ma === CN) return;
+        T[t]++; perInd[ind.ma].n++;
+        perUnit[c.ma] = perUnit[c.ma] || { chua: 0, cct: 0, n: 0 }; perUnit[c.ma].n++;
+        if (t === 'chua' || t === 'cct') { perUnit[c.ma][t]++; perInd[ind.ma][t]++; }
+      });
+    });
+    var yeu = function (u) { var p = perUnit[u.ma] || { chua: 0, cct: 0 }; return p; };
+    var ordered = units.slice();
+    if (f.sort === 'yeu') ordered = units.map(function (u, i) { return [u, i]; }).sort(function (a, b) { var x = yeu(a[0]), y = yeu(b[0]); return (y.chua - x.chua) || (y.cct - x.cct) || (a[1] - b[1]); }).map(function (p) { return p[0]; });
+    var danhGia = T.dat + T.kha + T.cct + T.chua, total = danhGia + T.gap;
+    var top = function (o, key, list, name) { return list.map(function (x) { var p = o[x.ma]; return p && (p.chua || p.cct) ? { ma: x.ma, ten: name(x), chua: p.chua, cct: p.cct, n: p.n } : null; }).filter(Boolean)
+      .sort(function (a, b) { return (b.chua - a.chua) || (b.cct - a.cct); }).slice(0, 5); };
+    return { cn: cn, units: ordered, inds: inds, cols: [cn].concat(ordered), cells: cells, counts: T, total: total, danhGia: danhGia,
+      tyLeChua: danhGia ? T.chua / danhGia : null, perUnit: perUnit, perInd: perInd,
+      weakUnits: top(perUnit, 'chua', units, function (u) { return u.ten_ngan; }), weakInds: top(perInd, 'chua', inds, function (i) { return i.ten_ngan || i.ten; }),
+      nhoms: M.inds.reduce(function (a, i) { if (i.nhom && a.indexOf(i.nhom) < 0) a.push(i.nhom); return a; }, []),
+      khois: M.units.reduce(function (a, u) { if (u.khoi && a.indexOf(u.khoi) < 0) a.push(u.khoi); return a; }, []) };
+  }
+
+  root.MOI_DATA = { maTran: maTran, UU_TIEN: UU_TIEN, isNum: isNum, tierTT: tierTT, tierHt: tierHt, rowVM: rowVM, cardRows: cardRows, rank: rank, kpiChinh: kpiChinh, avgSeries: avgSeries, duBaoCn: duBaoCn, tongQuan: tongQuan, matDonVi: matDonVi };
 })(window);

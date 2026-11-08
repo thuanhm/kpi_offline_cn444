@@ -81,3 +81,21 @@ Thành phần cấp khung (`moi-shell.js`): sidebar, topbar, **UI Switcher** (`j
 6. Mọi hàng/thẻ bấm được là `role="button"` có `tabindex="0"`, nhận Enter/Space, vòng focus 2px `focus-ring`.
 7. Không dùng Dark Mode ở phiên bản 1 (D5).
 8. Màn hình cũ đặt trong vỏ mới chỉ được **đổi bảng màu** qua biến CSS dưới `body.ui-moi` (không đổi bố cục).
+
+## 7. Ma trận chỉ tiêu — bảng màu trạng thái riêng (`ui-moi/moi-matrix.css`)
+
+Chỉ áp dụng dưới `.moi-mx` (màn Ma trận và chế độ trình chiếu của nó); các màn khác giữ token ở mục 2.
+
+| Mức | Nền | Chữ/biểu tượng | Tương phản | Biểu tượng |
+|---|---|---|---|---|
+| Đạt | `#DCEAF7` | `#07539A` | 6,32:1 | Circle Check đặc |
+| Khá | `#EDF3FA` | `#35658F` | 5,51:1 | Circle Check rỗng |
+| Cần cải thiện | `#FFF0D9` | `#A95708` | 4,62:1 | Triangle Alert |
+| Chưa đạt | `#FCE2E2` | `#B4232D` | 5,32:1 | Circle X đặc |
+| GAP | `#E9EDF2` | `#5B6B80` | 4,63:1 | Circle Minus nét đứt |
+
+- Chữ GAP đậm hơn đề xuất `#64748B` (chỉ 4,05:1, dưới AA) để đạt ≥ 4,5:1; nền giữ nguyên.
+- Nền Đạt và Khá gần nhau (1,10:1) nên được tách thêm bằng biểu tượng đặc/rỗng, màu chữ và viền 1px; không dựa vào nền.
+- Ô bị làm mờ khi lọc: nền `#F3F5F9`, chữ `#5A6881` (5,0:1) — vẫn đọc được.
+- Chế độ **Thứ hạng** và **Điểm bị mất** không phải trạng thái: dùng thang một tông tím (`#F7F5FD` → `#BDB1EE`, viền `#6250D6` cho hạng 1 / mất nhiều nhất), không dùng màu trạng thái.
+- Cột **Toàn chi nhánh**: khung xanh thương hiệu hai bên, tiêu đề nền `brand-blue-tint` và nhãn "Tổng hợp toàn CN".
