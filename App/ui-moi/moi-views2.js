@@ -69,10 +69,10 @@
   var MX_STATUS_MODES = { ht: 1, kh_nam: 1, diem: 1 };   // chế độ mà màu/biểu tượng ô là MỨC TRẠNG THÁI KPI (có ý nghĩa để lọc theo trạng thái)
   function mxNote(mode, M) {
     var ng = M.ng;
-    return { ht: 'Số trong ô = % hoàn thành kế hoạch lũy kế; màu và biểu tượng = mức theo ngưỡng cấu hình.',
+    return { ht: 'Số trong ô = % hoàn thành kế hoạch lũy kế; màu Heatmap chuyển liên tục đỏ → xanh lá theo % hoàn thành, nằm đúng trong dải của mức Đạt/Khá/Cần cải thiện/Chưa đạt theo ngưỡng cấu hình. Ô xám = GAP.',
       hang: 'Số trong ô = hạng của đơn vị ở chỉ tiêu đó theo % hoàn thành (1 = cao nhất). Màu xanh càng đậm = hạng càng cao; đây không phải mức trạng thái.',
-      kh_nam: 'Số trong ô = thực hiện lũy kế ÷ kế hoạch cả năm. Màu và biểu tượng vẫn là mức hoàn thành KH lũy kế (hệ thống không có ngưỡng riêng cho % KH năm).',
-      diem: 'Số trong ô = điểm đạt / trọng số; màu và biểu tượng = mức hoàn thành KH lũy kế của chỉ tiêu.',
+      kh_nam: 'Số trong ô = thực hiện lũy kế ÷ kế hoạch cả năm. Màu Heatmap vẫn theo % hoàn thành KH lũy kế (hệ thống không có ngưỡng riêng cho % KH năm).',
+      diem: 'Số trong ô = điểm đạt / trọng số; màu Heatmap = % hoàn thành KH lũy kế của chỉ tiêu.',
       mat: 'Số trong ô = điểm bị mất (✓ = không mất điểm). Màu xanh càng đậm = mất càng nhiều so với ô mất nhiều nhất đang hiển thị; không phải mức trạng thái.' }[mode];
   }
   function mxTierTip(M) {
@@ -80,6 +80,31 @@
     return { dat: 'Đạt: hoàn thành từ ' + p(ng.dat) + ' kế hoạch lũy kế trở lên.', kha: 'Khá: từ ' + p(ng.kha) + ' đến dưới ' + p(ng.dat) + ' kế hoạch.',
       cct: 'Cần cải thiện: từ ' + p(ng.cct) + ' đến dưới ' + p(ng.kha) + ' kế hoạch.', chua: 'Chưa đạt: dưới ' + p(ng.cct) + ' kế hoạch.',
       gap: 'GAP: thiếu số thực hiện hoặc kế hoạch, hoặc thiếu cấu hình nên chưa xếp được mức. Khác với ô “·” (đơn vị không có chỉ tiêu này).' };
+  }
+  /* ---- Heatmap liên tục: màu CHỈ để hiển thị, suy ra từ % hoàn thành (r.ht, engine đã tính, đã xử lý chiều "thấp là tốt") ----
+   * Mức (đạt/khá/cct/chưa) vẫn do engine quyết định; màu luôn nằm trong dải của mức đó nên không bao giờ mâu thuẫn với bộ lọc/bộ đếm.
+   * Mốc nội suy trong từng mức lấy từ ngưỡng cấu hình M.ng; không tạo ngưỡng mới. */
+  var MX_RAMP = ['#E85D61', '#F47768', '#F49768', '#F7B66F', '#FDD17A', '#FFEB84', '#E8E47A', '#C8DC7D', '#A8D17D', '#83C77B', '#63BE7B'];
+  var MX_BAND = { chua: [0, 0.28], cct: [0.28, 0.56], kha: [0.56, 0.82], dat: [0.82, 1] };
+  var MX_INK = '#1B2333';
+  function rampAt(p) {
+    p = Math.max(0, Math.min(1, p)); var f = p * (MX_RAMP.length - 1), i = Math.min(MX_RAMP.length - 2, Math.floor(f)), k = f - i, a = MX_RAMP[i], b = MX_RAMP[i + 1], o = '#';
+    for (var j = 1; j < 7; j += 2) { var x = parseInt(a.substr(j, 2), 16), y = parseInt(b.substr(j, 2), 16), v = Math.round(x + (y - x) * k); o += (v < 16 ? '0' : '') + v.toString(16); }
+    return o;
+  }
+  function heatPos(ht, t, ng) {
+    var B = MX_BAND[t]; if (!B) return null; if (!isNum(ht)) return (B[0] + B[1]) / 2;
+    var lo = t === 'chua' ? 0 : t === 'cct' ? ng.cct : t === 'kha' ? ng.kha : ng.dat, hi = t === 'chua' ? ng.cct : t === 'cct' ? ng.kha : t === 'kha' ? ng.dat : ng.dat * 1.2, u = hi > lo ? (ht - lo) / (hi - lo) : 1;
+    return B[0] + (B[1] - B[0]) * Math.max(0, Math.min(1, u));
+  }
+  function heatColor(ht, t, ng) { var p = heatPos(ht, t, ng); return p === null ? null : rampAt(p); }
+  function heatLegend(M) {
+    var ng = M.ng, pc = function (v) { return pct(v, 0); }, stops = MX_RAMP.map(function (c, i) { return c + ' ' + (i * 10) + '%'; }).join(','),
+      tk = function (p, lab) { return '<span class="moi-hm-tk" style="left:' + (p * 100) + '%"><i></i><b>' + lab + '</b></span>'; };
+    return '<div class="moi-hm" aria-label="Thang màu Heatmap theo % hoàn thành kế hoạch lũy kế" data-tip="Màu chuyển liên tục từ đỏ (chưa đạt) đến xanh lá (đạt) theo % hoàn thành KH. Chỉ tiêu có chiều “thấp là tốt” (như nợ xấu) đã được hệ thống quy về cùng % hoàn thành nên dùng chung thang. Các mốc lấy từ ngưỡng cấu hình.">' +
+      '<span class="vtb-caption moi-hm-l">Thấp</span><div class="moi-hm-bar"><div class="moi-hm-grad" style="background:linear-gradient(90deg,' + stops + ')"></div>' +
+      tk(0, '0%') + tk(MX_BAND.cct[0], pc(ng.cct)) + tk(MX_BAND.kha[0], pc(ng.kha)) + tk(MX_BAND.dat[0], pc(ng.dat)) + '</div><span class="vtb-caption moi-hm-l">Cao</span>' +
+      '<span class="moi-hm-gap"><i></i><span class="vtb-caption">GAP · chưa có số</span></span></div>';
   }
   function mxState(A) { return { tier: V.TIERS.indexOf(A.mt_tier) >= 0 ? A.mt_tier : 'all', khoi: A.mt_khoi || '', dv: A.mt_dv || '', nhom: A.mt_nhom || '', sort: A.mt_sort === 'yeu' ? 'yeu' : 'hang' }; }
   function weakBadges(p) {
@@ -102,8 +127,9 @@
     var stNote = t === 'gap' ? (r.tt || 'GAP') : V.LABEL_LONG[t];
     var tip = c.ten_ngan + ' · ' + (ind.ten_ngan || ind.ten) + ' · KH ' + H.fmtV(r.kh, ind) + ' · TH ' + H.fmtV(r.th, ind) + ' · ' + (isNum(r.ht) ? pct(r.ht, 1) : 'chưa có số') + ' · ' + stNote;
     aria = (ind.ten_ngan || ind.ten) + ', ' + c.ten_ngan + ': ' + txt + ', ' + stNote + '. Mở thẻ điểm đơn vị';
-    var icon = (mode === 'hang' || mode === 'mat') ? '' : V.svgIcon(t);
-    return '<td class="vtb-cell ' + cls + '" data-tier="' + t + '" data-dv="' + esc(c.ma) + '" data-tip="' + esc(tip) + '"><span class="vtb-cb" role="button" tabindex="-1" data-dv="' + esc(c.ma) + '" aria-label="' + esc(aria) + '">' + icon + '<span class="vtb-cv">' + esc(txt) + '</span></span></td>';
+    var hm = MX_STATUS_MODES[mode] ? heatColor(r.ht, t, M.ng) : null, icon = (mode === 'hang' || mode === 'mat' || hm) ? '' : V.svgIcon(t);
+    if (hm) cls += ' vtb-hm';
+    return '<td class="vtb-cell ' + cls + '"' + (hm ? ' style="--hm:' + hm + '"' : '') + ' data-tier="' + t + '" data-dv="' + esc(c.ma) + '" data-tip="' + esc(tip) + '"><span class="vtb-cb" role="button" tabindex="-1" data-dv="' + esc(c.ma) + '" aria-label="' + esc(aria) + '">' + icon + '<span class="vtb-cv">' + esc(txt) + '</span></span></td>';
   }
 
   VIEWS['ma-tran'] = {
@@ -127,12 +153,14 @@
       /* --- dải đếm trạng thái (cũng là bộ lọc nhanh) --- */
       var chips = ['all'].concat(V.TIERS).map(function (t) {
         var n = t === 'all' ? X.total : X.counts[t], lab = t === 'all' ? 'Tất cả' : V.LABEL[t], inner = (t === 'all' ? '' : V.svgIcon(t)) + '<span>' + lab + '</span><b>' + n + '</b>', cl = 'vtb-mxf' + (t === 'all' ? '' : ' vtb-t-' + t);
-        return tierMode ? '<button type="button" class="' + cl + '" data-mxf="' + t + '" aria-pressed="' + (active === t) + '" data-tip="' + esc(t === 'all' ? 'Hiện toàn bộ ô, không làm mờ' : tip[t]) + '" data-n="' + n + '">' + inner + '</button>'
+        var hs = ''; if (tierMode && MX_BAND[t]) { cl += ' vtb-hm'; hs = ' style="--hm:' + rampAt((MX_BAND[t][0] + MX_BAND[t][1]) / 2) + '"'; }
+        return tierMode ? '<button type="button" class="' + cl + '"' + hs + ' data-mxf="' + t + '" aria-pressed="' + (active === t) + '" data-tip="' + esc(t === 'all' ? 'Hiện toàn bộ ô, không làm mờ' : tip[t]) + '" data-n="' + n + '">' + inner + '</button>'
           : '<span class="' + cl + ' is-static" data-tip="' + esc(t === 'all' ? 'Tổng số ô có trạng thái' : tip[t]) + '">' + inner + '</span>';
       }).join('');
       var tyle = X.tyLeChua === null ? '–' : pct(X.tyLeChua, 1);
       var strip = '<div class="moi-mx-strip"><div class="moi-mx-chips" role="group" aria-label="' + (tierMode ? 'Lọc nhanh theo trạng thái KPI' : 'Số ô theo trạng thái KPI') + '">' + chips + '</div>' +
         '<div class="moi-mx-rate" data-tip="Chưa đạt ÷ (Đạt + Khá + Cần cải thiện + Chưa đạt). Không tính ô GAP và ô không áp dụng."><span class="vtb-caption">Tỷ lệ Chưa đạt</span><b>' + tyle + '</b><span class="vtb-caption">' + X.counts.chua + '/' + X.danhGia + ' ô có số</span></div></div>';
+      if (tierMode) strip += heatLegend(M);
       var live = '<p class="vtb-caption moi-mx-hint" id="mx-live" role="status" aria-live="polite">' + (tierMode ? (active === 'all' ? 'Chọn một trạng thái để làm nổi bật các ô tương ứng; các ô khác được làm mờ, vị trí và thứ hạng giữ nguyên.' : 'Đang làm nổi bật ' + X.counts[active] + ' ô ' + V.LABEL[active] + '.') : 'Chế độ này không phân loại theo trạng thái KPI nên không có bộ lọc trạng thái. Các số đếm bên trên là mức hoàn thành KH lũy kế.') + '</p>';
       /* --- phát hiện đơn vị / chỉ tiêu yếu (đếm thuần, không phải điểm KPI) --- */
       var li = function (x, attr, aria) { return '<li class="vtb-att-i is-link" ' + attr + '="' + esc(x.ma) + '" role="button" tabindex="0" aria-label="' + esc(aria(x)) + '"><span class="vtb-mx-nm">' + esc(x.ten) + '</span>' + weakBadges(x) + '<small>/ ' + x.n + ' ô</small></li>'; };
@@ -157,7 +185,7 @@
         tb += '</tr>';
       });
       if (!hien) return '<div class="moi-toolbar">' + pills + '</div><div class="moi-card moi-empty"><h2>Không có chỉ tiêu phù hợp</h2><p>Điều kiện lọc hiện tại không còn ô nào. Bấm “Xóa bộ lọc” để quay về tất cả.</p>' + clear + '</div>';
-      var foot = '<tr><th scope="row" class="vtb-sticky">Điểm quy đổi <small>(toàn bộ chỉ tiêu)</small></th>' + cols.map(function (c) { var t = D.tierHt(M, c.ht_chung); var tm = mode === 'ht' || mode === 'kh_nam' || mode === 'diem'; return '<td class="vtb-cell vtb-ft' + (c.ma === CN ? ' vtb-mx-cn' : '') + (tm ? ' vtb-t-' + t : ' vtb-rk-0') + '"' + (tm ? ' data-tier="' + t + '" data-tip="' + esc(c.ten_ngan + ' · điểm quy đổi toàn bộ chỉ tiêu · ' + V.LABEL_LONG[t]) + '"' : '') + '><span class="vtb-cv">' + (tm ? V.svgIcon(t) + ' ' : '') + '<b>' + num(c.quy_doi, 1) + '</b></span></td>'; }).join('') + '</tr>';
+      var foot = '<tr><th scope="row" class="vtb-sticky">Điểm quy đổi <small>(toàn bộ chỉ tiêu)</small></th>' + cols.map(function (c) { var t = D.tierHt(M, c.ht_chung); var tm = mode === 'ht' || mode === 'kh_nam' || mode === 'diem'; return '<td class="vtb-cell vtb-ft' + (c.ma === CN ? ' vtb-mx-cn' : '') + (tm ? ' vtb-t-' + t : ' vtb-rk-0') + (tm && heatColor(c.ht_chung, t, M.ng) ? ' vtb-hm' : '') + '"' + (tm && heatColor(c.ht_chung, t, M.ng) ? ' style="--hm:' + heatColor(c.ht_chung, t, M.ng) + '"' : '') + (tm ? ' data-tier="' + t + '" data-tip="' + esc(c.ten_ngan + ' · điểm quy đổi toàn bộ chỉ tiêu · ' + V.LABEL_LONG[t]) + '"' : '') + '><span class="vtb-cv">' + (tm ? V.svgIcon(t) + ' ' : '') + '<b>' + num(c.quy_doi, 1) + '</b></span></td>'; }).join('') + '</tr>';
       if (mode === 'mat') foot += '<tr><th scope="row" class="vtb-sticky">Tổng điểm mất <small>(các ô đang hiển thị)</small></th>' + cols.map(function (c) {
         var s = 0, has = false; X.inds.forEach(function (ind) { var x = X.cells[ind.ma + '|' + c.ma]; if (x && isNum(x.r.mat)) { s += x.r.mat; has = true; } });
         return '<td class="vtb-cell vtb-ft vtb-rk-0' + (c.ma === CN ? ' vtb-mx-cn' : '') + '"><span class="vtb-cv"><b>' + (has ? (s > 0.005 ? '−' + num(s, 1) : '✓') : '–') + '</b></span></td>'; }).join('') + '</tr>';

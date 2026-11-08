@@ -148,7 +148,7 @@ try {
   const W = { dat: 'rgb(28, 92, 171)', kha: 'rgb(109, 167, 236)', cct: 'rgb(236, 131, 90)', chua: 'rgb(176, 42, 42)', gap: 'rgb(137, 150, 171)' };
   rec('E. Màu PA-A', 'Màu trạng thái đúng PA-A (#1c5cab #6da7ec #ec835a #b02a2a #8996ab) — kiểm bằng mẫu đủ 5 mức', Object.keys(W).every((k) => col.m[k] === W[k]), JSON.stringify(col.m));
   rec('E. Màu PA-A', `Không chỉ dựa vào màu: ${col.n} chip trạng thái đều có biểu tượng + nhãn chữ`, col.n > 10 && col.sans === 0);
-  rec('E. D6', 'Ma trận trạng thái: không dùng thang cầu vồng (ô là 4 mức rời + biểu tượng + số)', await (async () => { await go(p, '#/ma-tran', 900); return p.eval(`(() => { const c = [...document.querySelectorAll('#view td.vtb-cell')]; return c.length > 20 && c.every(x => x.querySelector('svg') && x.textContent.trim() && /^(dat|kha|cct|chua|gap)$/.test(x.dataset.tier)) && !document.querySelector('.heat-legend'); })()`); })());
+  rec('E. D6', 'Ma trận trạng thái (cập nhật theo yêu cầu Heatmap liên tục): mỗi ô có số + mức hợp lệ; ô có số dùng màu Heatmap --hm, ô GAP giữ biểu tượng; không có thang cũ .heat-legend', await (async () => { await go(p, '#/ma-tran', 900); return p.eval(`(() => { const c = [...document.querySelectorAll('#view td.vtb-cell')]; return c.length > 20 && c.every(x => (x.querySelector('svg') || x.style.getPropertyValue('--hm')) && x.textContent.trim() && /^(dat|kha|cct|chua|gap)$/.test(x.dataset.tier)) && !document.querySelector('.heat-legend'); })()`); })());
   rec('E. Console', 'Không lỗi/cảnh báo console khi dùng các tính năng giao diện mới', p.logs.length === 0, p.logs.slice(0, 3).map((l) => l.text.slice(0, 120)).join(' | '));
   await p.close();
 

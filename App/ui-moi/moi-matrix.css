@@ -118,3 +118,23 @@
 .moi-stage .moi-mx-hint { display: none; }
 #mx-sort { max-width: 200px; }
 .moi-mx .vtb-ft .vtb-cv { gap: 6px; } .moi-mx .vtb-ft .vtb-ic { width: 16px; height: 16px; opacity: 1 !important; }
+
+/* ===== Continuous Heatmap (chế độ % hoàn thành KH, % KH năm, Điểm đạt) — màu liên tục đỏ → cam → vàng → xanh lá; --hm đặt từng ô ===== */
+.moi-mx .vtb-matrix td.vtb-cell.vtb-hm, .moi-mx .vtb-matrix tfoot .vtb-cell.vtb-hm { background: var(--hm); color: #1b2333; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .85); }
+.moi-mx .vtb-matrix td.vtb-cell.vtb-hm .vtb-cv { font-weight: 700; }
+.moi-mx .vtb-matrix td.vtb-cell.vtb-hm:not(.vtb-ft):hover .vtb-cb { box-shadow: inset 0 0 0 2px #1b2333; }
+.moi-mx .vtb-mxf.vtb-hm { background: var(--hm); color: #1b2333; border-color: rgba(27, 35, 51, .28); }
+.moi-mx .vtb-mxf.vtb-hm b { color: #1b2333; }
+.moi-hm { display: flex; align-items: center; gap: var(--space-3, 12px); margin: 0 0 var(--space-2, 8px); flex-wrap: wrap; }
+.moi-hm-bar { position: relative; flex: 1 1 320px; max-width: 560px; height: 30px; min-width: 220px; }
+.moi-hm-grad { height: 12px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(27, 35, 51, .18); }
+.moi-hm-tk { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #3b4658; font-variant-numeric: tabular-nums; }
+.moi-hm-tk i { width: 1px; height: 16px; background: #3b4658; margin-top: -2px; } .moi-hm-tk b { font-weight: 600; line-height: 1.1; }
+.moi-hm-tk:first-of-type { transform: none; align-items: flex-start; }
+.moi-hm-gap { display: inline-flex; align-items: center; gap: 6px; } .moi-hm-gap i { width: 18px; height: 12px; border-radius: 3px; background: var(--mx-gap-bg); box-shadow: inset 0 0 0 1px var(--mx-gap-ln); }
+.moi-stage .moi-hm { margin: 0 0 4px; } .moi-stage .moi-hm-bar { height: 28px; } .moi-stage .moi-hm-tk { font-size: 13px; }
+@media print { .moi-hm-grad { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+.moi-stage .moi-hm { margin: 0; gap: 10px; } .moi-stage .moi-hm-bar { height: 24px; max-width: 460px; flex-basis: 260px; } .moi-stage .moi-hm-grad { height: 10px; } .moi-stage .moi-hm-tk i { height: 10px; } .moi-stage .moi-hm-tk { font-size: 12px; }
+.moi-stage .moi-mx .vtb-matrix td { height: 24px; } .moi-stage .moi-mx .vtb-cb { min-height: 23px; }
+.moi-stage .moi-mx .vtb-matrix td { height: 22px; } .moi-stage .moi-mx .vtb-cb { min-height: 21px; } .moi-stage .moi-mx .vtb-matrix { font-size: 15px; } .moi-stage .moi-mx .vtb-cell { font-size: 15px; }
+.moi-stage .moi-hm-gap { display: none; }
