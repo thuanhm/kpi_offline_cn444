@@ -13,7 +13,6 @@ body.ui-moi .moi-top .moi-btn, body.ui-moi .moi-top .moi-period select { min-hei
 /* Sidebar: nền xanh thương hiệu như giao diện cũ, nhóm thu gọn được; mục đang chọn nền trắng chữ xanh + chỉ báo đỏ */
 body.ui-moi .moi-side { background: var(--brand-blue); border-right: 0; color: var(--text-inverse); }
 body.ui-moi .moi-brand { border-bottom: 3px solid var(--brand-red); color: var(--text-inverse); }
-body.ui-moi .moi-brand img { background: var(--surface-primary); border-radius: var(--radius-sm); padding: 6px 8px; box-sizing: content-box; }
 body.ui-moi .moi-brand-t b { color: var(--text-inverse); } body.ui-moi .moi-brand-t small { color: rgba(255, 255, 255, .8); }
 body.ui-moi .moi-nav-i { position: relative; color: rgba(255, 255, 255, .92); }
 body.ui-moi .moi-nav-i .ic { color: var(--text-inverse); }
@@ -36,8 +35,8 @@ body.ui-moi .moi-sel:hover, body.ui-moi .moi-period select:hover { border-color:
 /* Thẻ: tiêu đề xanh thương hiệu, số chỉ tiêu trọng tâm xanh; đường nhấn xanh da trời trên thẻ KPI, đỏ khi đang chọn */
 body.ui-moi .moi-head h2 { color: var(--brand-blue); }
 body.ui-moi .vtb-hero-num { color: var(--brand-blue); }
-body.ui-moi .vtb-kpi { border-top: 3px solid var(--brand-sky); }
-body.ui-moi .vtb-kpi.is-active { border-top-color: var(--brand-red); }
+body.ui-moi .vtb-kpi:not(.vtb-hm-on) { border-top: 3px solid var(--brand-sky); }  /* thẻ có %HT: vạch trên = màu Heatmap (moi-components.css); thẻ GAP giữ vạch thương hiệu */
+body.ui-moi .vtb-kpi.is-active:not(.vtb-hm-on) { border-top-color: var(--brand-red); }
 body.ui-moi .moi-card a:not(.moi-btn):not(.vtb-chip) { color: var(--brand-blue); }
 /* Biểu đồ: chuỗi phụ = xanh da trời (luôn kèm nhãn/chú giải), nhấn = đỏ thương hiệu */
 body.ui-moi .vtb-sw-sky { background: var(--series-sky); } body.ui-moi .vtb-sw-accent { background: var(--series-accent); }

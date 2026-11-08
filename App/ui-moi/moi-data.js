@@ -25,7 +25,7 @@
       var pv = thang > 1 ? M.card(c.ma, nam, thang - 1) : null;
       return { ma: c.ma, hang: c.hang, hang_truoc: c.hang_truoc, ten: c.ten_ngan, ten_day_du: c.ten, khoi: c.khoi, diem: c.quy_doi, ht: c.ht_chung,
         gap: isNum(c.quy_doi) ? c.quy_doi - 100 * M.ng.dat : null, tier: tierHt(M, c.ht_chung),
-        delta: pv && isNum(pv.quy_doi) && isNum(c.quy_doi) ? c.quy_doi - pv.quy_doi : null, series: M.scoreSeries(c.ma, nam),
+        delta: pv && isNum(pv.quy_doi) && isNum(c.quy_doi) ? c.quy_doi - pv.quy_doi : null, series: chuoiDiem(M, c.ma, nam),
         canhbao: c.so_chua > 0 ? c.so_chua + ' chỉ tiêu chưa đạt' : (c.so_thieu > 0 ? 'Thiếu số ' + c.so_thieu + ' chỉ tiêu' : ''), co_so: c.co_so, card: c };
     });
   }
@@ -39,10 +39,15 @@
     return out.map(rowVM);
   }
 
+  /* Chuỗi điểm 12 tháng của engine, nhưng tháng đơn vị CHƯA có số thực hiện (card.co_so = false) để trống (null) thay vì điểm 0:
+   * điểm 0 khi chưa nhập là "chưa có số", không phải kết quả thật — vẽ ra sẽ thành đường rơi xuống đáy. Không đổi giá trị engine. */
+  function chuoiDiem(M, dv, nam) {
+    return M.scoreSeries(dv, nam).map(function (v, i) { if (!isNum(v)) return null; var c = M.card(dv, nam, i + 1); return c && c.co_so ? v : null; });
+  }
   function avgSeries(M, nam) {
     var out = [];
     for (var t = 0; t < 12; t++) {
-      var s = 0, n = 0; M.units.forEach(function (u) { var v = M.scoreSeries(u.ma, nam)[t]; if (isNum(v)) { s += v; n++; } });
+      var s = 0, n = 0; M.units.forEach(function (u) { var v = chuoiDiem(M, u.ma, nam)[t]; if (isNum(v)) { s += v; n++; } });
       out.push(n ? s / n : null);
     }
     return out;
@@ -60,7 +65,7 @@
       counts: { dat: cn.so_dat, kha: cn.so_kha, cct: cn.so_cct, chua: cn.so_chua, gap: cn.so_thieu }, rk: rk, alerts: al,
       stats: { diem_cao: ng.diem_cao, cao: E.demDiemCao(cards, ng.diem_cao), so_dv: rk.length,
         duoi_kha: cards.filter(function (c) { return isNum(c.quy_doi) && c.quy_doi < ng.kha * 100; }).length, can_chu_y: cn.so_cct + cn.so_chua, canh_bao3: al.filter(function (a) { return a.muc === 3; }).length },
-      series_cn: M.scoreSeries(CN, nam), series_bq: avgSeries(M, nam), du_bao: du.diem, X: du.X, kpi: kpiChinh(cn, 8), rows: cardRows(cn).map(rowVM) };
+      series_cn: chuoiDiem(M, CN, nam), series_bq: avgSeries(M, nam), du_bao: du.diem, X: du.X, kpi: kpiChinh(cn, 8), rows: cardRows(cn).map(rowVM) };
   }
 
   /* Các dòng đơn vị × chỉ tiêu có mất điểm (cho "đơn vị kéo giảm") — lấy từ card của từng đơn vị */
@@ -105,5 +110,5 @@
       khois: M.units.reduce(function (a, u) { if (u.khoi && a.indexOf(u.khoi) < 0) a.push(u.khoi); return a; }, []) };
   }
 
-  root.MOI_DATA = { maTran: maTran, UU_TIEN: UU_TIEN, isNum: isNum, tierTT: tierTT, tierHt: tierHt, rowVM: rowVM, cardRows: cardRows, rank: rank, kpiChinh: kpiChinh, avgSeries: avgSeries, duBaoCn: duBaoCn, tongQuan: tongQuan, matDonVi: matDonVi };
+  root.MOI_DATA = { maTran: maTran, UU_TIEN: UU_TIEN, isNum: isNum, tierTT: tierTT, tierHt: tierHt, rowVM: rowVM, cardRows: cardRows, rank: rank, kpiChinh: kpiChinh, avgSeries: avgSeries, duBaoCn: duBaoCn, tongQuan: tongQuan, chuoiDiem: chuoiDiem, matDonVi: matDonVi };
 })(window);

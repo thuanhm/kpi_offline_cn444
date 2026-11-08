@@ -26,7 +26,7 @@
     var M = STORE.model(); o = o || {};
     var tbl = H.tbl({ caption: 'Xếp hạng đơn vị ' + H.kyTxt(A.ky), cols: [{ k: 'hang', t: 'Hạng', cls: 'vtb-r' }, { k: 'ten', t: 'Đơn vị' }, { k: 'khoi', t: 'Khối' }, { k: 'diem', t: 'Điểm KPI', cls: 'vtb-r' }, { k: 'delta', t: 'So kỳ trước', cls: 'vtb-r' }, { k: 'gap', t: 'GAP điểm', cls: 'vtb-r' }, { k: 'tier', t: 'Mức' }, { k: 'cb', t: 'Cảnh báo' }],
       rows: rows.map(function (r) { return { _key: r.ma, hang: r.hang || '–', ten: r.ten, khoi: r.khoi, diem: num(r.diem, 1), delta: isNum(r.delta) ? sgn(r.delta, 1) : '–', gap: isNum(r.gap) ? sgn(r.gap, 1) : '–', tier: V.LABEL_LONG[r.tier], cb: r.canhbao || '–' }; }) });
-    return H.pair(V.rankBars(rows, { ng: M.ng, selected: o.selected || '', noSpark: !!o.noSpark }), tbl);
+    return H.pair(V.heatLegend({ compact: true, title: '% hoàn thành chung' }) + V.rankBars(rows, { ng: M.ng, selected: o.selected || '', noSpark: !!o.noSpark }), tbl);
   };
   /* Dải thẻ KPI từ dữ liệu engine (một dòng/chỉ tiêu). soSanh: hàm sẵn có của màn "Theo dõi chỉ tiêu" để lấy mức thay đổi. */
   H.kpiCards = function (M, A, T, active) {
@@ -35,8 +35,8 @@
       var kieu = E.kieuSo(r.ind), s = ss ? ss(M, r.ma, CN, A.ky.nam, A.ky.thang, kieu) : null, xau = r.huong === 'thap_tot';
       var p = s ? (kieu === 'so_du' ? s.tt_p : s.ck_p) : null, vs = kieu === 'so_du' ? 'so ' + (H.kyTruoc(A.ky) || 'đầu năm') : 'so cùng kỳ ' + (A.ky.nam - 1);
       var dl = isNum(p) ? '<span title="' + esc('Thay đổi ' + vs) + '">' + V.deltaBadge(p * 100, { digits: 1, unit: '%', lowerIsBetter: xau }) + '</span>' : '';
-      return V.kpiCard({ id: r.ma, label: r.ten_ngan, value: H.fmtV(r.th, r.ind).replace('%', ''), unit: r.dvt === '%' ? '%' : r.dvt, sub: isNum(r.kh) ? 'KH ' + H.fmtV(r.kh, r.ind) + (isNum(r.gap) ? ' · GAP ' + H.gapTxt(r) : '') : (r.huong === 'nhap_ty_le' ? 'Tự đánh giá % hoàn thành' : 'Chưa có kế hoạch'),
-        ht: isNum(r.ht) ? pct(r.ht, 0) + (r.huong === 'nhap_ty_le' ? '' : ' KH') : 'GAP', tier: r.tier, delta: dl, spark: V.sparkline(M.indSeries(r.ma, CN, A.ky.nam).th.slice(0, A.ky.thang), { w: 70, h: 24 }), active: r.ma === active });
+      return V.kpiCard({ id: r.ma, htv: r.ht, label: r.ten_ngan, value: H.fmtV(r.th, r.ind).replace('%', ''), unit: r.dvt === '%' ? '%' : r.dvt, sub: isNum(r.kh) ? 'KH ' + H.fmtV(r.kh, r.ind) + (isNum(r.gap) ? ' · GAP ' + H.gapTxt(r) : '') : (r.huong === 'nhap_ty_le' ? 'Tự đánh giá % hoàn thành' : 'Chưa có kế hoạch'),
+        ht: isNum(r.ht) ? pct(r.ht, 0) + (r.huong === 'nhap_ty_le' ? '' : ' KH') : 'Thiếu số', tier: r.tier, delta: dl, spark: V.sparkline(M.indSeries(r.ma, CN, A.ky.nam).th.slice(0, A.ky.thang), { w: 70, h: 24 }), active: r.ma === active });
     }).join('');
   };
 
@@ -44,12 +44,28 @@
   H.CH['trend'] = function (el, A, st) {
     var M = STORE.model(), T = D.tongQuan(M, A.ky), w = Math.max(320, el.clientWidth || 600), ng = M.ng;
     var fc = T.du_bao !== null && isNum(T.cn.quy_doi) ? { from: { i: A.ky.thang - 1, v: T.cn.quy_doi }, to: { i: 11, v: T.du_bao } } : null;
-    var chart = V.trendLine({ w: w, h: st ? 190 : 290, rightPad: Math.min(150, w * 0.26), series: [{ name: 'Toàn CN', vals: T.series_cn }, { name: 'BQ đơn vị', vals: T.series_bq, color: 'var(--series-neutral)', thin: true, labelColor: 'var(--ink-2)' }],
-      refs: [{ v: ng.dat * 100, label: 'Đạt ' + num(ng.dat * 100, 0) }, { v: ng.kha * 100, label: 'Khá ' + num(ng.kha * 100, 0) }], forecast: fc, yMin: st ? 60 : 50, yMax: Math.max(110, Math.ceil(Math.max.apply(null, T.series_cn.filter(isNum).concat([100])) / 10) * 10), aria: 'Diễn biến điểm KPI toàn chi nhánh đến ' + H.kyTxt(A.ky) });
+    /* trục bắt đầu/kết thúc đúng mốc nhãn (làm tròn 10): 70–130 mặc định (điểm quy đổi có thể vượt 130), tự mở rộng khi số liệu vượt; bước lưới 10 khi khoảng ≤ 60, ngược lại 20 */
+    /* Điểm KPI Giám đốc chi nhánh (thẻ điểm BGĐ, hàm sẵn có của hệ thống) — chỉ khi được phép xem thẻ điểm BGĐ (quản trị hoặc đã bật công khai) */
+    var gdMa = null, gd = null;
+    try { if (M.scoreSeriesBgd && (STORE.isAdmin() || STORE.state.settings.bgd_cong_khai)) { var gds = M.bgdDs(), g0 = gds.filter(function (m) { return m.ma === 'GD'; })[0] || gds.filter(function (m) { return /giám đốc/i.test(m.chuc_danh || '') && !/phó/i.test(m.chuc_danh || ''); })[0]; if (g0) { gdMa = g0.ma; gd = M.scoreSeriesBgd(g0.ma, A.ky.nam).map(function (v, i) { return i < A.ky.thang ? v : null; }); } } } catch (e) { gd = null; }
+    var vAll = T.series_cn.concat(T.series_bq, [T.du_bao], gd || []).filter(isNum);
+    var yDuoi = Math.min(70, Math.floor(Math.min.apply(null, vAll.concat([70])) / 10) * 10), yTren = Math.max(130, Math.ceil(Math.max.apply(null, vAll.concat([130])) / 10) * 10);
+    var hFit = !st && el.__fitting ? el.__hFit : (st ? 190 : 290);   // mỗi lần vẽ mới bắt đầu từ 290 rồi mới nới theo thẻ (thu lại được khi thẻ thấp đi)
+    var chart = V.trendLine({ w: w, h: hFit, rightPad: st ? Math.max(132, Math.min(150, w * 0.26)) : 'auto', axisFmt: st ? null : function (v) { return num(v, 0); }, refDash: !st, legendPlot: !st, series: [{ name: 'Toàn CN', vals: T.series_cn }, { name: 'BQ đơn vị', vals: T.series_bq, color: 'var(--series-accent)', thin: true, labelColor: 'var(--ink-2)' }].concat(gd ? [{ name: 'Giám đốc CN', vals: gd, color: 'var(--series-4)', thin: true, labelColor: 'var(--series-4)' }] : []),
+      refs: [{ v: ng.dat * 100, label: 'Đạt ' + num(ng.dat * 100, 0) }, { v: ng.kha * 100, label: 'Khá ' + num(ng.kha * 100, 0) }], forecast: fc, yMin: st ? 60 : yDuoi, yMax: st ? Math.max(110, Math.ceil(Math.max.apply(null, T.series_cn.filter(isNum).concat([100])) / 10) * 10) : yTren, yStep: st ? null : (yTren - yDuoi <= 60 ? 10 : 20), bottomPad: st ? null : 36, aria: 'Diễn biến điểm KPI toàn chi nhánh đến ' + H.kyTxt(A.ky) });
     var note = fc ? '' : '<p class="vtb-caption">Chưa có số dự kiến cho kỳ này — biểu đồ chỉ hiển thị số thực tế.</p>';
-    var rows = []; for (var i = 0; i < 12; i++) if (isNum(T.series_cn[i])) rows.push({ _key: i + 1, th: 'T' + (i + 1), cn: num(T.series_cn[i], 1), bq: isNum(T.series_bq[i]) ? num(T.series_bq[i], 1) : '–', loai: 'Thực tế' });
-    if (fc) rows.push({ _key: 12, th: 'T12', cn: num(T.du_bao, 1), bq: '–', loai: 'DỰ KIẾN (không phải số thực tế)' });
-    el.innerHTML = H.pair(chart + note, H.tbl({ caption: 'Điểm KPI theo tháng', cols: [{ k: 'th', t: 'Tháng' }, { k: 'cn', t: 'Toàn chi nhánh', cls: 'vtb-r' }, { k: 'bq', t: 'BQ đơn vị', cls: 'vtb-r' }, { k: 'loai', t: 'Loại số liệu' }], rows: rows }));
+    var rows = []; for (var i = 0; i < 12; i++) if (isNum(T.series_cn[i])) rows.push({ _key: i + 1, th: 'T' + (i + 1), cn: num(T.series_cn[i], 1), bq: isNum(T.series_bq[i]) ? num(T.series_bq[i], 1) : '–', gd: gd && isNum(gd[i]) ? num(gd[i], 1) : '–', loai: 'Thực tế' });
+    if (fc) rows.push({ _key: 12, th: 'T12', cn: num(T.du_bao, 1), bq: '–', gd: '–', loai: 'DỰ KIẾN (không phải số thực tế)' });
+    el.innerHTML = H.pair(chart + note, H.tbl({ caption: 'Điểm KPI theo tháng', cols: [{ k: 'th', t: 'Tháng' }, { k: 'cn', t: 'Toàn chi nhánh', cls: 'vtb-r' }, { k: 'bq', t: 'BQ đơn vị', cls: 'vtb-r' }].concat(gd ? [{ k: 'gd', t: 'Giám đốc CN', cls: 'vtb-r' }] : []).concat([{ k: 'loai', t: 'Loại số liệu' }]), rows: rows }));
+    if (!st && !el.__fitting) {
+      var vc = el.querySelector('.moi-vchart'), svg = el.querySelector('svg.vtb-trend');
+      if (vc && svg && svg.getBoundingClientRect().width) {
+        /* .moi-ch giãn hết phần còn lại của thẻ (CSS); phần dư = chiều cao .moi-ch − nội dung. Trần theo tỷ lệ 0,8 × rộng (≤ 480px) để không méo; dư nữa thì căn giữa dọc */
+        var thua = el.getBoundingClientRect().height - vc.getBoundingClientRect().height;
+        var hMoi = Math.max(240, Math.min(480, Math.round(w * 0.8), Math.round(hFit + thua)));
+        if (Math.abs(hMoi - hFit) > 6) { el.__hFit = hMoi; el.__fitting = true; try { H.CH['trend'](el, A, st); } finally { el.__fitting = false; } }
+      }
+    }
   };
   function selCt(A, M, T) { var c = A.moi_ct; return c && M.indMap[c] ? c : (T.kpi[0] ? T.kpi[0].ma : (M.inds[0] && M.inds[0].ma)); }
   H.selCt = selCt;
@@ -58,7 +74,7 @@
     if (dv !== CN && !M.apDung(ct, dv)) { el.innerHTML = H.empty('Chỉ tiêu này không áp dụng cho đơn vị đã chọn.'); return; }
     var s = M.indSeries(ct, dv, A.ky.nam), f = function (v) { return H.fmtV(v, ind); }, w = Math.max(320, el.clientWidth || 600), th = s.th.map(function (v, i) { return i < A.ky.thang ? v : null; });
     if (!s.kh.some(isNum) && !th.some(isNum)) { el.innerHTML = H.empty('Chưa có số liệu của chỉ tiêu này.'); return; }
-    var chart = V.trendLine({ w: w, h: 270, rightPad: Math.min(170, w * 0.3), series: [{ name: 'Thực hiện', vals: th }, { name: 'Kế hoạch', vals: s.kh, color: 'var(--series-neutral)', thin: true, labelColor: 'var(--ink-2)' }], fmt: f, yMin: ind.dvt === '%' ? undefined : 0, aria: 'Thực hiện so với kế hoạch ' + ind.ten_ngan });
+    var chart = V.trendLine({ w: w, h: 270, rightPad: Math.min(170, w * 0.3), series: [{ name: 'Thực hiện', vals: th }, { name: 'Kế hoạch', vals: s.kh, color: 'var(--series-accent)', thin: true, labelColor: 'var(--ink-2)' }], fmt: f, yMin: ind.dvt === '%' ? undefined : 0, aria: 'Thực hiện so với kế hoạch ' + ind.ten_ngan });
     var rows = []; for (var i = 0; i < 12; i++) if (isNum(s.kh[i]) || isNum(th[i])) rows.push({ _key: i + 1, th: 'T' + (i + 1), kh: f(s.kh[i]), tt: f(th[i]), ht: isNum(s.ht[i]) && isNum(th[i]) ? pct(s.ht[i], 0) : '–' });
     el.innerHTML = H.pair(chart, H.tbl({ caption: 'Thực hiện so với kế hoạch', cols: [{ k: 'th', t: 'Tháng' }, { k: 'kh', t: 'Kế hoạch', cls: 'vtb-r' }, { k: 'tt', t: 'Thực hiện', cls: 'vtb-r' }, { k: 'ht', t: '% hoàn thành', cls: 'vtb-r' }], rows: rows }));
   };
@@ -85,8 +101,7 @@
         note: num(cn.diem, 2) + ' / ' + cn.ts + ' điểm theo trọng số' + (Math.abs(cn.dc_diem) > 0.004 ? ' · cộng/trừ ' + sgn(cn.dc_diem, 2) : '') });
       var s = T.stats, stats = V.statTile({ label: 'Đơn vị ≥ ' + num(s.diem_cao, 0) + ' điểm', value: s.cao + '/' + s.so_dv, sub: 'ngưỡng cấu hình nguong' }) + V.statTile({ label: 'Đơn vị dưới mức Khá', value: String(s.duoi_kha), sub: 'trên ' + s.so_dv + ' đơn vị' }) +
         V.statTile({ label: 'Chỉ tiêu cần chú ý', value: String(s.can_chu_y), sub: 'Cần cải thiện + Chưa đạt' }) + V.statTile({ label: 'Cảnh báo nghiêm trọng', value: String(s.canh_bao3), sub: 'trong ' + T.alerts.length + ' cảnh báo' });
-      var rkAll = T.rk, rkShow = A.khoi ? D.rank(M, A.ky.nam, A.ky.thang, A.khoi) : rkAll;
-      var khoiPills = '<div class="moi-pills" role="group" aria-label="Lọc theo khối"><button type="button" class="moi-pill" data-khoi="" aria-pressed="' + !A.khoi + '">Tất cả</button>' + STORE.state.khoi.filter(function (k) { return k.ma !== CN && M.units.some(function (u) { return u.khoi === k.ma; }); }).map(function (k) { return '<button type="button" class="moi-pill" data-khoi="' + esc(k.ma) + '" aria-pressed="' + (A.khoi === k.ma) + '" title="' + esc(k.ten) + '">' + esc(k.ma) + '</button>'; }).join('') + '</div>';
+      var rkAll = T.rk, rkShow = rkAll;   // thẻ Xếp hạng ở Tổng quan luôn hiện toàn bộ đơn vị (không có bộ lọc nhóm)
       /* cảnh báo */
       var lowDv = rkAll.filter(function (r) { return isNum(r.diem) && r.diem < ng.kha * 100; }).sort(function (a, b) { return a.diem - b.diem; }).map(function (r) { return { muc: r.diem < ng.cct * 100 ? 3 : 2, loai: r.ten, text: 'đạt ' + num(r.diem, 1) + ' điểm (GAP ' + sgn(r.gap, 1) + '), hạng ' + (r.hang || '–') + '. ' + (r.canhbao ? r.canhbao + '.' : ''), dv: r.ma }; });
       var kp = []; T.rows.forEach(function (r) { if (r.tham_khao) return; if (r.tier === 'chua' || r.tier === 'cct') kp.push({ muc: r.tier === 'chua' ? 3 : 2, loai: r.tier === 'chua' ? 'KPI chưa đạt' : 'Cần cải thiện', text: r.ten_ngan + ': ' + pct(r.ht, 0) + ' kế hoạch' + (isNum(r.mat) ? ', mất ' + num(r.mat, 2) + ' điểm' : '') + '.', ct: r.ma, k: r.ht }); });
@@ -116,9 +131,9 @@
       return '<div class="moi-grid moi-tq">' +
         '<section class="moi-card moi-c3 a-hero" aria-label="Điểm KPI toàn chi nhánh">' + hero + '<div class="moi-sep"></div><div class="vtb-label">Phân bố chỉ tiêu theo mức</div><div class="moi-mt">' + V.tierBar(T.counts) + '</div></section>' +
         '<div class="moi-c9 a-topright"><div class="moi-kpis a-kpis">' + H.kpiCards(M, A, T, ct) + '</div><div class="moi-stats">' + stats + '</div></div>' +
-        H.card('moi-c7 a-rank', 'Xếp hạng phòng/PGD', '<p class="vtb-caption moi-sub">Bấm một đơn vị để xem chi tiết các chỉ tiêu bên dưới. Hai vạch dọc trên mỗi thanh là ngưỡng Khá và ngưỡng Đạt.</p>' + H.rankHtml(A, rkShow, { selected: dv, noSpark: st }), khoiPills + H.seg('Kiểu hiển thị xếp hạng')) +
+        H.card('moi-c7 a-rank', 'Xếp hạng phòng/PGD', '<p class="vtb-caption moi-sub">Bấm một đơn vị để xem chi tiết các chỉ tiêu bên dưới. Hai vạch dọc trên mỗi thanh là ngưỡng Khá và ngưỡng Đạt.</p>' + H.rankHtml(A, rkShow, { selected: dv, noSpark: st }), H.seg('Kiểu hiển thị xếp hạng')) +
         '<div class="moi-c5 a-side">' + H.card('a-trend', 'Diễn biến điểm KPI toàn chi nhánh', '<div class="moi-ch" data-ch="trend"></div>', H.seg('Kiểu hiển thị xu hướng')) + H.cardPlain('a-alerts', 'Cảnh báo điều hành', alerts) + '</div>' +
-        H.card('moi-c12 a-bullets moi-secondary', 'Tỷ lệ hoàn thành kế hoạch theo chỉ tiêu <span class="moi-scope">· ' + esc(scope) + ' · ' + H.kyTxt(A.ky) + '</span>', drill + '<div class="moi-bl-head vtb-caption" aria-hidden="true"><span>Chỉ tiêu</span><span>% hoàn thành (vạch đen = mức kế hoạch)</span><span class="vtb-r">Thực hiện / KH</span><span class="vtb-r">GAP</span><span>Mức</span></div>' + H.pair(bl, blTbl).replace('<div class="moi-vchart">', '<div class="moi-vchart" id="moi-bullets">'),
+        H.card('moi-c12 a-bullets moi-secondary', 'Tỷ lệ hoàn thành kế hoạch theo chỉ tiêu <span class="moi-scope">· ' + esc(scope) + ' · ' + H.kyTxt(A.ky) + '</span>', drill + H.pair(V.heatLegend({ compact: true }) + '<div class="moi-bl-head vtb-caption" aria-hidden="true"><span>Chỉ tiêu</span><span>% hoàn thành (vạch đen = mức kế hoạch)</span><span class="vtb-r">Thực hiện / KH</span><span class="vtb-r">GAP</span><span>Mức</span></div>' + bl, blTbl).replace('<div class="moi-vchart">', '<div class="moi-vchart" id="moi-bullets">'),
           (dv ? '<button type="button" class="moi-btn sm" data-act="ve-cn">Về toàn chi nhánh</button> ' : '') + H.seg('Kiểu hiển thị chỉ tiêu')) +
         H.card('moi-c6 a-compare moi-secondary', 'Thực hiện so với kế hoạch <span class="moi-scope">· ' + esc(cind ? cind.ten_ngan : '') + ' · ' + esc(scope) + '</span>', '<div class="moi-ch" data-ch="compare"></div>', H.seg('Kiểu hiển thị so sánh') + '<a class="moi-link" href="#/chi-tieu/' + esc(ct) + '">Phân tích chi tiết →</a>') +
         H.card('moi-c6 a-growth moi-secondary', 'Xu hướng tăng trưởng theo tháng <span class="moi-scope">· ' + esc(cind ? cind.ten_ngan : '') + ' · ' + esc(scope) + '</span>', '<div class="moi-ch" data-ch="growth"></div>', H.seg('Kiểu hiển thị tăng trưởng')) +
@@ -180,8 +195,8 @@
       var cols = T.kpi.map(function (r) { return { ma: r.ma, name: r.ten_ngan }; });
       var mx = '<div class="vtb-tablewrap"><table class="vtb-matrix"><caption class="vtb-sr">Ma trận trạng thái KPI theo đơn vị và chỉ tiêu</caption><thead><tr><th scope="col" class="vtb-sticky">Đơn vị</th>' + cols.map(function (c) { return '<th scope="col">' + esc(c.name) + '</th>'; }).join('') + '</tr></thead><tbody>' +
         M.units.map(function (u) { var c = M.card(u.ma, A.ky.nam, A.ky.thang), rs = {}; D.cardRows(c).forEach(function (r) { rs[r.ma] = r; });
-          return '<tr><th scope="row" class="vtb-sticky"><button type="button" data-dv="' + esc(u.ma) + '">' + esc(u.ten_ngan || u.ten) + '</button></th>' + cols.map(function (cc) { var r = rs[cc.ma]; if (!r) return '<td class="vtb-na" aria-label="Không áp dụng">·</td>'; var t = D.tierTT(r.tt); return '<td class="vtb-cell vtb-t-' + t + '" data-tier="' + t + '" data-tip="' + esc((u.ten_ngan || u.ten) + ' · ' + cc.name + ': ' + (isNum(r.ht) ? pct(r.ht, 0) : 'chưa có số') + ' · ' + V.LABEL_LONG[t]) + '">' + V.svgIcon(t) + '<span>' + (isNum(r.ht) ? pct(r.ht, 0) : 'GAP') + '</span></td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
-      var mxC = H.cardPlain('moi-c12 a-matrix moi-secondary', 'Ma trận trạng thái: đơn vị × chỉ tiêu chính', mx, '<span class="vtb-caption">Mỗi ô: biểu tượng + % hoàn thành kế hoạch</span>');
+          return '<tr><th scope="row" class="vtb-sticky"><button type="button" data-dv="' + esc(u.ma) + '">' + esc(u.ten_ngan || u.ten) + '</button></th>' + cols.map(function (cc) { var r = rs[cc.ma]; if (!r) return '<td class="vtb-na" aria-label="Không áp dụng">·</td>'; var t = D.tierTT(r.tt), h = V.heat(r.ht, t); return '<td class="vtb-cell vtb-t-' + t + (h ? ' vtb-hm' : '') + '"' + (h ? ' style="' + V.hmVars(h) + '"' : '') + ' data-tier="' + t + '" data-tip="' + esc((u.ten_ngan || u.ten) + ' · ' + cc.name + ': ' + (isNum(r.ht) ? pct(r.ht, 0) : 'chưa có số') + ' · ' + V.LABEL_LONG[t]) + '">' + (h ? '' : V.svgIcon(t)) + '<span>' + (isNum(r.ht) ? pct(r.ht, 0) : 'Thiếu số') + '</span></td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table></div>';
+      var mxC = H.cardPlain('moi-c12 a-matrix moi-secondary', 'Ma trận trạng thái: đơn vị × chỉ tiêu chính', V.heatLegend({ compact: true }) + mx, '<span class="vtb-caption">Mỗi ô: % hoàn thành kế hoạch, màu Heatmap; ô xám = thiếu số</span>');
       var fresh = '<footer class="moi-c12 a-fresh">' + V.dataFreshness({ capNhat: H.kyNgay(STORE.state.cap_nhat_luc), ky: H.kyTxt(A.ky) + ' (lũy kế)', khoa: khoa, soLieu: kt.tong_co + '/' + kt.tong_can + ' ô thực hiện đã nhập', extra: (kt.bat_thuong || []).length + ' số liệu bất thường' + (STORE.state.du_lieu_mau ? ' · DỮ LIỆU MẪU' : '') }) + '</footer>';
       return '<div class="moi-grid moi-bgd">' + q3a + '<div class="moi-c12 moi-kpis4 a-kpis4">' + k1 + k2 + k3 + k4 + '</div>' + rankC + '<div class="moi-c4 a-mid">' + lossC + focC + '</div><div class="moi-c3 a-right">' + riskC + taskC + '</div>' + actC + growC + mxC + fresh + '</div>';
     }

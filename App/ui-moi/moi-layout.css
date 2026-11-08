@@ -28,7 +28,7 @@ body.ui-moi::before { display: none; }                      /* bỏ dải màu c
 .moi-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface-card); color: var(--ink); font: 600 13px var(--font-sans); cursor: pointer; text-decoration: none; white-space: nowrap; }
 .moi-btn:hover { background: var(--brand-blue-tint); } .moi-btn.sm { min-height: 28px; font-size: 12px; padding: 0 var(--space-2); }
 .moi-btn.primary { background: var(--brand-blue); border-color: var(--brand-blue); color: var(--on-brand); } .moi-btn.primary:hover { background: var(--brand-blue-dark); }
-.moi-btn.admin { background: var(--tier-cct-tint); color: var(--tier-cct-ink); border-color: var(--tier-cct); }
+.moi-btn.admin { background: var(--brand-blue-tint); color: var(--brand-blue); border-color: var(--brand-blue); } /* không phải trạng thái KPI → không dùng màu trạng thái */
 .moi-btn .ic { width: 16px; height: 16px; }
 .moi-ico-btn { border: 0; background: transparent; color: var(--ink-2); padding: 6px; border-radius: var(--radius-sm); cursor: pointer; } .moi-ico-btn .ic { width: 22px; height: 22px; }
 .moi-only-m { display: none; }
@@ -114,7 +114,6 @@ body.ui-moi::before { display: none; }                      /* bỏ dải màu c
   .moi-upd { display: none; }
 }
 @media (max-width: 560px) { .moi-kpis, .moi-kpis4, .moi-stats { grid-template-columns: minmax(0, 1fr); } .moi-vtable, .vtb-tablewrap { max-width: 100%; } }
-@media (max-width: 1100px) { .moi-loss-narrow .vtb-loss-r { grid-template-columns: minmax(0, 1.2fr) minmax(36px, 1fr) auto; } }
 body.ui-moi:not(.moi-presenting) .vtb-loss-r { grid-template-columns: minmax(110px, 1.1fr) minmax(70px, 1.4fr) 84px auto; }
 @media (max-width: 1280px) { body.ui-moi:not(.moi-presenting) .vtb-loss-r { grid-template-columns: minmax(0, 1.2fr) minmax(36px, 1fr) auto; } body.ui-moi:not(.moi-presenting) .vtb-loss-r .vtb-chip { grid-column: 1 / -1; justify-self: start; } }
 
@@ -148,8 +147,22 @@ body.ui-moi:not(.moi-presenting) .vtb-loss-r { grid-template-columns: minmax(110
 
 /* ---------- Giao diện cũ đặt trong vỏ mới: áp bảng màu mới (D1) cho các màn chưa thiết kế lại ---------- */
 body.ui-moi { --primary: var(--brand-blue); --primary-d: var(--brand-blue-dark); --primary-l: var(--brand-blue-tint); --accent: var(--brand-red); --bg: #f4f6fa; --card: #fff; --line: #e3e9f2; --line-2: #eef2f7; --text: #15233b; --muted: #5a6881;
-  --c-dat: #1e8449; --c-kha: #6da7ec; --c-cct: #ec835a; --c-chua: #b02a2a; --c-thieu: #8996ab; --t-dat: #e3f4ea; --t-kha: #edf4fd; --t-cct: #fdf0eb; --t-chua: #f6e5e5; --t-thieu: #f1f2f5; --r: 10px; }
+  --c-dat: var(--status-achieved-bg); --c-kha: var(--status-good-bg); --c-cct: var(--status-improve-bg); --c-chua: var(--status-failed-bg); --c-thieu: var(--status-gap-bg);
+  --t-dat: var(--status-achieved-bg); --t-kha: var(--status-good-bg); --t-cct: var(--status-improve-bg); --t-chua: var(--status-failed-bg); --t-thieu: var(--status-gap-bg); --r: 10px; }
 .moi-legacy .chip.dat, .moi-legacy .txt-dat { color: var(--tier-dat-ink); } .moi-legacy .chip.kha, .moi-legacy .txt-kha { color: var(--tier-kha-ink); } .moi-legacy .chip.cct, .moi-legacy .txt-cct { color: var(--tier-cct-ink); } .moi-legacy .chip.chua, .moi-legacy .txt-chua { color: var(--tier-chua-ink); } .moi-legacy .chip.thieu { color: var(--tier-gap-ink); }
+/* Màn hình cũ đặt trong vỏ mới: nền = --status-*-bg (qua --c-*/--t-*), CHỮ đi theo --status-*-text. Chỉ áp dụng trong body.ui-moi → giao diện cũ không đổi. */
+body.ui-moi .moi-legacy .chip, body.ui-moi .moi-legacy .hc { font-weight: 600; }
+body.ui-moi .moi-legacy .chip.dat, body.ui-moi .moi-legacy .hc.dat:not([style*="background"]), body.ui-moi .moi-legacy .txt-dat, body.ui-moi .moi-legacy .delta.up, body.ui-moi .moi-legacy .tbl.daily td.up, body.ui-moi .moi-legacy .ok, body.ui-moi .moi-legacy .wsum.ok, body.ui-moi .moi-legacy .sync-txt.ok, body.ui-moi .moi-legacy [style*="var(--c-dat"], body.ui-moi .moi-legacy [style*="var(--dat"] { color: var(--status-achieved-text) !important; }
+body.ui-moi .moi-legacy .chip.kha, body.ui-moi .moi-legacy .hc.kha:not([style*="background"]), body.ui-moi .moi-legacy .txt-kha { color: var(--status-good-text) !important; }
+body.ui-moi .moi-legacy .chip.cct, body.ui-moi .moi-legacy .hc.cct:not([style*="background"]), body.ui-moi .moi-legacy .txt-cct, body.ui-moi .moi-legacy .al.cct em { color: var(--status-improve-text) !important; }
+body.ui-moi .moi-legacy .wsum.warn { color: var(--status-improve-text); background: var(--status-improve-bg) !important; }
+body.ui-moi .moi-legacy .chip.chua, body.ui-moi .moi-legacy .hc.chua:not([style*="background"]), body.ui-moi .moi-legacy .txt-chua, body.ui-moi .moi-legacy .delta.down, body.ui-moi .moi-legacy .tbl.daily td.down, body.ui-moi .moi-legacy .al.chua em, body.ui-moi .moi-legacy .sync-txt.err,
+body.ui-moi .moi-legacy [data-route="diem-kpi"] [style*="var(--accent"], body.ui-moi .moi-legacy [style*="var(--chua"] { color: var(--status-failed-text) !important; }
+body.ui-moi .moi-legacy .chip.thieu, body.ui-moi .moi-legacy .hc.thieu, body.ui-moi .moi-legacy .txt-thieu { color: var(--status-gap-text) !important; }
+body.ui-moi .moi-legacy .hc.thieu { background: var(--status-gap-bg); }
+/* thanh tiến độ: được tô lại bằng Heatmap chung trong moi-shell.js (toLaiThanh) */
+/* ô nhập số bị lỗi (kiểm tra dữ liệu, không phải trạng thái KPI): nền đỏ nhạt thay vì đỏ đặc */
+body.ui-moi .moi-legacy .cell.bad { background: color-mix(in srgb, var(--status-failed-bg) 22%, #fff); }
 .moi-legacy .btn.primary { background: var(--brand-blue); border-color: var(--brand-blue); } .moi-legacy .card { box-shadow: var(--shadow-card); } .moi-legacy .hero { background: var(--surface-card); border-image: none; border-top: 0; } .moi-legacy .hero::after { display: none; }
 .moi-legacy .tile:hover, .moi-legacy .stat:hover { transform: none; box-shadow: var(--shadow-card); }
 
@@ -169,3 +182,45 @@ body.ui-moi { --primary: var(--brand-blue); --primary-d: var(--brand-blue-dark);
 @media (max-width: 1700px) { .moi-upd { display: none; } }
 .moi-stage .moi-kpis .vtb-kpi-spark { display: inline; } .moi-stage .moi-kpis .vtb-display { font-size: var(--fs-display, 40px); }
 .moi-stage .moi-bgd .a-rank .vtb-rk-head, .moi-stage .moi-bgd .a-rank .vtb-rk-row { grid-template-columns: 54px 132px minmax(80px, 1.3fr) 70px 62px 146px; }
+
+/* Tổng quan (không trình chiếu): thẻ Xếp hạng cao bằng cột bên phải (Diễn biến + Cảnh báo); các hàng giãn đều, không để khoảng trống dưới thẻ khi cảnh báo dài */
+.moi-content .moi-tq > .a-rank { align-self: stretch; display: flex; flex-direction: column; }
+.moi-content .moi-tq > .a-rank:not(.is-table) .moi-vchart { flex: 1 1 auto; display: flex; flex-direction: column; min-height: 0; }
+.moi-content .moi-tq > .a-rank .vtb-rank { flex: 1 1 auto; } .moi-content .moi-tq > .a-rank .vtb-rk-row { flex: 1 1 auto; max-height: 96px; }
+
+/* ===== Tổng quan (màn hình thường, ≥ 1281px): bố cục gọn theo hàng =====
+ * Hàng 1: Điểm tổng + thẻ KPI. Hàng 2: Diễn biến điểm KPI ‖ Cảnh báo điều hành (song song).
+ * Hàng 3: Xếp hạng phòng/PGD (hẹp hơn) ‖ Tỷ lệ hoàn thành kế hoạch theo chỉ tiêu (rộng hơn). Sau đó các khối phân tích.
+ * .a-side "tan" vào lưới (display: contents) để hai thẻ con thành ô độc lập; trình chiếu (.moi-stage) giữ nguyên bố cục riêng. */
+@media (min-width: 1281px) {
+  .moi-content .moi-tq .a-side { display: contents; }
+  .moi-content .moi-tq .a-trend, .moi-content .moi-tq .a-alerts { grid-column: span 6; order: 1; align-self: stretch; }
+  .moi-content .moi-tq > .a-rank { grid-column: span 5; order: 2; align-self: stretch; }  /* chiều cao hàng do thẻ Xếp hạng quyết định */
+  /* thẻ Tỷ lệ hoàn thành bằng đúng chiều cao thẻ Xếp hạng: contain:size để nội dung dài không kéo hàng cao thêm, phần thừa cuộn bên trong thẻ */
+  .moi-content .moi-tq > .a-bullets { grid-column: span 7; order: 2; align-self: stretch; contain: size; min-height: 360px; overflow-y: auto; overscroll-behavior: contain; }
+  .moi-content .moi-tq > .a-bullets > .moi-head { position: sticky; top: calc(var(--pad) * -1); z-index: 3; background: var(--surface-card); margin: calc(var(--pad) * -1) calc(var(--pad) * -1) var(--space-3); padding: var(--space-3) var(--pad) var(--space-2); }
+  .moi-content .moi-tq > .a-compare, .moi-content .moi-tq > .a-growth, .moi-content .moi-tq > .a-nd { order: 3; }
+  .moi-content .moi-tq > .a-rank .vtb-rk-head, .moi-content .moi-tq > .a-rank .vtb-rk-row { grid-template-columns: 36px minmax(0, 1fr) minmax(64px, .9fr) 50px 56px minmax(0, .95fr); gap: var(--space-2); }
+  .moi-content .moi-tq > .a-rank .vtb-warn { white-space: normal; overflow-wrap: anywhere; } .moi-content .moi-tq > .a-rank .vtb-chip { max-width: 100%; }
+  .moi-content .moi-tq > .a-rank .vtb-spark { display: none; }
+  .moi-content .moi-tq > .a-rank .moi-head { flex-wrap: wrap; }
+}
+
+/* ===== Đa độ phân giải: màn hình lớn (QHD/WQHD/4K) phóng to giao diện để chữ và khoảng cách giữ cỡ như 1920×1080 =====
+ * Dùng thuộc tính zoom (Chrome/Edge/Safari; Firefox ≥ 126). Chế độ trình chiếu (.moi-presenting) tự co giãn bằng --s nên được loại trừ. */
+@media (min-width: 2400px) and (min-height: 1300px) { body.ui-moi:not(.moi-presenting) { zoom: 1.333; } }
+@media (min-width: 3000px) and (min-height: 1600px) { body.ui-moi:not(.moi-presenting) { zoom: 1.667; } }
+@media (min-width: 3600px) and (min-height: 1900px) { body.ui-moi:not(.moi-presenting) { zoom: 2; } }
+
+/* ===== Bảng điều hành BGĐ (màn hình thường, ≥ 1281px): hàng đều chiều cao, không còn khoảng trống khi số chỉ tiêu/đơn vị thay đổi =====
+ * Hàng 1: Xếp hạng (rộng) ‖ Chỉ tiêu mất điểm (hẹp hơn, cuộn trong thẻ khi dài) — thẻ Xếp hạng quyết định chiều cao hàng, tối thiểu 440px.
+ * Hàng 2: Đơn vị cần tập trung ‖ Nguy cơ không đạt KH năm — hai thẻ bằng nhau (stretch).
+ * .a-mid / .a-right "tan" vào lưới (display: contents). Trình chiếu (.moi-stage) giữ bố cục riêng. */
+@media (min-width: 1281px) {
+  .moi-content .moi-bgd .a-mid, .moi-content .moi-bgd .a-right { display: contents; }
+  .moi-content .moi-bgd > .a-rank { grid-column: span 7; order: 1; align-self: stretch; min-height: 440px; }
+  .moi-content .moi-bgd .moi-a-loss { grid-column: span 5; order: 1; align-self: stretch; contain: size; min-height: 440px; overflow-y: auto; overscroll-behavior: contain; }
+  .moi-content .moi-bgd .moi-a-loss > .moi-head { position: sticky; top: calc(var(--pad) * -1); z-index: 3; background: var(--surface-card); margin: calc(var(--pad) * -1) calc(var(--pad) * -1) var(--space-3); padding: var(--space-3) var(--pad) var(--space-2); }
+  .moi-content .moi-bgd .moi-a-focus, .moi-content .moi-bgd .moi-a-risk { grid-column: span 6; order: 2; align-self: stretch; }
+  .moi-content .moi-bgd > .a-actions, .moi-content .moi-bgd > .a-growthtb, .moi-content .moi-bgd > .a-matrix, .moi-content .moi-bgd > .a-fresh { order: 3; }
+}

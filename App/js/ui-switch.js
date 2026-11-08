@@ -6,7 +6,7 @@
  * - CSS của nút chuyển đổi tự chèn (tiền tố .ui-sw) nên không phải sửa app.css của giao diện cũ. */
 (function (root) {
   var KEY = 'KPI_CN444.giao_dien', V = (root.KPI_CFG && KPI_CFG.PHIEN_BAN) || '0';
-  var FILES = { css: ['ui-moi/moi.css'], js: ['ui-moi/vtb.js', 'ui-moi/moi-data.js', 'ui-moi/moi-views.js', 'ui-moi/moi-views2.js', 'ui-moi/moi-shell.js'] };
+  var FILES = { css: ['ui-moi/moi.css'], js: ['ui-moi/moi-heat.js', 'ui-moi/vtb.js', 'ui-moi/moi-data.js', 'ui-moi/moi-views.js', 'ui-moi/moi-views2.js', 'ui-moi/moi-tools.js', 'ui-moi/moi-shell.js'] };
   var pref = doc(), san = false, dangNap = null, cssDa = false;
 
   function doc() { try { return localStorage.getItem(KEY) === 'moi' ? 'moi' : 'cu'; } catch (e) { return 'cu'; } }

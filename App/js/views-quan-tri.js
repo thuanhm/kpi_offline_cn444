@@ -357,7 +357,7 @@
         field('Cảnh báo khi điểm giảm liên tiếp (tháng)', '<input id="s-ct" type="number" min="1" max="6" value="' + (s.so_thang_canh_bao || 2) + '" class="w120">') +
         '<div class="right"><button class="btn primary" id="s-save">Lưu cài đặt chung</button></div></div>';
 
-      h += '<div class="card">' +
+      h += '<div class="card" data-no-png>' +
         '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">' +
           '<h3 style="margin:0">Người dùng quản trị</h3>' +
           '<button class="btn primary sm" id="u-add">+ Thêm người dùng</button>' +
@@ -377,7 +377,7 @@
         '<div class="btns"><button class="btn" id="d-tai">⤓ Tải bản sao lưu (.json)</button><button class="btn" id="d-gop">Gộp từ tệp sao lưu</button><button class="btn danger-ghost" id="d-thay">Khôi phục (thay toàn bộ)</button></div>' +
         '<h3 class="mt">Dọn dữ liệu</h3><div class="btns"><button class="btn danger-ghost" id="d-xoa-nam">Xoá số năm ' + s.nam + '</button><button class="btn danger-ghost" id="d-xoa-het">Xoá toàn bộ số liệu (giữ danh mục)</button></div></div>';
 
-      h += '<div class="card"><div class="card-head"><h3>Nhật ký thay đổi</h3><span class="muted small">' + Math.min(A.nk_n || 15, st.nhat_ky.length) + ' / ' + st.nhat_ky.length + ' mục gần nhất</span></div>' + (st.nhat_ky.length ? '<table class="tbl compact"><tbody>' + st.nhat_ky.slice(-(A.nk_n || 15)).reverse().map(function (x) { return '<tr><td class="muted nowrap">' + new Date(x.t).toLocaleString('vi-VN') + '</td><td>' + esc(x.viec) + (x.ai ? ' <small class="muted">— ' + esc(x.ai) + '</small>' : '') + '</td></tr>'; }).join('') + '</tbody></table>' + ((A.nk_n || 15) < st.nhat_ky.length ? '<div class="nk-btns"><button class="btn sm" id="nk-them">Xem thêm 20 mục</button></div>' : '') + ((A.nk_n || 15) > 15 ? '<div class="nk-btns"><button class="btn sm" id="nk-gon">Thu gọn</button></div>' : '') : '<p class="muted">Chưa có thay đổi.</p>') + '</div></div>';
+      h += '<div class="card" data-no-png><div class="card-head"><h3>Nhật ký thay đổi</h3><span class="muted small">' + Math.min(A.nk_n || 15, st.nhat_ky.length) + ' / ' + st.nhat_ky.length + ' mục gần nhất</span></div>' + (st.nhat_ky.length ? '<table class="tbl compact"><tbody>' + st.nhat_ky.slice(-(A.nk_n || 15)).reverse().map(function (x) { return '<tr><td class="muted nowrap">' + new Date(x.t).toLocaleString('vi-VN') + '</td><td>' + esc(x.viec) + (x.ai ? ' <small class="muted">— ' + esc(x.ai) + '</small>' : '') + '</td></tr>'; }).join('') + '</tbody></table>' + ((A.nk_n || 15) < st.nhat_ky.length ? '<div class="nk-btns"><button class="btn sm" id="nk-them">Xem thêm 20 mục</button></div>' : '') + ((A.nk_n || 15) > 15 ? '<div class="nk-btns"><button class="btn sm" id="nk-gon">Thu gọn</button></div>' : '') : '<p class="muted">Chưa có thay đổi.</p>') + '</div></div>';
       return h;
     },
     mount: function (v, A) {

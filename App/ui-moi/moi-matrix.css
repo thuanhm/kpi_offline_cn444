@@ -1,11 +1,11 @@
 /* MA TRẬN CHỈ TIÊU — bảng màu trạng thái, lọc nhanh, phát hiện KPI yếu. Mọi quy tắc nằm dưới .moi-mx nên không ảnh hưởng màn hình khác.
- * Bảng màu: nền/chữ theo đề xuất nghiệm thu; riêng chữ GAP đậm hơn đề xuất (#64748B → #5B6B80) để đạt WCAG AA 4,5:1 (đề xuất chỉ đạt 4,05:1). */
+ * Bảng màu: --mx-* chỉ là bí danh của token trạng thái --status-* (moi-tokens.css). */
 .moi-mx {
-  --mx-dat-bg: #dceaf7; --mx-dat-ink: #07539a; --mx-dat-ln: #8fb6dc;
-  --mx-kha-bg: #edf3fa; --mx-kha-ink: #35658f; --mx-kha-ln: #c3d3e4;
-  --mx-cct-bg: #fff0d9; --mx-cct-ink: #a95708; --mx-cct-ln: #ecc182;
-  --mx-chua-bg: #fce2e2; --mx-chua-ink: #b4232d; --mx-chua-ln: #eaa2a6;
-  --mx-gap-bg: #e9edf2; --mx-gap-ink: #64748b; --mx-gap-ln: #c4ccd8;
+  --mx-dat-bg: var(--status-achieved-bg); --mx-dat-ink: var(--status-achieved-text); --mx-dat-ln: var(--status-achieved-line);
+  --mx-kha-bg: var(--status-good-bg); --mx-kha-ink: var(--status-good-text); --mx-kha-ln: var(--status-good-line);
+  --mx-cct-bg: var(--status-improve-bg); --mx-cct-ink: var(--status-improve-text); --mx-cct-ln: var(--status-improve-line);
+  --mx-chua-bg: var(--status-failed-bg); --mx-chua-ink: var(--status-failed-text); --mx-chua-ln: var(--status-failed-line);
+  --mx-gap-bg: var(--status-gap-bg); --mx-gap-ink: var(--status-gap-text); --mx-gap-ln: var(--status-gap-line);
   --mx-dim-bg: #f3f5f9; --mx-dim-ink: #5a6881;
   display: flex; flex-direction: column; gap: var(--space-3);
 }
@@ -53,7 +53,6 @@
 .moi-mx .vtb-mxf.is-static { cursor: default; }
 .moi-mx-rate { display: flex; align-items: baseline; gap: var(--space-2); flex-wrap: wrap; } .moi-mx-rate b { font-size: 22px; color: var(--mx-chua-ink); font-variant-numeric: tabular-nums; }
 .moi-mx-hint, .moi-mx-applied, .moi-mx-note { margin: 0; } .moi-mx-applied b { color: var(--ink); }
-.moi-mx-filters { align-items: flex-end; }
 /* --- đơn vị / chỉ tiêu cần chú ý --- */
 .moi-mx-ins { background: var(--surface-card); border: 1px solid var(--line); border-radius: var(--radius-md); padding: var(--space-2) var(--space-4); }
 .moi-mx-ins summary { cursor: pointer; font-weight: 700; font-size: var(--fs-body); padding: var(--space-1) 0; } .moi-mx-ins summary:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
@@ -78,17 +77,16 @@
 /* --- Presentation Mode (khung 1920×1080) --- */
 .moi-stage .moi-mx { height: 100%; gap: var(--space-2); }
 .moi-stage .moi-mx-bar .moi-pill, .moi-stage .moi-mx-bar .moi-btn { min-height: 40px; font-size: 17px; }
-.moi-stage .moi-mx-filters .moi-fl span { font-size: 14px; } .moi-stage .moi-mx-filters .moi-sel { min-height: 40px; font-size: 16px; }
 .moi-stage .moi-mx-applied, .moi-stage .moi-mx-note, .moi-stage .moi-mx-ins, .moi-stage .moi-mx-hint { display: none; }
 .moi-stage .moi-mx-strip { padding: var(--space-2) var(--space-4); }
 .moi-stage .moi-mx .vtb-mxf { min-height: 46px; padding: 0 18px; font-size: 20px; } .moi-stage .moi-mx .vtb-mxf b { font-size: 24px; } .moi-stage .moi-mx .vtb-mxf .vtb-ic { width: 22px; height: 22px; }
 .moi-stage .moi-mx-rate b { font-size: 30px; } .moi-stage .moi-mx-rate .vtb-caption { font-size: 15px; }
 .moi-stage .moi-mx > .moi-card { flex: 1 1 0; min-height: 0; padding: 0; } .moi-stage .moi-mx .moi-mx-wrap { max-height: none; height: 100%; }
-.moi-stage .moi-mx .vtb-matrix { font-size: 16px; } .moi-stage .moi-mx .vtb-matrix td { height: 26px; } .moi-stage .moi-mx .vtb-cb { min-height: 25px; gap: 6px; } .moi-stage .moi-mx .vtb-cell { font-size: 16px; }
+.moi-stage .moi-mx .vtb-matrix { font-size: 16px; } .moi-stage .moi-mx .vtb-cb { gap: 6px; } .moi-stage .moi-mx .vtb-cell { font-size: 16px; }
 .moi-stage .moi-mx .vtb-cb .vtb-ic { width: 18px; height: 18px; } .moi-stage .moi-mx .vtb-matrix .vtb-sticky { min-width: 240px; font-size: 16px; } .moi-stage .moi-mx .vtb-matrix th.vtb-sticky a { padding: 2px 0; }
 .moi-stage .moi-mx .vtb-matrix thead th { font-size: 15px; } .moi-stage .moi-mx .vtb-matrix thead th small { font-size: 13px; } .moi-stage .moi-mx .moi-mx-grp td { font-size: 16px; padding: 4px 8px 1px; }
 .moi-stage .moi-mx .vtb-wk { font-size: 14px; }
-@media print { .moi-mx-bar, .moi-mx-filters, .moi-mx-ins { display: none !important; } .moi-mx .moi-mx-wrap { max-height: none; } }
+@media print { .moi-mx-bar, .moi-mx-ins { display: none !important; } .moi-mx .moi-mx-wrap { max-height: none; } }
 
 /* gọn đầu trang */
 .moi-mx-bar { align-items: flex-end; gap: var(--space-2) var(--space-3); } .moi-mx-bar .moi-pills { align-self: flex-end; }
@@ -103,7 +101,7 @@
 
 .moi-mx-clear-st { display: none; } .moi-stage .moi-mx-clear-st { display: inline-flex; align-items: center; } .moi-stage .moi-mx-arow { display: none; }
 .moi-stage .moi-st-tabs button { white-space: nowrap; padding: 0 var(--space-4); font-size: 18px; } .moi-stage .moi-st-brand .moi-brand-t b { white-space: nowrap; }
-.moi-stage .moi-mx .vtb-matrix td { height: 24px; } .moi-stage .moi-mx .vtb-cb { min-height: 23px; } .moi-stage .moi-mx { gap: 6px; }
+.moi-stage .moi-mx { gap: 6px; }
 .moi-stage .moi-mx .moi-fl .moi-sel { max-width: none; }
 .moi-stage .moi-mx[data-f="all"] .vtb-cell.vtb-t-chua { box-shadow: inset 0 0 0 2px var(--mx-chua-ink); } .moi-stage .moi-mx[data-f="all"] .vtb-cell.vtb-t-cct { box-shadow: inset 0 0 0 2px var(--mx-cct-ink); }
 .moi-mx-ins .vtb-att { flex-direction: row; } .moi-mx-ins .vtb-att-i { border-bottom: 1px solid var(--line); }
@@ -118,13 +116,21 @@
 .moi-mx .vtb-ft .vtb-cv { gap: 6px; } .moi-mx .vtb-ft .vtb-ic { width: 16px; height: 16px; opacity: 1 !important; }
 
 /* ===== Continuous Heatmap (chế độ % hoàn thành KH, % KH năm, Điểm đạt) — màu liên tục đỏ → cam → vàng → xanh lá; --hm đặt từng ô ===== */
-.moi-mx .vtb-matrix td.vtb-cell.vtb-hm, .moi-mx .vtb-matrix tfoot .vtb-cell.vtb-hm { background: var(--hm); color: var(--hi, #1b2333); box-shadow: none; }
+.moi-mx .vtb-matrix td.vtb-cell.vtb-hm, .moi-mx .vtb-matrix tfoot .vtb-cell.vtb-hm { background: var(--hm); color: var(--hi, #0f172a); box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .85); }
 .moi-mx .vtb-matrix td.vtb-cell.vtb-hm .vtb-cv { font-weight: 700; }
-.moi-mx .vtb-matrix td.vtb-cell.vtb-hm:not(.vtb-ft):hover .vtb-cb { box-shadow: inset 0 0 0 2px currentColor; }
-.moi-mx .vtb-mxf.vtb-hm { background: var(--hm); color: var(--hi, #1b2333); border-color: rgba(27, 35, 51, .28); }
-.moi-mx .vtb-mxf.vtb-hm b { color: var(--hi, #1b2333); }
-.moi-stage .moi-mx .vtb-matrix td { height: 24px; } .moi-stage .moi-mx .vtb-cb { min-height: 23px; }
+.moi-mx .vtb-matrix td.vtb-cell.vtb-hm:not(.vtb-ft):hover .vtb-cb { box-shadow: inset 0 0 0 2px var(--hi, #0f172a); }
+.moi-mx .vtb-mxf.vtb-hm { background: var(--hm); color: var(--hi, #0f172a); border-color: rgba(27, 35, 51, .28); }
+.moi-mx .vtb-mxf.vtb-hm b { color: var(--hi, #0f172a); }
+.moi-hm { display: flex; align-items: center; gap: var(--space-3, 12px); margin: 0 0 var(--space-2, 8px); flex-wrap: wrap; }
+.moi-hm-bar { position: relative; flex: 1 1 320px; max-width: 560px; height: 30px; min-width: 220px; }
+.moi-hm-grad { height: 12px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(27, 35, 51, .18); }
+.moi-hm-tk { position: absolute; top: 0; transform: translateX(-50%); display: flex; flex-direction: column; align-items: center; font-size: 11px; color: #3b4658; font-variant-numeric: tabular-nums; }
+.moi-hm-tk i { width: 1px; height: 16px; background: #3b4658; margin-top: -2px; } .moi-hm-tk b { font-weight: 600; line-height: 1.1; }
+.moi-hm-gap { display: inline-flex; align-items: center; gap: 6px; } .moi-hm-gap i { width: 18px; height: 12px; border-radius: 3px; background: var(--status-gap-bg); box-shadow: inset 0 0 0 1px var(--status-gap-line); }
+@media print { .moi-hm-grad { -webkit-print-color-adjust: exact; print-color-adjust: exact; } }
+.moi-stage .moi-hm { margin: 0; gap: 10px; } .moi-stage .moi-hm-bar { height: 24px; max-width: 460px; flex-basis: 260px; } .moi-stage .moi-hm-grad { height: 10px; } .moi-stage .moi-hm-tk i { height: 10px; } .moi-stage .moi-hm-tk { font-size: 12px; }
 .moi-stage .moi-mx .vtb-matrix td { height: 22px; } .moi-stage .moi-mx .vtb-cb { min-height: 21px; } .moi-stage .moi-mx .vtb-matrix { font-size: 15px; } .moi-stage .moi-mx .vtb-cell { font-size: 15px; }
+.moi-stage .moi-hm-gap { display: none; }
 
 /* ===== Heatmap kiểu lưới: ô liền nhau, KHÔNG bo tròn, KHÔNG khe trắng; đường kẻ mảnh tối giữa các ô; số đậm tối màu ===== */
 .moi-mx .vtb-matrix td.vtb-cell, .moi-mx .vtb-matrix td.vtb-na { border: 0 !important; border-right: 1px solid rgba(27, 35, 51, .55) !important; border-bottom: 1px solid rgba(27, 35, 51, .55) !important; border-radius: 0 !important; }
@@ -133,3 +139,16 @@
 .moi-mx .vtb-matrix td.vtb-cell.vtb-hm .vtb-cv { font-weight: 800; }
 .moi-mx .vtb-matrix tbody tr:first-child td.vtb-cell, .moi-mx .vtb-matrix tbody tr:first-child td.vtb-na { border-top: 1px solid rgba(27, 35, 51, .55) !important; }
 .moi-mx .vtb-matrix tbody th.vtb-sticky { border-right: 1px solid rgba(27, 35, 51, .55); border-bottom: 1px solid rgba(27, 35, 51, .25); }
+.moi-mx-strip .moi-hm { margin: 0; flex: 1 1 380px; } .moi-mx-strip .moi-mx-rate { margin-left: auto; } /* thang chú giải Heatmap nằm cùng hàng dải đếm/lọc */
+
+/* ===== Ma trận chỉ tiêu: chữ và màu rõ ràng hơn (tham khảo giao diện cũ). Chỉ màn hình thường; trình chiếu có cỡ chữ riêng. ===== */
+.moi-content .moi-mx .vtb-matrix thead th { font-size: 13px; font-weight: 700; color: var(--ink); }
+.moi-content .moi-mx .vtb-matrix thead th small, .moi-content .moi-mx .vtb-matrix thead th .vtb-caption { font-size: 12px; font-weight: 500; color: var(--ink-2); }
+/* tên chỉ tiêu: cỡ nhỏ, KHÔNG đậm — để phân biệt với tên nhóm chỉ tiêu (chữ hoa, đậm, xanh) */
+.moi-content .moi-mx .vtb-matrix tbody th.vtb-sticky, .moi-content .moi-mx .vtb-matrix tbody th.vtb-sticky a { font-size: 13px; font-weight: 400; }
+.moi-content .moi-mx .vtb-matrix tfoot th.vtb-sticky { font-size: 13px; font-weight: 600; }
+.moi-content .moi-mx .vtb-matrix .vtb-sticky small { font-size: 11.5px; font-weight: 400; color: var(--ink-2); }
+.moi-content .moi-mx .moi-mx-grp td { font-size: 12.5px; font-weight: 800; letter-spacing: .05em; text-transform: uppercase; color: var(--brand-blue); padding-top: 10px; }
+.moi-content .moi-mx .vtb-matrix td.vtb-cell .vtb-cv { font-size: 14px; font-weight: 800; }
+.moi-content .moi-mx .vtb-matrix td.vtb-cell.vtb-t-gap, .moi-content .moi-mx .vtb-matrix td.vtb-cell.vtb-t-gap .vtb-cv { color: var(--status-gap-text-strong); }
+.moi-content .moi-mx .vtb-matrix td.vtb-cell.vtb-t-gap .vtb-cv { font-weight: 700; }

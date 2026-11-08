@@ -25,27 +25,24 @@ body.ui-moi {
   --border-default: var(--line); --border-subtle: var(--line-2, #eef2f7); --border-strong: var(--line-strong); --border-focus: var(--brand-blue);
   --primary-button: var(--brand-blue); --primary-button-hover: var(--brand-blue-dark); --accent-button: var(--brand-red); --accent-button-hover: var(--brand-red-dark);
   --navigation-active: var(--brand-blue-tint); --navigation-hover: var(--surface-page); --selected-state: var(--brand-blue-tint);
-  --success: var(--tier-dat-ink); --warning: var(--tier-cct-ink); --danger: var(--tier-chua-ink); --info: var(--brand-blue); --neutral: var(--tier-gap-ink);
-  --tier-dat: #1e8449;
-  --tier-dat-tint: #e3f4ea;
-  --tier-dat-ink: #1e8449;
-  --on-tier-dat: #ffffff;
-  --tier-kha: #6da7ec;
-  --tier-kha-tint: #edf4fd;
-  --tier-kha-ink: #1b6dce;
-  --on-tier-kha: #15233b;
-  --tier-cct: #ec835a;
-  --tier-cct-tint: #fdf0eb;
-  --tier-cct-ink: #c04616;
-  --on-tier-cct: #15233b;
-  --tier-chua: #b02a2a;
-  --tier-chua-tint: #f6e5e5;
-  --tier-chua-ink: #b02a2a;
-  --on-tier-chua: #ffffff;
-  --tier-gap: #8996ab;
-  --tier-gap-tint: #f1f2f5;
-  --tier-gap-ink: #606f87;
-  --on-tier-gap: #15233b;
+  --success: var(--status-achieved-text); --warning: var(--status-improve-text); --danger: var(--status-failed-text); --info: var(--brand-blue); --neutral: var(--status-gap-text);
+  /* === MÀU TRẠNG THÁI NGHIỆP VỤ KPI — NGUỒN DUY NHẤT (quy chuẩn do chủ dự án ban hành). Độc lập hoàn toàn với màu thương hiệu.
+   * Mọi thành phần (thẻ KPI, huy hiệu, thanh tiến độ, bảng, xếp hạng, biểu đồ, legend, tooltip, giao diện cũ đặt trong vỏ mới) chỉ tham chiếu các token này. === */
+  --status-achieved-bg: #63be7b; --status-achieved-text: #174d2b; /* Đạt: xanh lá */
+  --status-good-bg: #ffeb84;     --status-good-text: #665000;     /* Khá: vàng */
+  --status-improve-bg: #f4a261;  --status-improve-text: #713800;  /* Cần cải thiện: cam */
+  --status-failed-bg: #e76b70;   --status-failed-text: #761d25;   /* Chưa đạt: đỏ */
+  --status-gap-bg: #e9edf2;      --status-gap-text: #64748b;      /* GAP: xám */
+  --status-gap-text-strong: #475569; /* chữ ô Thiếu số trong Ma trận: đậm hơn --status-gap-text (4,05:1) để đạt ≥ 6:1 trên nền GAP — ngoại lệ có chủ đích về khả năng đọc */
+  /* viền mảnh của ô/chip: pha nền với chữ cùng mức (không phải màu mới) */
+  --status-achieved-line: color-mix(in srgb, var(--status-achieved-text) 45%, var(--status-achieved-bg)); --status-good-line: color-mix(in srgb, var(--status-good-text) 45%, var(--status-good-bg));
+  --status-improve-line: color-mix(in srgb, var(--status-improve-text) 45%, var(--status-improve-bg)); --status-failed-line: color-mix(in srgb, var(--status-failed-text) 45%, var(--status-failed-bg)); --status-gap-line: color-mix(in srgb, var(--status-gap-text) 45%, var(--status-gap-bg));
+  /* Bí danh theo mã mức của engine (dat/kha/cct/chua/gap) — chỉ trỏ về token trạng thái, KHÔNG có giá trị riêng */
+  --tier-dat: var(--status-achieved-bg);  --tier-dat-tint: var(--status-achieved-bg);  --tier-dat-ink: var(--status-achieved-text);  --on-tier-dat: var(--status-achieved-text);
+  --tier-kha: var(--status-good-bg);      --tier-kha-tint: var(--status-good-bg);      --tier-kha-ink: var(--status-good-text);      --on-tier-kha: var(--status-good-text);
+  --tier-cct: var(--status-improve-bg);   --tier-cct-tint: var(--status-improve-bg);   --tier-cct-ink: var(--status-improve-text);   --on-tier-cct: var(--status-improve-text);
+  --tier-chua: var(--status-failed-bg);   --tier-chua-tint: var(--status-failed-bg);   --tier-chua-ink: var(--status-failed-text);   --on-tier-chua: var(--status-failed-text);
+  --tier-gap: var(--status-gap-bg);       --tier-gap-tint: var(--status-gap-bg);       --tier-gap-ink: var(--status-gap-text);       --on-tier-gap: var(--status-gap-text);
   --series-1: var(--brand-blue);   /* chuỗi chính */
   --series-sky: var(--brand-sky);   /* chuỗi phụ (chỉ dùng cho vùng/nét phụ, kèm nhãn) */
   --series-accent: var(--brand-red); /* nhấn mốc quan trọng, không mặc định = xấu */
@@ -62,8 +59,8 @@ body.ui-moi {
   --chart-axis: #b9c3d3;
   --chart-ref: var(--ink-2);
   --forecast: var(--brand-blue);
-  --delta-up: var(--tier-dat-ink);
-  --delta-down: var(--tier-chua-ink);
+  --delta-up: var(--status-achieved-text);
+  --delta-down: var(--status-failed-text);
   --shadow-card: 0 1px 2px rgba(16, 38, 77, 0.06);
   --shadow-pop: 0 8px 24px rgba(16, 38, 77, 0.16);
 }

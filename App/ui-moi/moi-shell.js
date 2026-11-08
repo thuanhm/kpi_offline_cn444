@@ -8,8 +8,37 @@
   var STAGE_OK = { 'tong-quan': 1, 'dieu-hanh': 1, 'ma-tran': 1 };
   var STAGE_MAN = ['tong-quan', 'dieu-hanh', 'ma-tran'];
 
+  /* ---------- Heatmap cho các màn hình cũ đặt trong vỏ mới ----------
+   * Hàm màu dùng chung của UI (thang số cứng 100/95/90…, không theo ngưỡng cấu hình) chỉ được THAY khi giao diện mới đang bật và được khôi phục khi thoát;
+   * giao diện cũ không đổi. Mức lấy từ E.trangThai (engine, ngưỡng cấu hình) qua MOI_DATA.tierHt; màu từ cơ chế chung MOI_HEAT. Không tự tính mức. */
+  var UI_GOC = null, HM = root.MOI_HEAT;
+  function tierHt(r) { try { return D.tierHt(root.STORE.model(), r); } catch (e) { return 'gap'; } }
+  function gapBg() { return getComputedStyle(document.body).getPropertyValue('--status-gap-bg').trim() || '#e9edf2'; }
+  function batMauMoi() {
+    if (UI_GOC || !root.UI) return;
+    UI_GOC = { htColor: root.UI.htColor, heatStyleHT: root.UI.heatStyleHT };
+    root.UI.htColor = function (r) { return HM.color(r, tierHt(r)) || gapBg(); };
+    root.UI.heatStyleHT = function (r, ng) {
+      if (!D.isNum(r)) return '';
+      var pal = 'kpi'; try { pal = localStorage.getItem('KPI_CN444.heat') || 'kpi'; } catch (e) { /* mặc định */ }
+      if (pal !== 'kpi') return UI_GOC.heatStyleHT(r, ng);         // bảng màu khác do người dùng chọn: giữ nguyên
+      var h = HM.of(r, tierHt(r)); return h ? 'background:' + h.bg + ';color:' + h.ink : '';
+    };
+  }
+  function tatMauMoi() { if (UI_GOC && root.UI) { root.UI.htColor = UI_GOC.htColor; root.UI.heatStyleHT = UI_GOC.heatStyleHT; } UI_GOC = null; }
+  /* Thanh tiến độ của màn cũ (UI.bar) gắn màu nội tuyến theo thang số cứng: tô lại bằng Heatmap chung.
+   * %HT suy ngược từ chính hình học thanh (độ rộng ÷ vị trí vạch 100%); mức lấy theo engine. Chỉ đổi màu, không đổi kích thước/số liệu. */
+  function toLaiThanh(view) {
+    [].forEach.call(view.querySelectorAll('.moi-legacy .pbar'), function (p) {
+      var i = p.querySelector('i'), b = p.querySelector('b'); if (!i || !b || p.classList.contains('thieu')) return;
+      var w = parseFloat(i.style.width), m = parseFloat(b.style.left); if (!D.isNum(w) || !D.isNum(m) || m <= 0) return;
+      var c = HM.color(w / m, tierHt(w / m)); if (c) i.style.background = c;
+    });
+  }
+
   function vaoKhung() {
     if (document.body.classList.contains('ui-moi')) return;
+    batMauMoi();
     var app = document.querySelector('.app'), main = document.querySelector('.main'), side = $('sidebar'), top = $('topbar'), view = $('view');
     orig = { app: app.className, main: main.className, side: side.className, top: top.className, view: view.className };
     app.className = 'moi-app'; main.className = 'moi-main'; side.className = 'moi-side'; top.className = 'moi-top'; view.className = 'moi-content vtb-scope';
@@ -20,7 +49,7 @@
     if (orig && app) { app.className = orig.app; main.className = orig.main; side.className = orig.side; top.className = orig.top; view.className = orig.view; }
     document.body.classList.remove('ui-moi', 'moi-nav-open', 'moi-presenting');
     var st = $('moi-stage-root'); if (st) st.remove();
-    orig = null;
+    tatMauMoi(); orig = null;
   }
 
   /* ---------- Sidebar ---------- */
@@ -28,7 +57,7 @@
     var admin = STORE.isAdmin(), st = STORE.state.settings, rt = A.route.id, grp = [], cur = null;
     A.NAV.forEach(function (n) { if (n.nhom !== undefined) { cur = { ten: n.nhom, admin: n.admin, items: [] }; grp.push(cur); return; } if (n.admin && !admin) return; cur.items.push(n); });
     var cn = String(st.ten_chi_nhanh || '').replace(/^VietinBank\s*/i, '');
-    var h = '<a class="moi-brand" href="#/tong-quan" title="Về Tổng quan"><img src="assets/logo-vietinbank.png" alt="VietinBank" width="124" height="33"><span class="moi-brand-t"><b>' + esc(cn) + '</b><small>Dashboard KPI điều hành</small></span></a><nav aria-label="Điều hướng">';
+    var h = '<a class="moi-brand" href="#/tong-quan" title="Về Tổng quan"><span class="moi-brand-t"><b>' + esc(cn) + '</b><small>Dashboard KPI điều hành</small></span></a><nav aria-label="Điều hướng">';
     grp.forEach(function (g) {
       if (!g.items.length || (g.admin && !admin)) return;
       var mo = !g.ten || g.items.some(function (n) { return n.id === rt; });   // như giao diện cũ: chỉ nhóm chứa màn đang xem được mở, các nhóm khác thu gọn
@@ -135,6 +164,7 @@
   /* ---------- Vẽ ---------- */
   function render(A, banner) {
     vaoKhung();
+    try { HM.cfg(root.STORE.model().ng); } catch (e) { /* giữ ngưỡng trước */ }
     var rt = A.route.id, view = $('view'), nat = H.VIEWS[rt];
     if (A.moi_tc && !STAGE_OK[rt]) thoatStage(A);
     renderSide(A); renderTop(A);
@@ -144,12 +174,14 @@
       view.innerHTML = banner + '<div class="moi-page" data-route="' + esc(rt) + '">' + nat.html(A, false) + '</div>';
       if (nat.mount) nat.mount(view, A);
       H.ve(view, false);
+      if (root.MOI_TOOLS) root.MOI_TOOLS.attach(view);   // nút tải ảnh PNG + sắp xếp bảng (công cụ thư viện của giao diện cũ)
       if (!view.__moi) { view.__moi = true; V.attachTips(view); V.attachKeys(view); view.addEventListener('click', function (e) { onClick(e, false); }); }
     } else {                                   // màn hình chưa thiết kế lại: dùng bản cũ trong vỏ mới (bảng màu mới)
       var fn = root.VIEWS[rt];
       view.innerHTML = banner + '<div class="page moi-legacy" data-route="' + esc(rt) + '">' + fn.html(A) + '</div>';
       if (fn.mount) fn.mount(view, A);
       if (root.KPI_ICONS) KPI_ICONS.decorate(view);
+      toLaiThanh(view);
       var trang = view.querySelector('.moi-legacy');
       UI.nangBang(view).then(function () { if (view.querySelector('.moi-legacy') === trang) UI.nutAnh(view); });
       if (!view.__moi) { view.__moi = true; view.addEventListener('click', function (e) { onClick(e, false); }); }

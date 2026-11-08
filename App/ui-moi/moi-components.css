@@ -75,7 +75,7 @@
 .vtb-bullet:hover, .vtb-bullet.is-active { background: var(--brand-blue-tint); } .vtb-bullet.is-active { box-shadow: inset 0 0 0 1px var(--brand-blue); }
 .vtb-bl-name { display: flex; flex-direction: column; min-width: 0; line-height: 1.25; } .vtb-bl-name small { color: var(--ink-muted); font-size: var(--fs-cap); }
 .vtb-bl-bar { position: relative; height: calc(var(--fs-body) * .75); background: var(--surface-sunken); border-radius: var(--radius-pill); }
-.vtb-bl-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: var(--radius-pill); } .vtb-bl-bar i.vtb-hatch { background: transparent; border: 2px dashed var(--tier-gap); }
+.vtb-bl-bar i { position: absolute; left: 0; top: 0; bottom: 0; border-radius: var(--radius-pill); } .vtb-bl-bar i.vtb-hatch { background: transparent; border: 2px dashed var(--status-gap-text); }
 .vtb-bl-bar b { position: absolute; top: -4px; bottom: -4px; width: 2px; background: var(--ink); border-radius: 1px; }
 .vtb-bl-val { display: flex; flex-direction: column; text-align: right; line-height: 1.2; } .vtb-bl-val small { color: var(--ink-muted); font-size: var(--fs-cap); white-space: nowrap; }
 .vtb-bl-gap { text-align: right; font-weight: 600; }
@@ -96,7 +96,7 @@
 .vtb-trend, .vtb-col { display: block; max-width: 100%; height: auto; overflow: visible; }
 .vtb-axis { font: 500 11px var(--font-sans); fill: var(--ink-muted); } .vtb-val { font-weight: 600; fill: var(--ink-2); } .vtb-ref { fill: var(--ink-2); font-weight: 600; }
 .vtb-end { font: 600 12px var(--font-sans); fill: var(--ink); } .vtb-end-b { font-weight: 700; letter-spacing: .02em; }
-.vtb-is-stage .vtb-axis, .is-stage .vtb-axis { font-size: 15px; } .is-stage .vtb-end { font-size: 16px; }
+.is-stage .vtb-axis { font-size: 15px; } .is-stage .vtb-end { font-size: 16px; }
 .vtb-dot { cursor: default; }
 .vtb-legend { list-style: none; margin: var(--space-2) 0 0; padding: 0; display: flex; flex-wrap: wrap; gap: var(--space-1) var(--space-4); font-size: var(--fs-cap); color: var(--ink-2); }
 .vtb-legend li { display: inline-flex; align-items: center; gap: 6px; } .vtb-legend small { color: var(--ink-muted); } .vtb-dukien { color: var(--forecast); letter-spacing: .04em; } .vtb-sw { width: 12px; height: 12px; border-radius: 3px; display: inline-block; }
@@ -121,3 +121,42 @@
 
 .vtb-fresh { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-2) var(--space-6); font-size: var(--fs-cap); color: var(--ink-2); } .vtb-fresh b { font-weight: 600; color: var(--ink); }
 @media (forced-colors: active) { .vtb-seg, .vtb-rk-bar i, .vtb-bl-bar i { forced-color-adjust: none; } }
+
+/* ===== Continuous Heatmap dùng chung (màu do MOI_HEAT tính, truyền qua --hm nền / --hi chữ). Trạng thái nghiệp vụ vẫn là chip/nhãn riêng. ===== */
+.vtb-rk-bar i.vtb-hm, .vtb-bl-bar i.vtb-hm { background: var(--hm); box-shadow: inset 0 0 0 1px rgba(15, 23, 42, .12); }
+.vtb-cell.vtb-hm { background: var(--hm); color: var(--hi, #0f172a); }
+.vtb-kpi.vtb-hm-on { border-top: 4px solid var(--hm); }
+.vtb-hm-dot { display: inline-block; width: .7em; height: .7em; border-radius: 50%; background: var(--hm); box-shadow: inset 0 0 0 1px rgba(15, 23, 42, .25); margin-right: 6px; vertical-align: .05em; }
+.moi-hm.is-compact { margin: 0 0 var(--space-2); } .moi-hm.is-compact .moi-hm-bar { max-width: 360px; flex-basis: 220px; }
+@media (forced-colors: active) { .vtb-cell.vtb-hm, .vtb-hm-dot { forced-color-adjust: none; } }
+.moi-stage .moi-hm.is-compact { display: none; } /* trình chiếu: giữ khung vừa màn hình; chú giải đầy đủ có ở Ma trận */
+.vtb-hm-pill { display: inline-block; min-width: 4.2em; padding: 2px 8px; border-radius: var(--radius-sm); text-align: center; font-weight: 700; font-variant-numeric: tabular-nums; }
+.vtb-hm-pill.vtb-hm { background: var(--hm); color: var(--hi, #0f172a); } .vtb-hm-pill.vtb-t-gap { background: var(--status-gap-bg); }
+/* Nhãn điểm trên thanh xếp hạng đi theo đầu phần tô (trước đây ghim mép phải → lệch và đè vạch ngưỡng khi điểm thấp); luôn nổi trên vạch ngưỡng */
+.vtb-rk-bar em { z-index: 1; } .vtb-rk-bar em.is-out { right: auto; left: calc(var(--w) + 4px); } .vtb-rk-bar em.is-in { right: calc(100% - var(--w) + 4px); }
+
+/* Ma trận trạng thái ở Bảng điều hành BGĐ: cùng kiểu lưới liền ô với Ma trận chỉ tiêu (không bo tròn, không khe trắng) */
+.moi-bgd .a-matrix .vtb-matrix td.vtb-cell, .moi-bgd .a-matrix .vtb-matrix td.vtb-na { border: 0; border-right: 1px solid rgba(27, 35, 51, .45); border-bottom: 1px solid rgba(27, 35, 51, .45); border-radius: 0; padding: 6px 4px !important; }
+.moi-bgd .a-matrix .vtb-matrix td.vtb-cell.vtb-hm { font-weight: 800; }
+.vtb-hero-spark { max-width: 100%; overflow: hidden; } .vtb-hero-spark svg { max-width: 100%; height: auto; }
+.vtb-trend { overflow: hidden; } /* mọi nét/nhãn nằm trong khung biểu đồ, không tràn sang thẻ khác */
+.vtb-legend { justify-content: center; } /* chú giải biểu đồ căn giữa dưới biểu đồ */
+/* Biểu đồ Diễn biến điểm KPI: nhãn ngưỡng có viền nền để không bị đường dữ liệu đè; chú giải ngay dưới trục X, căn theo vùng vẽ */
+.vtb-halo { paint-order: stroke; stroke: var(--surface-card); stroke-width: 4px; stroke-linejoin: round; }
+.vtb-legend.is-plot { margin-top: var(--space-1); gap: var(--space-1) var(--space-4); box-sizing: border-box; }
+@media (min-width: 1281px) {
+  .moi-content .moi-tq .a-trend { display: flex; flex-direction: column; }
+  .moi-content .moi-tq .a-trend > .moi-ch { flex: 1 1 auto; display: flex; flex-direction: column; justify-content: center; }
+  .moi-content .moi-tq .a-trend > .moi-ch > .moi-vtable { align-self: stretch; }
+  .moi-content .moi-tq .a-trend.is-table > .moi-ch { justify-content: flex-start; }
+}
+
+/* Công cụ thư viện mang sang giao diện mới: nút tải ảnh PNG ở tiêu đề thẻ, tiêu đề cột bấm được để sắp xếp */
+.moi-png { display: inline-grid; place-items: center; border: 1px solid var(--line); background: var(--surface-card); border-radius: var(--radius-sm); width: 30px; height: 30px; padding: 0; line-height: 1; cursor: pointer; color: var(--brand-blue); }
+.moi-png:hover { border-color: var(--brand-blue); background: var(--surface-hover); } .moi-png:disabled { opacity: .5; cursor: progress; }
+.moi-hend { display: inline-flex; align-items: center; gap: var(--space-2); flex: none; }
+.vtb-table th.moi-sortable { cursor: pointer; user-select: none; } .vtb-table th.moi-sortable:hover { background: var(--surface-hover); }
+.vtb-table th.moi-sortable::after { content: "↕"; margin-left: 4px; font-size: .85em; color: var(--ink-muted); opacity: .55; }
+.vtb-table th.moi-sortable[aria-sort="ascending"]::after { content: "▲"; opacity: 1; color: var(--brand-blue); } .vtb-table th.moi-sortable[aria-sort="descending"]::after { content: "▼"; opacity: 1; color: var(--brand-blue); }
+.vtb-table th.moi-sortable:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: -2px; }
+@media print { .moi-png { display: none !important; } }

@@ -132,3 +132,29 @@ Token chuẩn hóa (bí danh, không thêm màu): `--background-main/secondary`,
 - **Màu Đạt toàn giao diện mới** đổi sang xanh lá `#1E8449` (token `--tier-dat`); Khá giữ xanh dương `#6DA7EC` ở các màn ngoài Ma trận.
 - **Header**: nền trắng, một hàng gọn (nhãn phụ ẩn khi < 1700 px, nút chuyển giao diện/chế độ xem chỉ còn biểu tượng khi < 1500 px). **Sidebar**: nền xanh `#00538E` như giao diện cũ, nhóm menu thu gọn được (chỉ nhóm chứa màn đang xem mở, mở nhóm này thì đóng nhóm khác), mục đang chọn nền trắng chữ xanh + chỉ báo đỏ.
 - **Ma trận**: tên nhóm chỉ tiêu cùng cỡ chữ với tên chỉ tiêu (đậm, không viết hoa nhỏ); cột Toàn chi nhánh dùng cùng đường kẻ mảnh như các cột khác, chỉ khác nền tiêu đề.
+
+## 10. Cập nhật 11/2026 — THAY THẾ mọi quy định màu trạng thái và Heatmap ở mục 2, 7, 8, 9
+
+**Ba hệ màu độc lập** (chi tiết trong `HEATMAP_DESIGN.md`):
+
+1. **Thương hiệu**: `--brand-*` (#00538E · #D71249 · #80D1F2), chỉ dùng cho giao diện (header, sidebar, nút, tiêu đề).
+2. **Trạng thái nghiệp vụ**: nguồn duy nhất là token `--status-*` trong `moi-tokens.css`. Các bí danh `--tier-*`, `--mx-*`, và `--c-*`/`--t-*` (màn cũ trong vỏ mới) đều trỏ về đây, không còn giá trị riêng.
+
+   | Trạng thái | Token nền | Token chữ |
+   |---|---|---|
+   | Đạt | `--status-achieved-bg` #63BE7B | `--status-achieved-text` #174D2B |
+   | Khá | `--status-good-bg` #FFEB84 | `--status-good-text` #665000 |
+   | Cần cải thiện | `--status-improve-bg` #F4A261 | `--status-improve-text` #713800 |
+   | Chưa đạt | `--status-failed-bg` #E76B70 | `--status-failed-text` #761D25 |
+   | GAP | `--status-gap-bg` #E9EDF2 | `--status-gap-text` #64748B |
+
+   Ngoài ra có `--status-*-line` (viền mảnh, pha từ nền và chữ). Phạm vi: chip/huy hiệu, bộ lọc, bộ đếm, dải phân bố mức, legend trạng thái, chữ ▲▼ tốt/xấu (`--delta-up/down`), `--success/--warning/--danger/--neutral`.
+3. **Heatmap liên tục**: `MOI_HEAT` (`App/ui-moi/moi-heat.js`), 10 điểm màu #F04438 → #20A36C. Thành phần nhận màu qua biến `--hm` (nền) và `--hi` (chữ). Không thành phần nào tự tính màu.
+
+**API dùng chung:** `MOI_HEAT.of(ht, tier, ng)` trả `{pos, bg, ink}` hoặc `null` (GAP) · `MOI_HEAT.color` · `MOI_HEAT.band(tier)` · `MOI_HEAT.gradient()` · `VTB.heat(ht, tier)` · `VTB.hmVars(h)` · `VTB.heatLegend({compact,title})` · `VTB.heatPill(ht, tier)`.
+
+**Lớp CSS:** `.vtb-hm` (phần tử tô Heatmap), `.vtb-hm-on` (thẻ KPI có vạch Heatmap), `.vtb-hm-dot`, `.vtb-hm-pill`, `.moi-hm` (chú giải).
+
+**Ngoại lệ đã ghi nhận:**
+- Chữ GAP #64748B trên #E9EDF2 chỉ đạt 4,05:1 (< 4,5) vì là mã màu quy định. Được bù bằng chữ "GAP" và biểu tượng.
+- Nút quản trị `.moi-btn.admin` chuyển sang màu thương hiệu, vì đây không phải trạng thái KPI.

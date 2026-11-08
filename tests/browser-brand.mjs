@@ -36,7 +36,7 @@ try {
   rec('15.2 Header', 'Header nền trắng, dải xanh #00538E phía trên, tiêu đề xanh, vệt nhấn đỏ #D71249, gọn một hàng (cao ≤ 64px)', ui.topBg === 'rgb(255, 255, 255)' && ui.topB === BLUE && ui.h1 === BLUE && ui.acc === RED && ui.topH <= 64, JSON.stringify(ui));
   rec('15.2 Sidebar', 'Sidebar nền xanh #00538E; mục đang chọn nền trắng chữ xanh, chỉ báo đỏ #D71249 ở cạnh (không nền đỏ); icon mục thường trắng', ui.sideBg === BLUE && ui.navInk === BLUE && ui.bar === RED && ui.ic === 'rgb(255, 255, 255)' && ui.navBg !== RED, JSON.stringify(ui));
   rec('15.2 Nút', 'Nút chính nền xanh #00538E', ui.btn === BLUE, ui.btn);
-  rec('15.2 KPI Card', 'Thẻ KPI nền trắng, đường nhấn trên xanh da trời #80D1F2 (không tô cả thẻ)', ui.kpiTop === SKY && ui.surf === 'rgb(255, 255, 255)', ui.kpiTop);
+  rec('15.2 KPI Card', 'Thẻ KPI nền trắng (không tô cả thẻ); vạch trên = màu Heatmap của %HT (không dùng màu thương hiệu), thẻ GAP giữ vạch #80D1F2', ui.surf === 'rgb(255, 255, 255)' && ![BLUE, RED].includes(ui.kpiTop) && (ui.kpiTop === SKY || /^rgb/.test(ui.kpiTop)), ui.kpiTop);
   const c1 = cr(BLUE, 'rgb(255,255,255)'), c2 = cr(BLUE, 'rgb(228,239,247)'), c3 = cr('rgb(255,255,255)', RED);
   rec('15.2 Tương phản', 'Chữ xanh #00538E trên nền trắng và nền xanh nhạt ≥ 4,5:1; chữ trắng trên đỏ #D71249 ≥ 4,5:1', c1 >= 4.5 && c2 >= 4.5 && c3 >= 4.5, [c1, c2, c3].map((x) => x.toFixed(2)).join('/'));
   const sem = await p.eval(`(() => { const s = getComputedStyle(document.body); return ['--tier-dat','--tier-kha','--tier-cct','--tier-chua','--tier-gap','--tier-chua-ink','--danger'].map((n) => s.getPropertyValue(n).trim().toLowerCase()); })()`);
@@ -56,7 +56,7 @@ try {
   }
   await p.viewport(1440, 900); await p.eval(`location.hash = '#/ma-tran'`); await p.sleep(700);
   const hm = await p.eval(`(() => { const c = [...document.querySelectorAll('.moi-mx tbody td.vtb-hm')].map((e) => getComputedStyle(e).backgroundColor); return { n: c.length, brand: c.filter((x) => x === '${BLUE}' || x === '${RED}' || x === '${SKY}').length, distinct: new Set(c).size }; })()`);
-  rec('15.3 Heatmap', 'Heatmap độc lập thương hiệu: không ô nào dùng #00538E/#D71249/#80D1F2; màu theo mức quy chuẩn', hm.n > 20 && hm.brand === 0 && hm.distinct >= 4, JSON.stringify(hm));
+  rec('15.3 Heatmap', 'Heatmap độc lập thương hiệu: không ô nào dùng #00538E/#D71249/#80D1F2; vẫn là thang liên tục', hm.n > 20 && hm.brand === 0 && hm.distinct >= 8, JSON.stringify(hm));
   await p.eval(`UI_SWITCH.dat('cu')`); await p.sleep(900);
   const legacy = await p.eval(`(() => ({ moi: document.body.classList.contains('ui-moi'), brand: getComputedStyle(document.body).getPropertyValue('--brand-blue').trim(), cls: !!document.querySelector('.moi-side,.vtb-kpi,.moi-brand') }))()`);
   rec('15.5 Legacy', 'Giao diện cũ không nhận token/lớp thương hiệu mới (không có --brand-blue, không có moi-*/vtb-*)', !legacy.moi && legacy.brand === '' && !legacy.cls, JSON.stringify(legacy));

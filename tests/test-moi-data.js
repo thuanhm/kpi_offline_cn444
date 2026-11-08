@@ -22,7 +22,8 @@ M.periods.filter((p) => p.nam === nam).forEach((p) => {
   if (JSON.stringify(T.rk.map((r) => [r.ma, r.hang, r.hang_truoc, r.diem])) !== JSON.stringify(rk.map((c) => [c.ma, c.hang, c.hang_truoc, c.quy_doi]))) bad.rank++;
   if (JSON.stringify(T.rows.map((r) => [r.ma, r.kh, r.th, r.gap, r.ht, r.diem, r.mat])) !== JSON.stringify(cn.rows.concat(cn.ref).map((r) => [r.ma, r.kh, r.th, r.gap, r.ht, r.diem, r.mat]))) bad.rows++;
   if (T.stats.cao !== rk.filter((c) => c.quy_doi >= M.ng.diem_cao).length || T.stats.diem_cao !== M.ng.diem_cao) bad.cao++;
-  if (JSON.stringify(T.series_cn) !== JSON.stringify(M.scoreSeries(CN, nam))) bad.series++;
+  // tháng chưa có số thực hiện (card.co_so = false) để trống thay vì điểm 0; các tháng còn lại = nguyên số engine
+  if (JSON.stringify(T.series_cn) !== JSON.stringify(M.scoreSeries(CN, nam).map(function (v, i) { return v !== null && M.card(CN, nam, i + 1).co_so ? v : null; }))) bad.series++;
   if (!(T.kpi.length >= 1 && T.kpi.length <= 8 && T.kpi.every((k) => cn.rows.concat(cn.ref).some((r) => r.ma === k.ma && r.th === k.th && r.kh === k.kh && r.ht === k.ht)))) bad.kpi++;
   const tr = { 'Đạt': 'dat', 'Khá': 'kha', 'Cần cải thiện': 'cct', 'Chưa đạt': 'chua' };
   if (!T.rows.every((r) => r.tier === (tr[r.tt] || 'gap'))) bad.tier++;
@@ -35,7 +36,7 @@ ok(bad.counts === 0, 'số chỉ tiêu Đạt/Khá/CCT/Chưa đạt/GAP = engine
 ok(bad.rank === 0, 'xếp hạng (mã, hạng, hạng kỳ trước, điểm) = M.ranking ở mọi kỳ — không xếp lại');
 ok(bad.rows === 0, 'từng chỉ tiêu: KH, TH, GAP, %HT, điểm, mất điểm = engine ở mọi kỳ');
 ok(bad.cao === 0, 'số đơn vị ≥ ngưỡng điểm cao = KPI_ENGINE.demDiemCao theo cấu hình (D7)');
-ok(bad.series === 0, 'chuỗi 12 tháng = M.scoreSeries');
+ok(bad.series === 0, 'chuỗi 12 tháng = M.scoreSeries (tháng chưa có số → trống)');
 ok(bad.kpi === 0, 'thẻ KPI chỉ lấy từ chỉ tiêu có trong danh mục, số nguyên bản từ engine');
 ok(bad.tier === 0, 'mức (dat/kha/cct/chua/gap) khớp chuỗi trạng thái của engine');
 const src = fs.readFileSync(path.join(MOI, 'moi-data.js'), 'utf8');

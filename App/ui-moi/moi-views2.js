@@ -27,9 +27,12 @@
       var cols = [{ k: 'hang', t: 'Hạng', cls: 'vtb-r' }, { k: 'ten', t: 'Đơn vị', html: true }, { k: 'cur', t: 'Kỳ này', cls: 'vtb-r' }];
       if (kieu === 'so_du') cols.push({ k: 'tt', t: 'So tháng trước', cls: 'vtb-r', html: true }, { k: 'dn', t: 'So đầu năm', cls: 'vtb-r', html: true }, { k: 'ck', t: 'So cùng kỳ', cls: 'vtb-r', html: true }); else cols.push({ k: 'tt', t: 'Phát sinh tháng', cls: 'vtb-r', html: true }, { k: 'ck', t: 'So cùng kỳ', cls: 'vtb-r', html: true });
       if (cong) cols.push({ k: 'tr', t: 'Tỷ trọng', cls: 'vtb-r' });
-      var rowsT = d.rows.map(function (x) { var r = { _key: x.u.ma, hang: x.hang || '–', ten: '<button type="button" class="moi-linkbtn' + (x.u.ma === dv ? ' is-on' : '') + '" data-pick-dv="' + esc(x.u.ma) + '">' + esc(x.u.ten_ngan || x.u.ten) + '</button>', cur: f(x.s.cur), tr: isNum(x.s.cur) && tong ? pct(x.s.cur / tong, 1) : '–' };
+      /* % hoàn thành KH lũy kế + mức của engine (thẻ điểm đơn vị) → ô Heatmap dùng chung */
+      var htCell = function (u) { var c = M.card(u, ky.nam, ky.thang), r = c && c.rows.concat(c.ref).filter(function (x) { return x.ma === ma; })[0]; return r ? V.heatPill(r.ht, D.tierTT(r.tt)) : '<span class="vtb-caption">không áp dụng</span>'; };
+      cols.push({ k: 'ht', t: '% hoàn thành KH', cls: 'vtb-r', html: true });
+      var rowsT = d.rows.map(function (x) { var r = { _key: x.u.ma, hang: x.hang || '–', ten: '<button type="button" class="moi-linkbtn' + (x.u.ma === dv ? ' is-on' : '') + '" data-pick-dv="' + esc(x.u.ma) + '">' + esc(x.u.ten_ngan || x.u.ten) + '</button>', cur: f(x.s.cur), tr: isNum(x.s.cur) && tong ? pct(x.s.cur / tong, 1) : '–', ht: htCell(x.u.ma) };
         if (kieu === 'so_du') { r.tt = dcell(x.s.tt_d, ind, xau) + ' ' + dcell(x.s.tt_p, ind, xau, 'p'); r.dn = dcell(x.s.dn_d, ind, xau) + ' ' + dcell(x.s.dn_p, ind, xau, 'p'); r.ck = dcell(x.s.ck_d, ind, xau) + ' ' + dcell(x.s.ck_p, ind, xau, 'p'); } else { r.tt = dcell(x.s.tt_d, ind, xau); r.ck = dcell(x.s.ck_d, ind, xau) + ' ' + dcell(x.s.ck_p, ind, xau, 'p'); } return r; });
-      var tong0 = VC.soSanh(M, ma, CN, ky.nam, ky.thang, kieu); rowsT.unshift({ _key: CN, hang: '', ten: '<b>Toàn chi nhánh</b>', cur: f(tong0.cur), tr: '', tt: kieu === 'so_du' ? dcell(tong0.tt_d, ind, xau) + ' ' + dcell(tong0.tt_p, ind, xau, 'p') : dcell(tong0.tt_d, ind, xau), dn: dcell(tong0.dn_d, ind, xau) + ' ' + dcell(tong0.dn_p, ind, xau, 'p'), ck: dcell(tong0.ck_d, ind, xau) + ' ' + dcell(tong0.ck_p, ind, xau, 'p') });
+      var tong0 = VC.soSanh(M, ma, CN, ky.nam, ky.thang, kieu); rowsT.unshift({ _key: CN, hang: '', ten: '<b>Toàn chi nhánh</b>', cur: f(tong0.cur), tr: '', ht: htCell(CN), tt: kieu === 'so_du' ? dcell(tong0.tt_d, ind, xau) + ' ' + dcell(tong0.tt_p, ind, xau, 'p') : dcell(tong0.tt_d, ind, xau), dn: dcell(tong0.dn_d, ind, xau) + ' ' + dcell(tong0.dn_p, ind, xau, 'p'), ck: dcell(tong0.ck_d, ind, xau) + ' ' + dcell(tong0.ck_p, ind, xau, 'p') });
       var cmp = '<div class="moi-ch" data-ch="compare" data-ct="' + esc(ma) + '" data-dv="' + (dv === CN ? '' : esc(dv)) + '"></div>', gr = '<div class="moi-ch" data-ch="growth" data-ct="' + esc(ma) + '" data-dv="' + (dv === CN ? '' : esc(dv)) + '"></div>';
       return '<div class="moi-toolbar"><label class="moi-fl"><span>Chỉ tiêu</span>' + sel + '</label><label class="moi-fl"><span>Đơn vị</span>' + selDv + '</label>' + (ind.chi_tham_khao ? V.tierChip('gap', { text: 'Chỉ tiêu quản trị, không tính điểm' }) : '') + '<a class="moi-link" href="#/chi-tieu">Làm mới</a></div>' +
         '<section class="moi-card moi-c12 moi-ind-head"><div class="vtb-label">' + esc(ind.nhom) + ' · ĐVT: ' + esc(ind.dvt) + ' · ' + (kieu === 'so_du' ? 'Số dư / mức tại thời điểm' : 'Số lũy kế phát sinh trong năm') + '</div><h2 class="moi-ind-t">' + esc(ind.ten) + '</h2>' + (apDung ? head : H.empty('Chỉ tiêu này không áp dụng cho đơn vị đã chọn.')) + '</section>' +
@@ -56,7 +59,7 @@
       var xep = rk.filter(function (r) { return isNum(r.diem) && r.hang; }), top = xep[0], bot = xep[xep.length - 1], cnt = { dat: 0, kha: 0, cct: 0, chua: 0, gap: 0 }; rk.forEach(function (r) { cnt[r.tier]++; });
       var tiles = '<div class="moi-stats4">' + V.statTile({ label: 'Dẫn đầu', value: top ? top.ten : '–', sub: top ? num(top.diem, 1) + ' điểm' : '' }) + V.statTile({ label: 'Thấp nhất', value: bot ? bot.ten : '–', sub: bot ? num(bot.diem, 1) + ' điểm' : '' }) +
         V.statTile({ label: 'Khoảng cách dẫn đầu – thấp nhất', value: top && bot ? num(top.diem - bot.diem, 1) : '–', sub: 'điểm' }) + V.statTile({ label: 'Đơn vị dưới mức Khá', value: String(rk.filter(function (r) { return isNum(r.diem) && r.diem < ng.kha * 100; }).length), sub: 'trên ' + rk.length + ' đơn vị' }) + '</div>';
-      return '<div class="moi-toolbar">' + pills + '<span class="vtb-caption">Hạng theo điểm quy đổi (thang 100), cùng cách xếp hạng của giao diện cũ.</span></div>' + tiles +
+      return '<div class="moi-toolbar">' + pills + '</div>' + tiles +
         H.card('moi-c12', 'Bảng xếp hạng ' + H.kyTxt(A.ky), '<p class="vtb-caption moi-sub">Bấm một đơn vị để mở thẻ điểm. Hai vạch dọc: ngưỡng Khá và Đạt.</p>' + H.rankHtml(A, rk, { noSpark: false }), H.seg('Kiểu hiển thị xếp hạng')) +
         H.cardPlain('moi-c12', 'Cơ cấu mức của các đơn vị', V.tierBar(cnt));
     }
@@ -69,23 +72,23 @@
   var MX_STATUS_MODES = { ht: 1, kh_nam: 1, diem: 1 };   // chế độ mà màu/biểu tượng ô là MỨC TRẠNG THÁI KPI (có ý nghĩa để lọc theo trạng thái)
   function mxNote(mode, M) {
     var ng = M.ng;
-    return { ht: 'Số trong ô = % hoàn thành kế hoạch lũy kế; màu Heatmap chuyển liên tục đỏ → xanh lá theo % hoàn thành, nằm đúng trong dải của mức Đạt/Khá/Cần cải thiện/Chưa đạt theo ngưỡng cấu hình. Ô xám = GAP.',
+    return { ht: 'Số trong ô = % hoàn thành kế hoạch lũy kế; màu Heatmap chuyển liên tục đỏ → xanh lá theo % hoàn thành, nằm đúng trong dải của mức Đạt/Khá/Cần cải thiện/Chưa đạt theo ngưỡng cấu hình. Ô xám = thiếu số (chưa có số liệu để tính %).',
       hang: 'Số trong ô = hạng của đơn vị ở chỉ tiêu đó theo % hoàn thành (1 = cao nhất). Màu xanh càng đậm = hạng càng cao; đây không phải mức trạng thái.',
       kh_nam: 'Số trong ô = thực hiện lũy kế ÷ kế hoạch cả năm. Màu Heatmap vẫn theo % hoàn thành KH lũy kế (hệ thống không có ngưỡng riêng cho % KH năm).',
-      diem: 'Số trong ô = điểm đạt / trọng số; màu = mức hoàn thành KH lũy kế của chỉ tiêu.',
+      diem: 'Số trong ô = điểm đạt / trọng số; màu Heatmap = % hoàn thành KH lũy kế của chỉ tiêu.',
       mat: 'Số trong ô = điểm bị mất (✓ = không mất điểm). Màu xanh càng đậm = mất càng nhiều so với ô mất nhiều nhất đang hiển thị; không phải mức trạng thái.' }[mode];
   }
   function mxTierTip(M) {
     var ng = M.ng, p = function (v) { return pct(v, 0); };
     return { dat: 'Đạt: hoàn thành từ ' + p(ng.dat) + ' kế hoạch lũy kế trở lên.', kha: 'Khá: từ ' + p(ng.kha) + ' đến dưới ' + p(ng.dat) + ' kế hoạch.',
       cct: 'Cần cải thiện: từ ' + p(ng.cct) + ' đến dưới ' + p(ng.kha) + ' kế hoạch.', chua: 'Chưa đạt: dưới ' + p(ng.cct) + ' kế hoạch.',
-      gap: 'GAP: thiếu số thực hiện hoặc kế hoạch, hoặc thiếu cấu hình nên chưa xếp được mức. Khác với ô “·” (đơn vị không có chỉ tiêu này).' };
+      gap: 'Thiếu số: thiếu số thực hiện hoặc kế hoạch, hoặc thiếu cấu hình nên chưa xếp được mức. Khác với ô “·” (đơn vị không có chỉ tiêu này).' };
   }
-  /* ---- Màu ô theo MỨC do engine xếp (r.tt → tier); màu chỉ để hiển thị, không tính lại mức ---- */
-  /* BẢNG MÀU TRẠNG THÁI do chủ dự án quy định: mỗi mức một màu nền + màu chữ (Đạt xanh lá, Khá vàng, Cần cải thiện cam, Chưa đạt đỏ, GAP xám) */
-  var MX_FLAT = { dat: ['#63BE7B', '#174D2B'], kha: ['#FFEB84', '#665000'], cct: ['#F4A261', '#713800'], chua: ['#E76B70', '#761D25'] };
-  function heatColor(ht, t) { return MX_FLAT[t] ? MX_FLAT[t][0] : null; }
-  function heatInk(t) { return MX_FLAT[t] ? MX_FLAT[t][1] : null; }
+  /* ---- Heatmap liên tục: dùng CƠ CHẾ CHUNG MOI_HEAT (moi-heat.js) — màu suy từ %HT + mức do engine xếp, không tô màu riêng ở đây ---- */
+  var HM = root.MOI_HEAT;
+  function heatColor(ht, t, ng) { return HM.color(ht, t, ng); }
+  function heatVars(ht, t, ng) { var h = HM.of(ht, t, ng); return h ? '--hm:' + h.bg + ';--hi:' + h.ink : ''; }
+  function heatLegend() { return V.heatLegend(); }
   function mxState(A) { return { tier: V.TIERS.indexOf(A.mt_tier) >= 0 ? A.mt_tier : 'all', khoi: A.mt_khoi || '', dv: A.mt_dv || '', nhom: A.mt_nhom || '', sort: A.mt_sort === 'yeu' ? 'yeu' : 'hang' }; }
   function weakBadges(p) {
     if (!p || (!p.chua && !p.cct)) return '';
@@ -103,13 +106,13 @@
       else txt = ind.chi_tham_khao ? pct(r.ht, 0) : '–';
     } else if (mode === 'kh_nam') txt = isNum(r.ht_nam) ? pct(r.ht_nam, 0) : '–';
     else if (mode === 'diem') txt = isNum(r.diem) ? num(r.diem, 1) + '/' + r.ts : (ind.chi_tham_khao ? pct(r.ht, 0) : '–');
-    else txt = isNum(r.ht) ? pct(r.ht, 0) : 'GAP';
-    var stNote = t === 'gap' ? (r.tt || 'GAP') : V.LABEL_LONG[t];
+    else txt = isNum(r.ht) ? pct(r.ht, 0) : 'Thiếu số';
+    var stNote = t === 'gap' ? (r.tt || 'Thiếu số') : V.LABEL_LONG[t];
     var tip = c.ten_ngan + ' · ' + (ind.ten_ngan || ind.ten) + ' · KH ' + H.fmtV(r.kh, ind) + ' · TH ' + H.fmtV(r.th, ind) + ' · ' + (isNum(r.ht) ? pct(r.ht, 1) : 'chưa có số') + ' · ' + stNote;
     aria = (ind.ten_ngan || ind.ten) + ', ' + c.ten_ngan + ': ' + txt + ', ' + stNote + '. Mở thẻ điểm đơn vị';
     var hm = MX_STATUS_MODES[mode] ? heatColor(r.ht, t, M.ng) : null, icon = (mode === 'hang' || mode === 'mat' || hm) ? '' : V.svgIcon(t);
     if (hm) cls += ' vtb-hm';
-    return '<td class="vtb-cell ' + cls + '"' + (hm ? ' style="--hm:' + hm + ';--hi:' + heatInk(t) + '"' : '') + ' data-tier="' + t + '" data-dv="' + esc(c.ma) + '" data-tip="' + esc(tip) + '"><span class="vtb-cb" role="button" tabindex="-1" data-dv="' + esc(c.ma) + '" aria-label="' + esc(aria) + '">' + icon + '<span class="vtb-cv">' + esc(txt) + '</span></span></td>';
+    return '<td class="vtb-cell ' + cls + '"' + (hm ? ' style="' + heatVars(r.ht, t, M.ng) + '"' : '') + ' data-tier="' + t + '" data-dv="' + esc(c.ma) + '" data-tip="' + esc(tip) + '"><span class="vtb-cb" role="button" tabindex="-1" data-dv="' + esc(c.ma) + '" aria-label="' + esc(aria) + '">' + icon + '<span class="vtb-cv">' + esc(txt) + '</span></span></td>';
   }
 
   VIEWS['ma-tran'] = {
@@ -133,14 +136,15 @@
       /* --- dải đếm trạng thái (cũng là bộ lọc nhanh) --- */
       var chips = ['all'].concat(V.TIERS).map(function (t) {
         var n = t === 'all' ? X.total : X.counts[t], lab = t === 'all' ? 'Tất cả' : V.LABEL[t], inner = (t === 'all' ? '' : V.svgIcon(t)) + '<span>' + lab + '</span><b>' + n + '</b>', cl = 'vtb-mxf' + (t === 'all' ? '' : ' vtb-t-' + t);
-        var hs = ''; if (tierMode && MX_FLAT[t]) { cl += ' vtb-hm'; hs = ' style="--hm:' + MX_FLAT[t][0] + ';--hi:' + MX_FLAT[t][1] + '"'; }
+        var hs = ''; if (tierMode && HM.BAND[t]) { var bc = HM.band(t); cl += ' vtb-hm'; hs = ' style="--hm:' + bc + ';--hi:' + HM.ink(bc) + '"'; }
         return tierMode ? '<button type="button" class="' + cl + '"' + hs + ' data-mxf="' + t + '" aria-pressed="' + (active === t) + '" data-tip="' + esc(t === 'all' ? 'Hiện toàn bộ ô, không làm mờ' : tip[t]) + '" data-n="' + n + '">' + inner + '</button>'
           : '<span class="' + cl + ' is-static" data-tip="' + esc(t === 'all' ? 'Tổng số ô có trạng thái' : tip[t]) + '">' + inner + '</span>';
       }).join('');
       var tyle = X.tyLeChua === null ? '–' : pct(X.tyLeChua, 1);
       var strip = '<div class="moi-mx-strip"><div class="moi-mx-chips" role="group" aria-label="' + (tierMode ? 'Lọc nhanh theo trạng thái KPI' : 'Số ô theo trạng thái KPI') + '">' + chips + '</div>' +
-        '<div class="moi-mx-rate" data-tip="Chưa đạt ÷ (Đạt + Khá + Cần cải thiện + Chưa đạt). Không tính ô GAP và ô không áp dụng."><span class="vtb-caption">Tỷ lệ Chưa đạt</span><b>' + tyle + '</b><span class="vtb-caption">' + X.counts.chua + '/' + X.danhGia + ' ô có số</span></div></div>';
-            var live = '<p class="vtb-caption moi-mx-hint" id="mx-live" role="status" aria-live="polite">' + (tierMode ? (active === 'all' ? 'Chọn một trạng thái để làm nổi bật các ô tương ứng; các ô khác được làm mờ, vị trí và thứ hạng giữ nguyên.' : 'Đang làm nổi bật ' + X.counts[active] + ' ô ' + V.LABEL[active] + '.') : 'Chế độ này không phân loại theo trạng thái KPI nên không có bộ lọc trạng thái. Các số đếm bên trên là mức hoàn thành KH lũy kế.') + '</p>';
+        (tierMode ? heatLegend() : '') +
+        '<div class="moi-mx-rate" data-tip="Chưa đạt ÷ (Đạt + Khá + Cần cải thiện + Chưa đạt). Không tính ô Thiếu số và ô không áp dụng."><span class="vtb-caption">Tỷ lệ Chưa đạt</span><b>' + tyle + '</b><span class="vtb-caption">' + X.counts.chua + '/' + X.danhGia + ' ô có số</span></div></div>';
+      var live = '<p class="vtb-caption moi-mx-hint" id="mx-live" role="status" aria-live="polite">' + (tierMode ? (active === 'all' ? 'Chọn một trạng thái để làm nổi bật các ô tương ứng; các ô khác được làm mờ, vị trí và thứ hạng giữ nguyên.' : 'Đang làm nổi bật ' + X.counts[active] + ' ô ' + V.LABEL[active] + '.') : 'Chế độ này không phân loại theo trạng thái KPI nên không có bộ lọc trạng thái. Các số đếm bên trên là mức hoàn thành KH lũy kế.') + '</p>';
       /* --- phát hiện đơn vị / chỉ tiêu yếu (đếm thuần, không phải điểm KPI) --- */
       var li = function (x, attr, aria) { return '<li class="vtb-att-i is-link" ' + attr + '="' + esc(x.ma) + '" role="button" tabindex="0" aria-label="' + esc(aria(x)) + '"><span class="vtb-mx-nm">' + esc(x.ten) + '</span>' + weakBadges(x) + '<small>/ ' + x.n + ' ô</small></li>'; };
       var insOpen = A.mt_ins === undefined ? (window.innerHeight >= 860 || !!st) : !!A.mt_ins;
@@ -158,13 +162,13 @@
         if (ind.nhom !== nhom) { nhom = ind.nhom; tb += '<tr class="moi-mx-grp"><td colspan="' + (cols.length + 1) + '">' + esc(nhom) + '</td></tr>'; }
         tb += '<tr><th scope="row" class="vtb-sticky"><a href="#/chi-tieu/' + esc(ind.ma) + '">' + esc(ind.ten_ngan) + '</a>' + (ind.chi_tham_khao ? '<small> quản trị</small>' : '') + '</th>';
         cols.forEach(function (c) {
-          var x = X.cells[ind.ma + '|' + c.ma]; if (!x) { tb += '<td class="vtb-na' + (c.ma === CN ? ' vtb-mx-cn' : '') + '" aria-label="Không áp dụng" data-tip="Không áp dụng: đơn vị không có chỉ tiêu này (khác GAP)">·</td>'; return; }
+          var x = X.cells[ind.ma + '|' + c.ma]; if (!x) { tb += '<td class="vtb-na' + (c.ma === CN ? ' vtb-mx-cn' : '') + '" aria-label="Không áp dụng" data-tip="Không áp dụng: đơn vị không có chỉ tiêu này (khác Thiếu số)">·</td>'; return; }
           hien++; var h = mxCell(mode, x, c, M, RI, maxMat); tb += c.ma === CN ? h.replace('class="vtb-cell ', 'class="vtb-cell vtb-mx-cn ') : h;
         });
         tb += '</tr>';
       });
       if (!hien) return '<div class="moi-toolbar">' + pills + '</div><div class="moi-card moi-empty"><h2>Không có chỉ tiêu phù hợp</h2><p>Điều kiện lọc hiện tại không còn ô nào. Bấm “Xóa bộ lọc” để quay về tất cả.</p>' + clear + '</div>';
-      var foot = '<tr><th scope="row" class="vtb-sticky">Điểm quy đổi <small>(toàn bộ chỉ tiêu)</small></th>' + cols.map(function (c) { var t = D.tierHt(M, c.ht_chung); var tm = mode === 'ht' || mode === 'kh_nam' || mode === 'diem'; return '<td class="vtb-cell vtb-ft' + (c.ma === CN ? ' vtb-mx-cn' : '') + (tm ? ' vtb-t-' + t : ' vtb-rk-0') + (tm && heatColor(c.ht_chung, t, M.ng) ? ' vtb-hm' : '') + '"' + (tm && heatColor(c.ht_chung, t, M.ng) ? ' style="--hm:' + heatColor(c.ht_chung, t) + ';--hi:' + heatInk(t) + '"' : '') + (tm ? ' data-tier="' + t + '" data-tip="' + esc(c.ten_ngan + ' · điểm quy đổi toàn bộ chỉ tiêu · ' + V.LABEL_LONG[t]) + '"' : '') + '><span class="vtb-cv">' + (tm ? V.svgIcon(t) + ' ' : '') + '<b>' + num(c.quy_doi, 1) + '</b></span></td>'; }).join('') + '</tr>';
+      var foot = '<tr><th scope="row" class="vtb-sticky">Điểm quy đổi <small>(toàn bộ chỉ tiêu)</small></th>' + cols.map(function (c) { var t = D.tierHt(M, c.ht_chung); var tm = mode === 'ht' || mode === 'kh_nam' || mode === 'diem'; return '<td class="vtb-cell vtb-ft' + (c.ma === CN ? ' vtb-mx-cn' : '') + (tm ? ' vtb-t-' + t : ' vtb-rk-0') + (tm && heatColor(c.ht_chung, t, M.ng) ? ' vtb-hm' : '') + '"' + (tm && heatColor(c.ht_chung, t, M.ng) ? ' style="' + heatVars(c.ht_chung, t, M.ng) + '"' : '') + (tm ? ' data-tier="' + t + '" data-tip="' + esc(c.ten_ngan + ' · điểm quy đổi toàn bộ chỉ tiêu · ' + V.LABEL_LONG[t]) + '"' : '') + '><span class="vtb-cv">' + (tm ? V.svgIcon(t) + ' ' : '') + '<b>' + num(c.quy_doi, 1) + '</b></span></td>'; }).join('') + '</tr>';
       if (mode === 'mat') foot += '<tr><th scope="row" class="vtb-sticky">Tổng điểm mất <small>(các ô đang hiển thị)</small></th>' + cols.map(function (c) {
         var s = 0, has = false; X.inds.forEach(function (ind) { var x = X.cells[ind.ma + '|' + c.ma]; if (x && isNum(x.r.mat)) { s += x.r.mat; has = true; } });
         return '<td class="vtb-cell vtb-ft vtb-rk-0' + (c.ma === CN ? ' vtb-mx-cn' : '') + '"><span class="vtb-cv"><b>' + (has ? (s > 0.005 ? '−' + num(s, 1) : '✓') : '–') + '</b></span></td>'; }).join('') + '</tr>';
@@ -216,48 +220,8 @@
   }
 
   /* ====================== THẺ ĐIỂM ĐƠN VỊ ====================== */
-  VIEWS['phong'] = {
-    html: function (A) {
-      var M = STORE.model(), ky = A.ky, ma = A.route.arg || (M.units[0] && M.units[0].ma) || CN; if (ma !== CN && !M.unitMap[ma]) ma = CN; A.route.arg = ma;
-      var c = M.card(ma, ky.nam, ky.thang), prev = ky.thang > 1 ? M.card(ma, ky.nam, ky.thang - 1) : null, rk = D.rank(M, ky.nam, ky.thang, null), me = rk.filter(function (r) { return r.ma === ma; })[0];
-      var sel = '<select id="moi-sel-dvp" class="moi-sel" aria-label="Chọn đơn vị"><option value="' + CN + '"' + (ma === CN ? ' selected' : '') + '>★ Toàn chi nhánh</option>' + M.units.map(function (u) { return '<option value="' + esc(u.ma) + '"' + (u.ma === ma ? ' selected' : '') + '>' + esc(u.ten) + '</option>'; }).join('') + '</select>';
-      var tb = '<div class="moi-toolbar">' + sel + '<span class="moi-grow"></span>' + (ma !== CN ? '<a class="moi-btn" href="#/diem-kpi/' + esc(ma) + '">Trừ / Cộng điểm KPI</a>' : '') + '<button type="button" class="moi-btn" data-act="in">In thẻ điểm</button><button type="button" class="moi-btn" data-act="xlsx">Xuất Excel báo cáo</button><button type="button" class="moi-btn" data-act="in-tat-ca">In thẻ điểm tất cả phòng</button></div>';
-      if (!c.so_ct) return tb + '<div class="moi-card moi-empty"><h2>Chưa khai báo trọng số</h2><p>Khối “' + esc(c.khoi) + '” chưa có trọng số chỉ tiêu nào. Vào Danh mục &amp; trọng số để khai báo.</p></div>';
-      var delta = prev && isNum(prev.quy_doi) && isNum(c.quy_doi) ? c.quy_doi - prev.quy_doi : null;
-      var hero = V.heroFigure({ label: 'Thẻ điểm KPI · lũy kế ' + H.kyTxt(ky) + ' · khối ' + c.khoi, value: num(c.quy_doi, 1), unit: '/ 100 điểm', tier: D.tierHt(M, c.ht_chung), delta: delta === null ? '' : V.deltaBadge(delta, { digits: 2, vs: 'so ' + H.kyTruoc(ky) }), note: num(c.diem, 2) + ' / ' + c.ts + ' điểm theo trọng số' + (c.dc_diem ? ' · cộng/trừ điểm KPI ' + sgn(c.dc_diem, 2) : '') });
-      var rows = D.cardRows(c).map(D.rowVM), bl = '', last = null;
-      rows.forEach(function (r) { var g = r.nhom || 'Khác'; if (g !== last) { last = g; bl += '<div class="moi-grp">' + esc(g) + '</div>'; }
-        bl += V.bulletRow({ id: r.ma, name: r.ten, nhom: (r.tham_khao ? 'quản trị · không chấm điểm · ' : '') + (isNum(r.ts) ? 'Trọng số ' + r.ts + ' · ' : '') + (isNum(r.diem) ? 'điểm ' + num(r.diem, 2) : '') + (isNum(r.mat) && r.mat > 0.005 ? ' · mất ' + num(r.mat, 2) : ''), ht: r.ht, tier: r.tier, thTxt: isNum(r.th) ? H.fmtV(r.th, r.ind) : 'Chưa có số', khTxt: isNum(r.kh) ? H.fmtV(r.kh, r.ind) : '', gapTxt: isNum(r.gap) ? H.gapTxt(r) : '–', gapBad: isNum(r.gap) && (r.huong === 'thap_tot' ? r.gap > 0 : r.gap < 0), cap: Math.max(r.ind && 1.3, 1) }); });
-      var tbl = H.tbl({ caption: 'Thẻ điểm KPI ' + c.ten_ngan, cols: [{ k: 'ten', t: 'Chỉ tiêu' }, { k: 'ts', t: 'TS', cls: 'vtb-r' }, { k: 'kh', t: 'Kế hoạch', cls: 'vtb-r' }, { k: 'th', t: 'Thực hiện', cls: 'vtb-r' }, { k: 'ht', t: '% HT', cls: 'vtb-r' }, { k: 'diem', t: 'Điểm', cls: 'vtb-r' }, { k: 'mat', t: 'Mất', cls: 'vtb-r' }, { k: 'tier', t: 'Mức' }],
-        rows: rows.map(function (r) { return { _key: r.ma, ten: r.ten, ts: isNum(r.ts) ? r.ts : '–', kh: H.fmtV(r.kh, r.ind), th: H.fmtV(r.th, r.ind), ht: isNum(r.ht) ? pct(r.ht, 1) : '–', diem: isNum(r.diem) ? num(r.diem, 2) : '–', mat: isNum(r.mat) ? num(r.mat, 2) : '–', tier: V.LABEL_LONG[r.tier] }; }) });
-      var dc = c.ds_dc_diem && c.ds_dc_diem.length ? H.cardPlain('moi-c12', 'Điểm thi đua, khen thưởng và kỷ luật (tổng ' + sgn(c.dc_diem, 2) + ' điểm)', H.tbl({ caption: 'Cộng/trừ điểm KPI', cols: [{ k: 'diem', t: 'Điểm', cls: 'vtb-r' }, { k: 'ly', t: 'Lý do' }, { k: 'cc', t: 'Căn cứ' }, { k: 'ai', t: 'Người duyệt' }], rows: c.ds_dc_diem.map(function (x, i) { return { _key: i, diem: sgn(x.diem, 2), ly: x.ly_do || '—', cc: x.can_cu || '—', ai: x.ai || '—' }; }) })) : '';
-      var note = STORE.getNote(ma, ky.nam, ky.thang), info = STORE.getNoteInfo(ma, ky.nam, ky.thang);
-      var nt = H.cardPlain('moi-c12', 'Nhận xét và giải pháp ' + H.kyTxt(ky), (STORE.isAdmin() ? '<textarea id="moi-note" class="moi-ta" rows="4" placeholder="Nguyên nhân chưa đạt, giải pháp, đầu mối, thời hạn…">' + esc(note) + '</textarea><div class="moi-right"><button type="button" class="moi-btn primary" data-act="luu-note">Lưu nhận xét</button></div>' : (note ? '<p class="moi-pre">' + esc(note) + '</p>' : H.empty('Chưa có nhận xét.'))) + (info ? '<p class="vtb-caption">Cập nhật ' + (info.ai ? 'bởi ' + esc(info.ai) + ' ' : '') + 'lúc ' + new Date(info.t).toLocaleString('vi-VN') + '</p>' : ''));
-      return tb + '<div class="moi-grid"><section class="moi-card moi-c3">' + hero + '<div class="moi-sep"></div>' + V.tierBar({ dat: c.so_dat, kha: c.so_kha, cct: c.so_cct, chua: c.so_chua, gap: c.so_thieu }) + (me ? '<p class="vtb-caption moi-mt">Xếp hạng: <b>' + (me.hang || '–') + '/' + rk.length + '</b>' + (me.hang_truoc ? ' · tháng trước hạng ' + me.hang_truoc : '') + '</p>' : '') + '</section>' +
-        H.card('moi-c9', 'Chỉ tiêu của ' + esc(c.ten_ngan), '<div class="moi-bl-head vtb-caption" aria-hidden="true"><span>Chỉ tiêu</span><span>% hoàn thành (vạch đen = mức kế hoạch)</span><span class="vtb-r">Thực hiện / KH</span><span class="vtb-r">GAP</span><span>Mức</span></div>' + H.pair(bl, tbl), H.seg('Kiểu hiển thị thẻ điểm')) + '</div>' + dc +
-        '<div class="moi-grid">' + H.card('moi-c12', 'Diễn biến điểm quy đổi ' + ky.nam, '<div class="moi-ch" data-ch="unit-trend" data-dv="' + esc(ma) + '"></div>', H.seg('Kiểu hiển thị diễn biến')) + '</div>' + nt;
-    },
-    mount: function (v, A) {
-      var M = STORE.model(), ky = A.ky, ma = A.route.arg, g = function (s) { return v.querySelector(s); };
-      var s = g('#moi-sel-dvp'); if (s) s.onchange = function () { APP.go('phong', this.value); };
-      v.onclick = v.onclick;   // (sự kiện chung do vỏ giao diện mới xử lý: data-act, data-ct…)
-      void M; void ky; void ma;
-    },
-    act: function (a, A) {
-      var ky = A.ky, ma = A.route.arg;
-      if (a === 'in') window.print();
-      else if (a === 'xlsx') EXCEL.xuatBaoCao(ky.nam, ky.thang).catch(function (e) { UI.toast(e.message, 'err'); });
-      else if (a === 'in-tat-ca') KPI_THE_DIEM.inTatCa(ky);
-      else if (a === 'luu-note') { var t = document.getElementById('moi-note'); if (t) { STORE.setNote(ma, ky.nam, ky.thang, t.value.trim()); UI.toast('Đã lưu nhận xét.', 'ok'); } }
-    }
-  };
-  H.CH['unit-trend'] = function (el, A) {
-    var M = STORE.model(), dv = el.getAttribute('data-dv') || CN, ky = A.ky, w = Math.max(320, el.clientWidth || 600), ng = M.ng, s = M.scoreSeries(dv, ky.nam), cs = dv === CN ? null : M.scoreSeries(CN, ky.nam), c = M.card(dv, ky.nam, ky.thang);
-    var series = [{ name: dv === CN ? 'Toàn CN' : c.ten_ngan, vals: s }]; if (cs) series.push({ name: 'Toàn CN', vals: cs, color: 'var(--series-neutral)', thin: true, labelColor: 'var(--ink-2)' });
-    var chart = V.trendLine({ w: w, h: 270, rightPad: Math.min(150, w * 0.26), series: series, refs: [{ v: ng.dat * 100, label: 'Đạt ' + num(ng.dat * 100, 0) }, { v: ng.kha * 100, label: 'Khá ' + num(ng.kha * 100, 0) }], yMin: 50, yMax: 110, aria: 'Diễn biến điểm quy đổi ' + c.ten_ngan });
-    var rows = []; for (var i = 0; i < 12; i++) if (isNum(s[i])) rows.push({ _key: i + 1, th: 'T' + (i + 1), a: num(s[i], 1), b: cs && isNum(cs[i]) ? num(cs[i], 1) : '–' });
-    el.innerHTML = H.pair(chart, H.tbl({ caption: 'Điểm quy đổi theo tháng', cols: [{ k: 'th', t: 'Tháng' }, { k: 'a', t: dv === CN ? 'Toàn CN' : c.ten_ngan, cls: 'vtb-r' }, { k: 'b', t: 'Toàn CN', cls: 'vtb-r' }], rows: rows }));
-  };
+  /* Không đăng ký view riêng: giao diện mới dùng NGUYÊN bố cục và bảng chỉ số của màn 'Thẻ điểm KPI phòng' cũ (VIEWS['phong'] trong views-theo-doi.js),
+   * chạy trong vỏ mới với bảng màu trạng thái mới (xem moi-shell.js: nhánh .moi-legacy). */
 
   /* ====================== NỘI DUNG CẦN XỬ LÝ ====================== */
   VIEWS['canh-bao'] = {

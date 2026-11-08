@@ -17,15 +17,16 @@ Implement against existing architecture instead of inventing a parallel architec
 - Handle errors explicitly.
 - Avoid premature abstractions.
 - Never add a dependency when existing project capabilities are sufficient.
+- Do the work in the current session; do not spawn subagents for edits you can make directly.
+- Read only the files and line ranges you need; keep status updates and the final report short.
 
 ## Verification
-After implementation:
-1. format/lint relevant files;
-2. run type checking;
-3. run targeted tests;
-4. run integration/E2E tests when affected;
-5. run build when practical;
-6. inspect git diff for accidental changes.
+Scale checks to the change; run each step at most once, after the last edit.
+1. Run only the tests that cover the files changed (targeted, not the full suite).
+2. Run lint/type check/build only if the project defines that command.
+3. Run integration/E2E only when the change touches behavior they cover, not for CSS/docs/text-only edits.
+4. Inspect `git diff --stat`, then open the full diff only if it looks larger than expected.
+Report any check you skipped and why.
 
 ## Ngôn ngữ bắt buộc
 

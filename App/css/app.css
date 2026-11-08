@@ -504,3 +504,19 @@ input.cell.warn { outline: 2px solid #f5a623; background: #fff8e8; }
 .png-head-in { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 16px; padding: 8px 2px 0; }
 .png-head-in b { color: var(--primary-d); font-size: 15px; }
 .png-head-in span { color: var(--muted); }
+
+/* Đa độ phân giải (giao diện cũ): thanh trên cùng xuống dòng khi hẹp để nút bên phải không bị tràn khỏi màn hình (1024–1180px) */
+@media (max-width: 1180px) { .topbar { flex-wrap: wrap; } }
+/* Đa độ phân giải (giao diện cũ): màn hình lớn phóng to để chữ giữ cỡ như 1920×1080 — chỉ thêm quy tắc mới, không đổi quy tắc có sẵn */
+@media (min-width: 2400px) and (min-height: 1300px) { body:not(.ui-moi):not(.printing-bc) { zoom: 1.333; } }
+@media (min-width: 3000px) and (min-height: 1600px) { body:not(.ui-moi):not(.printing-bc) { zoom: 1.667; } }
+@media (min-width: 3600px) and (min-height: 1900px) { body:not(.ui-moi):not(.printing-bc) { zoom: 2; } }
+/* Chart.js đo khung chứa bằng pixel thực nên sai khi trang đang phóng to: đặt khung biểu đồ về tỷ lệ thực (zoom nghịch đảo) và nhân chiều cao theo hệ số phóng để biểu đồ vẫn vừa khung, đúng tỷ lệ so với phần còn lại */
+@media (min-width: 2400px) and (min-height: 1300px) { :root { --zf: 1.333; } }
+@media (min-width: 3000px) and (min-height: 1600px) { :root { --zf: 1.667; } }
+@media (min-width: 3600px) and (min-height: 1900px) { :root { --zf: 2; } }
+@media (min-width: 2400px) and (min-height: 1300px) {
+  body:not(.moi-presenting) .chart { zoom: calc(1 / var(--zf)); }
+  .chart.h260 { height: calc(260px * var(--zf)); } .chart.h300 { height: calc(300px * var(--zf)); } .chart.h320 { height: calc(320px * var(--zf)); } .chart.h340 { height: calc(340px * var(--zf)); }
+}
+@media print { body, body.ui-moi { zoom: 1 !important; } }

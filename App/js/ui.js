@@ -239,7 +239,8 @@
       dich.push([tb, tb.closest('.card') || tb.parentNode]);
     });
     dich.forEach(function (d) {
-      var neo = d[1]; if (neo.querySelector(':scope > .png-btn, :scope > .png-row, :scope > .card-head > .png-btn')) return;
+      var neo = d[1]; if (neo.closest('[data-no-png]') || d[0].closest('[data-no-png]')) return;   // khung đánh dấu không cần ảnh (VD: Người dùng quản trị, Nhật ký thay đổi)
+      if (neo.querySelector(':scope > .png-btn, :scope > .png-row, :scope > .card-head > .png-btn')) return;
       var b = document.createElement('button'); b.type = 'button'; b.className = 'png-btn'; b.title = 'Tải ảnh PNG của khung này'; b.setAttribute('aria-label', 'Tải ảnh PNG của khung này'); b.textContent = '📷';
       b.onclick = function (e) { e.stopPropagation(); taiAnh(d[0], b); };
       var hd = neo.querySelector(':scope > .card-head');

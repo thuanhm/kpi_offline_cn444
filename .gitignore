@@ -14,3 +14,6 @@ App/_smoke.html
 node_modules/
 *.log
 Thumbs.db
+
+# Kết quả/ảnh sinh ra khi chạy kiểm thử (tạo lại mỗi lần chạy)
+/tests/out/
