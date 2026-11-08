@@ -28,3 +28,4 @@ Mỗi bài in "TẤT CẢ ĐẠT" khi thành công.
   node tests\browser-ma-tran.mjs                          (69 kiểm thử trên ứng dụng thật, đánh số theo mục XII: màu, lọc 5 trạng thái, bộ đếm, kết hợp lọc, đổi kỳ/đơn vị,
                                                             5 chế độ, click/hover/focus, 3 kích thước, Presentation Mode, Legacy, KPI trước/sau)
   node tests\screenshots-ma-tran.mjs                      (chụp ảnh bàn giao vào docs\screenshots\ma-tran)
+  node tests\browser-brand.mjs                            (20 kiểm thử nhận diện thương hiệu VietinBank, giao diện mới + hồi quy Legacy)

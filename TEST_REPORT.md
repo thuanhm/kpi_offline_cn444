@@ -95,3 +95,15 @@ Lỗi nằm ở **bộ test** (không phải ứng dụng) và đã sửa test c
 ## 9. Bổ sung: Ma trận chỉ tiêu (giao diện mới)
 
 Chi tiết trong `MATRIX_UPGRADE_REPORT.md`. Kết quả: 14 bộ Node đạt (có thêm 8 kiểm tra ma trận trong `test-moi-data.js`, 60 tổ hợp kỳ × bộ lọc); `browser-ma-tran.mjs` **69/69**; `browser-dual-ui.mjs` vẫn **65/65**. Smoke PowerShell: tình trạng như mục 6, không đổi.
+
+## 10. Bổ sung: Heatmap liên tục và nhận diện thương hiệu VietinBank
+
+| Bộ test | Kết quả |
+|---|---|
+| `browser-brand.mjs` (mới) | **20/20 đạt** — mã/token thương hiệu, không còn `#005993`, header/sidebar/nút/thẻ KPI, tương phản, 3 độ phân giải × mọi màn hình trong điều hướng, Heatmap độc lập thương hiệu, Legacy không nhận token, KPI không đổi, không lỗi console |
+| `browser-ma-tran.mjs` | **74/74 đạt** (thêm kiểm tra Heatmap liên tục, chiều màu theo mức, tương phản mọi ô, chú giải) |
+| `browser-dual-ui.mjs` | **65/65 đạt** |
+| 14 bộ Node (`test-*.js`) | tất cả đạt (`test-saoluu.js` cần đường dẫn tương đối từ thư mục `tests`, xem CHAY_TEST.txt) |
+
+Thay đổi test có chủ đích: kiểm tra D6 của `browser-dual-ui.mjs` ("ô là 4 mức rời + biểu tượng") và nhóm kiểm tra màu của `browser-ma-tran.mjs` (bảng pastel) được **viết lại** theo yêu cầu Heatmap mới của chủ dự án — không xóa, không tắt; nội dung kiểm tra chuyển sang thang liên tục.
+Chưa kiểm thử: dữ liệu thật, Firefox/Safari, cảm ứng, in A4, trình đọc màn hình. Responsive 1920×1080 / 1440×900 / 1366×768 kiểm tự động không tràn ngang trên mọi màn hình; modal/thông báo dùng chung token nhưng chưa có ảnh riêng.

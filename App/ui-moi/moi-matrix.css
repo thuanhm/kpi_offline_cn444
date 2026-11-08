@@ -138,3 +138,13 @@
 .moi-stage .moi-mx .vtb-matrix td { height: 24px; } .moi-stage .moi-mx .vtb-cb { min-height: 23px; }
 .moi-stage .moi-mx .vtb-matrix td { height: 22px; } .moi-stage .moi-mx .vtb-cb { min-height: 21px; } .moi-stage .moi-mx .vtb-matrix { font-size: 15px; } .moi-stage .moi-mx .vtb-cell { font-size: 15px; }
 .moi-stage .moi-hm-gap { display: none; }
+
+/* ===== Heatmap kiểu lưới: ô liền nhau, KHÔNG bo tròn, KHÔNG khe trắng; đường kẻ mảnh tối giữa các ô; số đậm tối màu ===== */
+.moi-mx .vtb-matrix td.vtb-cell, .moi-mx .vtb-matrix td.vtb-na { border: 0 !important; border-right: 1px solid rgba(27, 35, 51, .55) !important; border-bottom: 1px solid rgba(27, 35, 51, .55) !important; border-radius: 0 !important; }
+.moi-mx .vtb-matrix td.vtb-cell.vtb-hm, .moi-mx .vtb-matrix tfoot .vtb-cell.vtb-hm { box-shadow: none; }
+.moi-mx .vtb-cb { border-radius: 0; }
+.moi-mx .vtb-matrix td.vtb-cell.vtb-hm .vtb-cv { font-weight: 800; }
+.moi-mx .vtb-matrix tbody tr:first-child td.vtb-cell, .moi-mx .vtb-matrix tbody tr:first-child td.vtb-na { border-top: 1px solid rgba(27, 35, 51, .55) !important; }
+.moi-mx .vtb-matrix td.vtb-mx-cn { border-left: 2px solid #1b2333 !important; border-right: 2px solid #1b2333 !important; }
+.moi-mx .vtb-matrix tfoot .vtb-mx-cn { border-bottom: 2px solid #1b2333 !important; }
+.moi-mx .vtb-matrix tbody th.vtb-sticky { border-right: 1px solid rgba(27, 35, 51, .55); border-bottom: 1px solid rgba(27, 35, 51, .25); }

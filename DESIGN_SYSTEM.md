@@ -99,3 +99,29 @@ Chỉ áp dụng dưới `.moi-mx` (màn Ma trận và chế độ trình chiế
 - Ô bị làm mờ khi lọc: nền `#F3F5F9`, chữ `#5A6881` (5,0:1) — vẫn đọc được.
 - Chế độ **Thứ hạng** và **Điểm bị mất** không phải trạng thái: dùng thang một tông tím (`#F7F5FD` → `#BDB1EE`, viền `#6250D6` cho hạng 1 / mất nhiều nhất), không dùng màu trạng thái.
 - Cột **Toàn chi nhánh**: khung xanh thương hiệu hai bên, tiêu đề nền `brand-blue-tint` và nhãn "Tổng hợp toàn CN".
+
+## 8. Nhận diện thương hiệu VietinBank và Heatmap liên tục (cập nhật)
+
+**Bộ màu thương hiệu** (khai báo MỘT lần trong `App/ui-moi/moi-tokens.css`, mọi nơi khác dùng token):
+
+| Token | Mã | Vai trò |
+|---|---|---|
+| `--brand-blue` | `#00538E` (RGB 0,83,142) | Màu chủ đạo: tiêu đề, điều hướng, nút chính, liên kết, số chỉ tiêu trọng tâm, chuỗi dữ liệu chính (`--series-1`). Trước đây `#005993` → đã chuyển. |
+| `--brand-red` | `#D71249` | Nhấn có chọn lọc: vệt dưới tiêu đề, chỉ báo mục điều hướng đang chọn, thẻ KPI đang chọn, huy hiệu thông báo, nút nhấn `.moi-btn.accent`. KHÔNG dùng cho trạng thái KPI. |
+| `--brand-sky` | `#80D1F2` | Bổ trợ: đường nhấn trên thẻ KPI, đường viền chân sidebar, vòng focus, chuỗi phụ (`--series-sky`). Không dùng làm màu chữ trên nền trắng. |
+| `--brand-blue-dark` / `--brand-red-dark` / `--brand-blue-tint` / `--brand-sky-tint` | dẫn xuất | hover/pressed và nền chọn nhẹ |
+
+Token chuẩn hóa (bí danh, không thêm màu): `--background-main/secondary`, `--surface-primary/secondary/hover/selected`, `--text-primary/secondary/muted/inverse/disabled`, `--border-default/subtle/strong/focus`, `--primary-button(-hover)`, `--accent-button(-hover)`, `--navigation-active/hover`, `--selected-state`, `--focus-ring`, `--success/warning/danger/info/neutral`.
+
+**Ba hệ màu độc lập:** (1) thương hiệu (trên); (2) trạng thái KPI `--tier-*` (Đạt/Khá/CCT/Chưa đạt/GAP, giữ nguyên); (3) Heatmap `--hm` (đỏ→cam→vàng→xanh lá). Có test bảo đảm không ô Heatmap nào mang màu thương hiệu và đỏ thương hiệu ≠ màu Chưa đạt.
+
+**Heatmap (Ma trận chỉ tiêu)** — thay thế bảng pastel rời rạc ở mục 7 cho các chế độ % hoàn thành KH, % KH năm, Điểm đạt:
+- Thang 11 điểm `#E85D61 → #F47768 → #F49768 → #F7B66F → #FDD17A → #FFEB84 → #E8E47A → #C8DC7D → #A8D17D → #83C77B → #63BE7B`, nội suy tuyến tính theo % hoàn thành của engine (`r.ht`; chỉ tiêu "thấp là tốt" đã được engine quy về cùng thang).
+- Mức (Đạt/Khá/CCT/Chưa đạt) vẫn do engine quyết định; màu luôn nằm trong dải của mức đó (Chưa đạt 0–28% thang, CCT 28–56%, Khá 56–82%, Đạt 82–100%), điểm mốc lấy từ ngưỡng cấu hình `M.ng`. Nội suy bên trong dải chỉ để hiển thị, không là ngưỡng nghiệp vụ.
+- GAP: nền xám trung tính `#E9EDF2` + chữ "GAP"; ô "·" = không áp dụng, không nền.
+- Chữ `#1B2333` đậm 800; tương phản thấp nhất trên thang 4,62:1 (AA).
+- Kiểu lưới: ô liền nhau, không bo góc, không khe trắng, đường kẻ mảnh `rgba(27,35,51,.55)`; cột Toàn chi nhánh phân biệt bằng nền tiêu đề + hai đường kẻ đậm.
+- Chú giải liên tục `.moi-hm` (thanh chuyển sắc + mốc % theo ngưỡng cấu hình). Chip lọc mang màu giữa dải của mức.
+- Thứ hạng / Điểm bị mất vẫn dùng thang tím một tông (ý nghĩa dữ liệu khác nhau).
+
+**Typography:** Plus Jakarta Sans (đã nhúng offline). **Áp dụng:** header (dải xanh + vệt đỏ), sidebar (nền sáng, icon xanh, mục chọn nền xanh nhạt + chỉ báo đỏ), nút, tiêu đề thẻ, thẻ KPI, biểu đồ (chuỗi chính xanh, phụ xám/xanh da trời; dự kiến nét đứt + nhãn DỰ KIẾN).

@@ -147,7 +147,7 @@ body.ui-moi:not(.moi-presenting) .vtb-loss-r { grid-template-columns: minmax(110
 .moi-stage .moi-bgd .a-right .moi-head h2, .moi-stage .moi-bgd .a-mid .moi-head h2 { font-size: 24px; }
 
 /* ---------- Giao diện cũ đặt trong vỏ mới: áp bảng màu mới (D1) cho các màn chưa thiết kế lại ---------- */
-body.ui-moi { --primary: #005993; --primary-d: #004573; --primary-l: #e6f1f8; --accent: #d71249; --bg: #f4f6fa; --card: #fff; --line: #e3e9f2; --line-2: #eef2f7; --text: #15233b; --muted: #5a6881;
+body.ui-moi { --primary: var(--brand-blue); --primary-d: var(--brand-blue-dark); --primary-l: var(--brand-blue-tint); --accent: var(--brand-red); --bg: #f4f6fa; --card: #fff; --line: #e3e9f2; --line-2: #eef2f7; --text: #15233b; --muted: #5a6881;
   --c-dat: #1c5cab; --c-kha: #6da7ec; --c-cct: #ec835a; --c-chua: #b02a2a; --c-thieu: #8996ab; --t-dat: #e4ebf5; --t-kha: #edf4fd; --t-cct: #fdf0eb; --t-chua: #f6e5e5; --t-thieu: #f1f2f5; --r: 10px; }
 .moi-legacy .chip.dat, .moi-legacy .txt-dat { color: var(--tier-dat-ink); } .moi-legacy .chip.kha, .moi-legacy .txt-kha { color: var(--tier-kha-ink); } .moi-legacy .chip.cct, .moi-legacy .txt-cct { color: var(--tier-cct-ink); } .moi-legacy .chip.chua, .moi-legacy .txt-chua { color: var(--tier-chua-ink); } .moi-legacy .chip.thieu { color: var(--tier-gap-ink); }
 .moi-legacy .btn.primary { background: var(--brand-blue); border-color: var(--brand-blue); } .moi-legacy .card { box-shadow: var(--shadow-card); } .moi-legacy .hero { background: var(--surface-card); border-image: none; border-top: 0; } .moi-legacy .hero::after { display: none; }

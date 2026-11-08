@@ -1,9 +1,13 @@
 /* Token Design System VietinBank KPI (nguồn: designs/kpi-executive-proto). Phạm vi body.ui-moi: không ảnh hưởng giao diện cũ. */
 body.ui-moi {
-  --brand-blue: #005993;
-  --brand-blue-dark: #004573;
-  --brand-blue-tint: #e6f1f8;
-  --brand-red: #d71249;
+  /* === NHẬN DIỆN THƯƠNG HIỆU VIETINBANK (chính thức do chủ dự án cung cấp) — độc lập với màu trạng thái KPI và Heatmap === */
+  --brand-blue: #00538e;            /* Brand Primary (RGB 0,83,142) */
+  --brand-blue-dark: #003e6c;       /* hover/pressed của nút chính (đậm hơn Primary) */
+  --brand-blue-tint: #e4eff7;       /* nền chọn/hover nhẹ (Primary pha trắng) */
+  --brand-red: #d71249;             /* Brand Accent: chỉ để nhấn; KHÔNG dùng làm màu cảnh báo KPI */
+  --brand-red-dark: #b00e3b;        /* hover nút nhấn */
+  --brand-sky: #80d1f2;             /* Brand Secondary: nền nhấn nhẹ, dữ liệu phụ; không dùng làm chữ trên nền trắng */
+  --brand-sky-tint: #e6f6fd;        /* vùng nền nhấn rất nhẹ */
   --surface-page: #f4f6fa;
   --surface-card: #ffffff;
   --surface-sunken: #eaeff6;
@@ -14,6 +18,14 @@ body.ui-moi {
   --ink-muted: #5a6881;
   --on-brand: #ffffff;
   --focus-ring: var(--brand-blue);
+  /* Tên token theo hệ thống chuẩn hóa — chỉ là bí danh của các giá trị trên (không thêm màu mới) */
+  --background-main: var(--surface-page); --background-secondary: var(--surface-sunken); --surface-primary: var(--surface-card); --surface-secondary: var(--surface-page);
+  --surface-hover: var(--brand-blue-tint); --surface-selected: var(--brand-blue-tint);
+  --text-primary: var(--ink); --text-secondary: var(--ink-2); --text-muted: var(--ink-muted); --text-inverse: var(--on-brand); --text-disabled: #8a96aa;
+  --border-default: var(--line); --border-subtle: var(--line-2, #eef2f7); --border-strong: var(--line-strong); --border-focus: var(--brand-blue);
+  --primary-button: var(--brand-blue); --primary-button-hover: var(--brand-blue-dark); --accent-button: var(--brand-red); --accent-button-hover: var(--brand-red-dark);
+  --navigation-active: var(--brand-blue-tint); --navigation-hover: var(--surface-page); --selected-state: var(--brand-blue-tint);
+  --success: var(--tier-dat-ink); --warning: var(--tier-cct-ink); --danger: var(--tier-chua-ink); --info: var(--brand-blue); --neutral: var(--tier-gap-ink);
   --tier-dat: #1c5cab;
   --tier-dat-tint: #e4ebf5;
   --tier-dat-ink: #1c5cab;
@@ -34,7 +46,9 @@ body.ui-moi {
   --tier-gap-tint: #f1f2f5;
   --tier-gap-ink: #606f87;
   --on-tier-gap: #15233b;
-  --series-1: #005993;
+  --series-1: var(--brand-blue);   /* chuỗi chính */
+  --series-sky: var(--brand-sky);   /* chuỗi phụ (chỉ dùng cho vùng/nét phụ, kèm nhãn) */
+  --series-accent: var(--brand-red); /* nhấn mốc quan trọng, không mặc định = xấu */
   --series-2: #eb6834;
   --series-3: #1baf7a;
   --series-4: #6250d6;
