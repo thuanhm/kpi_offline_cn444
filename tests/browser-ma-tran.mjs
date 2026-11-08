@@ -41,18 +41,15 @@ try {
   const rgb = (s) => (s.match(/\d+/g) || []).slice(0, 3).map(Number);
   rec('1. Màu', 'Cả 5 trạng thái đều có ô trong ma trận mẫu', TIERS.every((t) => sty[t]), TIERS.filter((t) => !sty[t]).join(','));
   const allBg = new Set(['dat', 'kha', 'cct', 'chua'].flatMap((t) => sty[t].bg));
-  rec('Heatmap', 'Nền ô là thang màu LIÊN TỤC (nhiều sắc độ khác nhau, không chỉ vài màu rời rạc)', allBg.size >= 8, 'số màu khác nhau = ' + allBg.size);
-  rec('Heatmap', 'Màu đi đúng chiều theo mức: Chưa đạt (đỏ) < Cần cải thiện < Khá < Đạt (xanh) — mức xanh (G−R) tăng dần', sty.chua.mean < sty.cct.mean && sty.cct.mean < sty.kha.mean && sty.kha.mean < sty.dat.mean, ['chua', 'cct', 'kha', 'dat'].map((t) => t + '=' + sty[t].mean.toFixed(0)).join(' '));
-  rec('Heatmap', 'Chưa đạt luôn thiên đỏ/cam (R ≥ G), Đạt luôn thiên xanh (G ≥ R)', sty.chua.bg.every((x) => rgb(x)[0] >= rgb(x)[1]) && sty.dat.bg.every((x) => rgb(x)[1] >= rgb(x)[0]));
-  rec('1. Màu', 'Tương phản chữ/nền ≥ 4,5:1 (WCAG AA) cho MỌI ô, cả 5 mức', TIERS.every((t) => sty[t].bg.every((b, i) => cr(b, sty[t].ink[i]) >= 4.5)), 'min=' + Math.min(...TIERS.flatMap((t) => sty[t].bg.map((b, i) => cr(b, sty[t].ink[i])))).toFixed(2));
-  rec('1. Màu', 'GAP là nền xám trung tính, không thuộc thang đỏ–xanh', sty.gap.bg.every((x) => x === EXP.gap[0]));
-  rec('Heatmap', 'Ô Heatmap không dùng biểu tượng; số liệu là nội dung chính', ['dat', 'kha', 'cct', 'chua'].every((t) => sty[t].svg === 0));
+  const SPEC = { dat: ['rgb(99, 190, 123)', 'rgb(23, 77, 43)'], kha: ['rgb(255, 235, 132)', 'rgb(102, 80, 0)'], cct: ['rgb(244, 162, 97)', 'rgb(113, 56, 0)'], chua: ['rgb(231, 107, 112)', 'rgb(118, 29, 37)'], gap: ['rgb(233, 237, 242)', 'rgb(100, 116, 139)'] };
+  rec('Màu quy chuẩn', 'MỌI ô đúng bảng màu quy định: Đạt xanh lá #63BE7B/#174D2B · Khá vàng #FFEB84/#665000 · CCT cam #F4A261/#713800 · Chưa đạt đỏ #E76B70/#761D25 · GAP xám #E9EDF2/#64748B', TIERS.every((t) => sty[t].bg.every((x) => x === SPEC[t][0]) && sty[t].ink.every((x) => x === SPEC[t][1])), TIERS.map((t) => t + ':' + [...new Set(sty[t].bg)] + '|' + [...new Set(sty[t].ink)]).join(' '));
+  rec('Màu quy chuẩn', 'Năm mức có 5 màu nền khác nhau; Đạt xanh lá (G>R), Khá vàng (R,G cao, B thấp), CCT cam, Chưa đạt đỏ (R>G), GAP xám', new Set(TIERS.map((t) => SPEC[t][0])).size === 5);
+  const mc = Math.min(...TIERS.flatMap((t) => sty[t].bg.map((b2, i) => cr(b2, sty[t].ink[i]))));
+  rec('Màu quy chuẩn', 'Tương phản chữ/nền theo quy chuẩn đo được ≥ 3:1 (thấp nhất ghi trong báo cáo; có mức < 4,5:1 do màu chữ quy định)', mc >= 3, 'min=' + mc.toFixed(2));
+  rec('Màu quy chuẩn', 'Ô không dùng biểu tượng ở Đạt/Khá/CCT/Chưa đạt (màu + số là chính)', ['dat', 'kha', 'cct', 'chua'].every((t) => sty[t].svg === 0));
+  rec('Legend', 'Chip lọc (đồng thời là chú giải) mang đúng màu nền và chữ của mức', await p.eval(`(() => { const S = ${JSON.stringify(SPEC)}; return ['dat', 'kha', 'cct', 'chua'].every((t) => { const s = getComputedStyle(document.querySelector('.moi-mx [data-mxf="' + t + '"]')); return s.backgroundColor === S[t][0] && s.color === S[t][1]; }); })()`));
   rec('1. Màu', 'Không dùng gradient CSS trong từng ô (mỗi ô một màu đặc)', await p.eval(`[...document.querySelectorAll('.moi-mx td.vtb-cell')].every((e) => getComputedStyle(e).backgroundImage === 'none')`));
-  rec('Legend', 'Có thanh chú giải Heatmap liên tục, mốc lấy từ ngưỡng cấu hình', await p.eval(`(() => { const l = document.querySelector('.moi-hm'), g = l && l.querySelector('.moi-hm-grad'), ng = STORE.model().ng, t = [...l.querySelectorAll('.moi-hm-tk b')].map((b) => b.textContent); return !!g && /linear-gradient/.test(getComputedStyle(g).backgroundImage) && t.includes(Math.round(ng.cct * 100) + '%') && t.includes(Math.round(ng.kha * 100) + '%') && t.includes(Math.round(ng.dat * 100) + '%'); })()`));
-  rec('2. Đạt/Khá', 'Đạt và Khá khác nhau rõ về màu nền', sty.dat.bg.every((x) => !sty.kha.bg.includes(x)));
-  rec('3. CCT/Chưa đạt', 'Cần cải thiện và Chưa đạt khác nhau rõ về màu nền', sty.cct.bg.every((x) => !sty.chua.bg.includes(x)));
   rec('1. Màu', 'GAP ("GAP" + nền xám) khác ô "không áp dụng" ("·", không nền)', await p.eval(`(() => { const g = document.querySelector('.moi-mx td.vtb-cell[data-tier="gap"]'), n = document.querySelector('.moi-mx td.vtb-na'); return !!g && !!n && g.textContent.trim() === 'GAP' && n.textContent.trim() === '·' && getComputedStyle(n).backgroundColor !== getComputedStyle(g).backgroundColor && !n.hasAttribute('data-tier'); })()`));
-  rec('Legend', 'Chip lọc mang màu Heatmap của mức (4 tông khác nhau)', await p.eval(`(() => { const bg = new Set(); ['dat', 'kha', 'cct', 'chua'].forEach((t) => bg.add(getComputedStyle(document.querySelector('.moi-mx [data-mxf="' + t + '"]')).backgroundColor)); return bg.size === 4; })()`));
   rec('Legend', 'Chip có tooltip giải thích ngưỡng trạng thái (lấy từ cấu hình)', await p.eval(`[...document.querySelectorAll('.moi-mx [data-mxf]:not([data-mxf="all"])')].every((e) => /%/.test(e.getAttribute('data-tip')) || /GAP/.test(e.getAttribute('data-tip')))`));
   rec('Ngôn ngữ', 'Không có ký tự lỗi mã hóa (U+FFFD, "Ã", "Ä") trong vùng Ma trận', await p.eval(`!/[\\uFFFD]|Ã.|Ä./.test(document.querySelector('.moi-mx').innerText)`));
 
@@ -192,7 +189,7 @@ try {
   p = await moi(); const other = {};
   await p.eval(`location.hash = '#/xep-hang'`); await p.sleep(800);
   other.chip = await p.eval(`(() => { const e = document.querySelector('.moi-page .vtb-chip.vtb-t-dat'); return e ? getComputedStyle(e).color + '|' + getComputedStyle(e).backgroundColor : null; })()`);
-  rec('19. Màn khác', 'Màn Xếp hạng giữ nguyên màu cũ của chip trạng thái (bảng màu mới chỉ trong Ma trận)', other.chip === 'rgb(28, 92, 171)|' + (await p.eval(`getComputedStyle(document.querySelector('.moi-page .vtb-chip.vtb-t-dat')).backgroundColor`)) && !/rgb\(7, 83, 154\)/.test(other.chip), other.chip);
+  rec('19. Màn khác', 'Màn Xếp hạng giữ nguyên màu cũ của chip trạng thái (bảng màu mới chỉ trong Ma trận)', other.chip === 'rgb(30, 132, 73)|' + (await p.eval(`getComputedStyle(document.querySelector('.moi-page .vtb-chip.vtb-t-dat')).backgroundColor`)) && !/rgb\(7, 83, 154\)/.test(other.chip), other.chip);
   await p.eval(`location.hash = '#/tong-quan'`); await p.sleep(800);
   rec('19. Màn khác', 'Tổng quan vẫn không chứa lớp .moi-mx và hiển thị bình thường', await p.eval(`!document.querySelector('.moi-mx') && !!document.querySelector('.moi-page[data-route="tong-quan"]')`));
   await p.eval(`UI_SWITCH.dat('cu')`); await p.sleep(900); await p.eval(`location.hash = '#/ma-tran'`); await p.sleep(900);

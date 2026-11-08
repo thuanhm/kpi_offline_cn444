@@ -125,3 +125,10 @@ Token chuẩn hóa (bí danh, không thêm màu): `--background-main/secondary`,
 - Thứ hạng / Điểm bị mất vẫn dùng thang tím một tông (ý nghĩa dữ liệu khác nhau).
 
 **Typography:** Plus Jakarta Sans (đã nhúng offline). **Áp dụng:** header (dải xanh + vệt đỏ), sidebar (nền sáng, icon xanh, mục chọn nền xanh nhạt + chỉ báo đỏ), nút, tiêu đề thẻ, thẻ KPI, biểu đồ (chuỗi chính xanh, phụ xám/xanh da trời; dự kiến nét đứt + nhãn DỰ KIẾN).
+
+## 9. Cập nhật mới nhất (thay thế các phần liên quan ở mục 7 và 8)
+
+- **Màu trạng thái Ma trận theo quy chuẩn của chủ dự án** (nền / chữ, áp dụng đúng cho mọi ô, chip lọc và chân bảng): Đạt xanh lá `#63BE7B` / `#174D2B` · Khá vàng `#FFEB84` / `#665000` · Cần cải thiện cam `#F4A261` / `#713800` · Chưa đạt đỏ `#E76B70` / `#761D25` · GAP xám `#E9EDF2` / `#64748B`. Màu theo MỨC do engine xếp (không theo giá trị số); thang liên tục và thanh chú giải liên tục ở mục 8 đã được thay bằng bảng này. Chip lọc đồng thời là chú giải. Tương phản đo được: Đạt 4,30 · Khá 6,44 · CCT 4,49 · Chưa đạt 3,41 · GAP 4,05 (một số mức < 4,5:1 do màu chữ quy định; chữ in đậm).
+- **Màu Đạt toàn giao diện mới** đổi sang xanh lá `#1E8449` (token `--tier-dat`); Khá giữ xanh dương `#6DA7EC` ở các màn ngoài Ma trận.
+- **Header**: nền trắng, một hàng gọn (nhãn phụ ẩn khi < 1700 px, nút chuyển giao diện/chế độ xem chỉ còn biểu tượng khi < 1500 px). **Sidebar**: nền xanh `#00538E` như giao diện cũ, nhóm menu thu gọn được (chỉ nhóm chứa màn đang xem mở, mở nhóm này thì đóng nhóm khác), mục đang chọn nền trắng chữ xanh + chỉ báo đỏ.
+- **Ma trận**: tên nhóm chỉ tiêu cùng cỡ chữ với tên chỉ tiêu (đậm, không viết hoa nhỏ); cột Toàn chi nhánh dùng cùng đường kẻ mảnh như các cột khác, chỉ khác nền tiêu đề.

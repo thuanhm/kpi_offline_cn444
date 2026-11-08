@@ -1,20 +1,32 @@
 /* GIAO DIỆN MỚI — nhận diện thương hiệu VietinBank (xanh chính · đỏ nhấn · xanh da trời bổ trợ; mã màu chỉ khai báo trong moi-tokens.css).
  * Nạp SAU CÙNG; chỉ dùng token trong moi-tokens.css. Màu thương hiệu tách hẳn màu trạng thái KPI (--tier-*) và Heatmap (--hm).
  * Phạm vi body.ui-moi — giao diện cũ không bị ảnh hưởng. */
-/* Header: dải xanh thương hiệu phía trên, một vệt đỏ nhỏ dưới tiêu đề */
-body.ui-moi .moi-top { border-top: 4px solid var(--brand-blue); }
-body.ui-moi .moi-h1 { color: var(--brand-blue); font-weight: 700; position: relative; padding-bottom: 6px; }
+/* Header: nền trắng, gọn một hàng (như giao diện cũ); nhận diện bằng dải xanh phía trên, tiêu đề xanh và vệt đỏ nhỏ */
+body.ui-moi .moi-top { border-top: 4px solid var(--brand-blue); padding: 6px var(--space-4); flex-wrap: nowrap; gap: var(--space-2) var(--space-3); min-height: 52px; }
+body.ui-moi .moi-h1 { color: var(--brand-blue); font-size: 19px; line-height: 26px; font-weight: 700; white-space: nowrap; position: relative; padding-bottom: 5px; }
 body.ui-moi .moi-h1::after { content: ""; position: absolute; left: 0; bottom: 0; width: 28px; height: 3px; border-radius: 2px; background: var(--brand-red); }
 body.ui-moi .moi-upd { color: var(--text-secondary); }
-/* Sidebar: nền sáng, icon xanh thương hiệu, mục đang chọn nền xanh nhạt + chỉ báo đỏ nhỏ ở cạnh */
-body.ui-moi .moi-brand { border-bottom: 3px solid var(--brand-blue); }
-body.ui-moi .moi-nav-i .ic { color: var(--brand-blue); }
-body.ui-moi .moi-nav-i:hover { background: var(--surface-hover); color: var(--brand-blue); }
-body.ui-moi .moi-nav-i { position: relative; }
-body.ui-moi .moi-nav-i.is-on { background: var(--surface-selected); color: var(--brand-blue); font-weight: 700; box-shadow: inset 0 0 0 1px rgba(0, 83, 142, .18); }
+body.ui-moi .moi-top .moi-btn, body.ui-moi .moi-top .moi-period select { min-height: 32px; }
+@media (max-width: 1700px) { body.ui-moi .moi-top .moi-period label, body.ui-moi .moi-upd { display: none; } }
+@media (max-width: 1500px) { body.ui-moi .moi-top .ui-sw button span, body.ui-moi .moi-top #btn-mode span { display: none; } body.ui-moi .moi-top #sync-dot { font-size: 0; } }
+@media (max-width: 1100px) { body.ui-moi .moi-top { flex-wrap: wrap; } }
+/* Sidebar: nền xanh thương hiệu như giao diện cũ, nhóm thu gọn được; mục đang chọn nền trắng chữ xanh + chỉ báo đỏ */
+body.ui-moi .moi-side { background: var(--brand-blue); border-right: 0; color: var(--text-inverse); }
+body.ui-moi .moi-brand { border-bottom: 3px solid var(--brand-red); color: var(--text-inverse); }
+body.ui-moi .moi-brand img { background: var(--surface-primary); border-radius: var(--radius-sm); padding: 6px 8px; box-sizing: content-box; }
+body.ui-moi .moi-brand-t b { color: var(--text-inverse); } body.ui-moi .moi-brand-t small { color: rgba(255, 255, 255, .8); }
+body.ui-moi .moi-nav-i { position: relative; color: rgba(255, 255, 255, .92); }
+body.ui-moi .moi-nav-i .ic { color: var(--text-inverse); }
+body.ui-moi .moi-nav-i:hover { background: rgba(255, 255, 255, .14); color: var(--text-inverse); }
+body.ui-moi .moi-nav-i.is-on { background: var(--surface-primary); color: var(--brand-blue); font-weight: 700; box-shadow: none; }
+body.ui-moi .moi-nav-i.is-on .ic { color: var(--brand-blue); }
 body.ui-moi .moi-nav-i.is-on::before { content: ""; position: absolute; left: 0; top: 8px; bottom: 8px; width: 4px; border-radius: 0 3px 3px 0; background: var(--brand-red); }
-body.ui-moi .moi-nav-h { color: var(--brand-blue); opacity: .85; }
-body.ui-moi .moi-side-foot { border-top-color: var(--brand-sky); }
+body.ui-moi .moi-nav-h { display: flex; width: 100%; align-items: center; justify-content: space-between; border: 0; background: transparent; cursor: pointer; color: rgba(255, 255, 255, .85); text-align: left; font-family: inherit; border-radius: var(--radius-sm); }
+body.ui-moi .moi-nav-h:hover { background: rgba(255, 255, 255, .1); color: var(--text-inverse); }
+body.ui-moi .moi-nav-h:focus-visible, body.ui-moi .moi-nav-i:focus-visible { outline: 3px solid var(--brand-sky); outline-offset: 1px; }
+body.ui-moi .moi-nav-chev { transition: transform .15s; } body.ui-moi .moi-nav-g.open .moi-nav-chev { transform: rotate(180deg); }
+body.ui-moi .moi-nav-g[data-nhom]:not(.open) .moi-nav-items { display: none; }
+body.ui-moi .moi-side-foot { color: rgba(255, 255, 255, .78); border-top: 1px solid rgba(255, 255, 255, .25); }
 /* Nút: chính = xanh; nhấn = đỏ (chỉ khi thật sự cần); phụ = trắng viền trung tính; chọn = xanh nhạt */
 body.ui-moi .moi-btn.accent { background: var(--accent-button); border-color: var(--accent-button); color: var(--on-brand); } body.ui-moi .moi-btn.accent:hover { background: var(--accent-button-hover); }
 body.ui-moi .moi-btn:hover:not(.primary):not(.accent) { background: var(--surface-hover); border-color: var(--brand-blue); }

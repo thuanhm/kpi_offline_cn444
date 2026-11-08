@@ -26,9 +26,9 @@ body.ui-moi {
   --primary-button: var(--brand-blue); --primary-button-hover: var(--brand-blue-dark); --accent-button: var(--brand-red); --accent-button-hover: var(--brand-red-dark);
   --navigation-active: var(--brand-blue-tint); --navigation-hover: var(--surface-page); --selected-state: var(--brand-blue-tint);
   --success: var(--tier-dat-ink); --warning: var(--tier-cct-ink); --danger: var(--tier-chua-ink); --info: var(--brand-blue); --neutral: var(--tier-gap-ink);
-  --tier-dat: #1c5cab;
-  --tier-dat-tint: #e4ebf5;
-  --tier-dat-ink: #1c5cab;
+  --tier-dat: #1e8449;
+  --tier-dat-tint: #e3f4ea;
+  --tier-dat-ink: #1e8449;
   --on-tier-dat: #ffffff;
   --tier-kha: #6da7ec;
   --tier-kha-tint: #edf4fd;

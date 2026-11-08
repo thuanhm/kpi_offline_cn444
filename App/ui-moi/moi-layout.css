@@ -93,7 +93,7 @@ body.ui-moi::before { display: none; }                      /* bỏ dải màu c
 .moi-a-risk .vtb-bullet { grid-template-columns: minmax(90px, 1.1fr) minmax(60px, 1fr) auto; } .moi-a-risk .vtb-bl-gap, .moi-a-risk .vtb-bl-tier { display: none; } .moi-a-risk .vtb-bl-name small { white-space: normal; }
 .moi-bgd .a-rank .vtb-rk-head, .moi-bgd .a-rank .vtb-rk-row { grid-template-columns: 46px minmax(78px, .9fr) minmax(80px, 1.5fr) 64px 56px 118px; gap: var(--space-2); } .moi-bgd .a-rank .vtb-spark { display: none; }
 .a-fresh { padding: var(--space-3) var(--space-4); background: var(--surface-card); border: 1px solid var(--line); border-radius: var(--radius-md); }
-.moi-mx-wrap { max-height: 70vh; } .moi-mx-grp td { padding: 10px 8px 2px; font-size: 11px; font-weight: 700; color: var(--brand-blue); text-transform: uppercase; letter-spacing: .05em; background: var(--surface-card); }
+.moi-mx-wrap { max-height: 70vh; } .moi-mx-grp td { padding: 12px 8px 4px; font-size: var(--fs-body, 14px); font-weight: 800; color: var(--brand-blue); text-transform: none; letter-spacing: 0; background: var(--surface-card); }
 .vtb-matrix tfoot td, .vtb-matrix tfoot th { padding-top: 6px; } .vtb-matrix thead th a { color: var(--ink); text-decoration: none; } .vtb-matrix thead th small { display: block; font-weight: 500; color: var(--ink-muted); font-size: 11px; }
 .vtb-matrix th a { color: var(--ink); font-weight: 600; text-decoration: none; }
 
@@ -148,7 +148,7 @@ body.ui-moi:not(.moi-presenting) .vtb-loss-r { grid-template-columns: minmax(110
 
 /* ---------- Giao diện cũ đặt trong vỏ mới: áp bảng màu mới (D1) cho các màn chưa thiết kế lại ---------- */
 body.ui-moi { --primary: var(--brand-blue); --primary-d: var(--brand-blue-dark); --primary-l: var(--brand-blue-tint); --accent: var(--brand-red); --bg: #f4f6fa; --card: #fff; --line: #e3e9f2; --line-2: #eef2f7; --text: #15233b; --muted: #5a6881;
-  --c-dat: #1c5cab; --c-kha: #6da7ec; --c-cct: #ec835a; --c-chua: #b02a2a; --c-thieu: #8996ab; --t-dat: #e4ebf5; --t-kha: #edf4fd; --t-cct: #fdf0eb; --t-chua: #f6e5e5; --t-thieu: #f1f2f5; --r: 10px; }
+  --c-dat: #1e8449; --c-kha: #6da7ec; --c-cct: #ec835a; --c-chua: #b02a2a; --c-thieu: #8996ab; --t-dat: #e3f4ea; --t-kha: #edf4fd; --t-cct: #fdf0eb; --t-chua: #f6e5e5; --t-thieu: #f1f2f5; --r: 10px; }
 .moi-legacy .chip.dat, .moi-legacy .txt-dat { color: var(--tier-dat-ink); } .moi-legacy .chip.kha, .moi-legacy .txt-kha { color: var(--tier-kha-ink); } .moi-legacy .chip.cct, .moi-legacy .txt-cct { color: var(--tier-cct-ink); } .moi-legacy .chip.chua, .moi-legacy .txt-chua { color: var(--tier-chua-ink); } .moi-legacy .chip.thieu { color: var(--tier-gap-ink); }
 .moi-legacy .btn.primary { background: var(--brand-blue); border-color: var(--brand-blue); } .moi-legacy .card { box-shadow: var(--shadow-card); } .moi-legacy .hero { background: var(--surface-card); border-image: none; border-top: 0; } .moi-legacy .hero::after { display: none; }
 .moi-legacy .tile:hover, .moi-legacy .stat:hover { transform: none; box-shadow: var(--shadow-card); }

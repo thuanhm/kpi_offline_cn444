@@ -31,12 +31,19 @@
     var h = '<a class="moi-brand" href="#/tong-quan" title="Về Tổng quan"><img src="assets/logo-vietinbank.png" alt="VietinBank" width="124" height="33"><span class="moi-brand-t"><b>' + esc(cn) + '</b><small>Dashboard KPI điều hành</small></span></a><nav aria-label="Điều hướng">';
     grp.forEach(function (g) {
       if (!g.items.length || (g.admin && !admin)) return;
-      h += '<div class="moi-nav-g">' + (g.ten ? '<div class="moi-nav-h">' + esc(g.ten) + '</div>' : '') + g.items.map(function (n) {
+      var mo = !g.ten || g.items.some(function (n) { return n.id === rt; });   // như giao diện cũ: chỉ nhóm chứa màn đang xem được mở, các nhóm khác thu gọn
+      h += '<div class="moi-nav-g' + (mo ? ' open' : '') + '"' + (g.ten ? ' data-nhom="' + esc(g.ten) + '"' : '') + '>' + (g.ten ? '<button type="button" class="moi-nav-h" aria-expanded="' + mo + '"><span>' + esc(g.ten) + '</span><svg class="moi-nav-chev" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6l6 -6"/></svg></button>' : '') + '<div class="moi-nav-items">' + g.items.map(function (n) {
         var nat = H.VIEWS[n.id] ? '' : '', on = rt === n.id;
-        return '<a class="moi-nav-i' + (on ? ' is-on' : '') + '" href="#/' + n.id + '"' + (on ? ' aria-current="page"' : '') + '>' + A.icon(n.icon) + '<span>' + n.ten + '</span></a>'; }).join('') + '</div>';
+        return '<a class="moi-nav-i' + (on ? ' is-on' : '') + '" href="#/' + n.id + '"' + (on ? ' aria-current="page"' : '') + '>' + A.icon(n.icon) + '<span>' + n.ten + '</span></a>'; }).join('') + '</div></div>';
     });
     h += '</nav><div class="moi-side-foot">Phiên bản ' + KPI_CFG.PHIEN_BAN + ' · Chạy offline<br>Giao diện mới (Design System VietinBank)</div>';
-    $('sidebar').innerHTML = h;
+    var sb = $('sidebar'); sb.innerHTML = h;
+    sb.onclick = function (e) {   // mở nhóm này thì thu gọn nhóm khác (giống giao diện cũ)
+      var b = e.target.closest && e.target.closest('.moi-nav-h'); if (!b) return;
+      var g = b.parentNode, m = !g.classList.contains('open');
+      if (m) [].forEach.call(sb.querySelectorAll('.moi-nav-g.open[data-nhom]'), function (o) { o.classList.remove('open'); o.querySelector('.moi-nav-h').setAttribute('aria-expanded', 'false'); });
+      g.classList.toggle('open', m); b.setAttribute('aria-expanded', String(m));
+    };
   }
 
   /* ---------- Topbar ---------- */

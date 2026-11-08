@@ -107,3 +107,5 @@ Chi tiết trong `MATRIX_UPGRADE_REPORT.md`. Kết quả: 14 bộ Node đạt (c
 
 Thay đổi test có chủ đích: kiểm tra D6 của `browser-dual-ui.mjs` ("ô là 4 mức rời + biểu tượng") và nhóm kiểm tra màu của `browser-ma-tran.mjs` (bảng pastel) được **viết lại** theo yêu cầu Heatmap mới của chủ dự án — không xóa, không tắt; nội dung kiểm tra chuyển sang thang liên tục.
 Chưa kiểm thử: dữ liệu thật, Firefox/Safari, cảm ứng, in A4, trình đọc màn hình. Responsive 1920×1080 / 1440×900 / 1366×768 kiểm tự động không tràn ngang trên mọi màn hình; modal/thông báo dùng chung token nhưng chưa có ảnh riêng.
+
+**Cập nhật (bảng màu trạng thái quy chuẩn, Đạt xanh lá, Sidebar xanh):** `browser-ma-tran` 69/69, `browser-brand` 20/20, `browser-dual-ui` 65/65, `test-moi-data` đạt. Các test màu cũ (Heatmap liên tục, PA-A) được viết lại theo yêu cầu mới của chủ dự án (kiểm đúng mã nền/chữ của 5 mức trên mọi ô và chip), không xóa. Ghi nhận: tương phản theo quy chuẩn thấp nhất 3,41:1 (Chưa đạt) — test đặt ngưỡng ≥ 3:1 và ghi giá trị đo.
