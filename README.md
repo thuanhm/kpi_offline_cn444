@@ -1,6 +1,6 @@
 # HỆ THỐNG QUẢN TRỊ & CHẤM ĐIỂM KPI CÁC PHÒNG / PGD
 ## VIETINBANK CHI NHÁNH BẮC NGHỆ AN (MÃ CN: 444)
-**Phiên bản:** `2.5.0` (Phát hành: `06/11/2026`)  
+**Phiên bản:** `2.12.0` (Phát hành: `08/11/2026`)  
 **Môi trường:** Chạy Offline / Mạng nội bộ (LAN / Shared Drive), không cần cài đặt Web Server hay Backend phức tạp.  
 
 ---
@@ -26,7 +26,7 @@ Hệ thống Quản trị & Chấm điểm KPI là ứng dụng Web chạy trự
 ### Điểm đặc thù kiến trúc:
 - **Zero Backend / Serverless:** Chạy trực tiếp từ file tĩnh HTML/JS/CSS, không phụ thuộc vào Node.js, Python, Java hay cơ sở dữ liệu SQL Server/MySQL trên máy chủ.
 - **Lưu trữ & Đồng bộ tệp JSON (File System Access API):** Dữ liệu được lưu trong tệp `Data/KPI_CHI_NHANH.json` trên ổ đĩa mạng chia sẻ. Cơ chế đồng bộ cấp ô (*Cell-level Last-Write-Wins*) cho phép nhiều máy cùng truy cập và cập nhật mà không sợ ghi đè mất dữ liệu.
-- **Hiệu năng cao:** Toàn bộ công cụ tính toán KPI, ma trận xếp hạng, cảnh báo điều hành và phân tích xu hướng chạy chỉ trong ~2–3 ms. Thư viện nặng (SheetJS ~880 KB, Chart.js ~200 KB) chỉ được nạp động khi người dùng thực hiện thao tác tương ứng.
+- **Hiệu năng cao:** Toàn bộ công cụ tính toán KPI, ma trận xếp hạng, cảnh báo điều hành và phân tích xu hướng chạy chỉ trong ~2–3 ms. Thư viện nặng (SheetJS ~880 KB, Chart.js ~200 KB, Tabulator ~470 KB) chỉ được nạp động khi người dùng thực hiện thao tác tương ứng.
 
 ---
 
@@ -63,8 +63,10 @@ KPI_CN444/
 │   │   ├── views-dieu-chinh.js     # Màn hình Điều chỉnh số liệu (+/-) có căn cứ
 │   │   └── views-quan-tri.js       # Quản trị Danh mục, Trọng số, Cài đặt & Users
 │   └── lib/                        # Thư viện bên thứ ba (chạy offline độc lập)
-│       ├── chart.umd.min.js        # Thư viện vẽ biểu đồ Chart.js
-│       └── xlsx.full.min.js        # Thư viện đọc/ghi bảng tính SheetJS
+│       ├── chart.umd.min.js        # Thư viện vẽ biểu đồ Chart.js (kèm plugin annotation, datalabels)
+│       ├── xlsx.full.min.js        # Thư viện đọc/ghi bảng tính SheetJS
+│       ├── tabulator.min.js/.css   # Bảng có sắp xếp theo cột (Tabulator)
+│       └── ...                     # PptxGenJS, docx, SortableJS, SnapDOM, xlsx-js-style
 │
 ├── Data/                        # THƯ MỤC DÙNG CHUNG (Lưu trên ổ mạng chung LAN)
 │   ├── HUONG_DAN.txt               # Hướng dẫn cấu hình ổ mạng
@@ -87,10 +89,13 @@ KPI_CN444/
 
 ## 3. CÁC TÍNH NĂNG NỔI BẬT (v2.5.0)
 
+### 3.0. Bảng sắp xếp được
+- Các bảng chỉ xem (Xếp hạng, Dự báo cuối năm, Kiểm tra số…) dùng Tabulator: bấm tiêu đề cột để sắp xếp tăng dần, giảm dần, bấm lần ba để về thứ tự ban đầu. Bảng nhập liệu, heatmap và bảng có gộp ô giữ nguyên.
+
 ### 3.1. Chấm điểm & Xếp hạng KPI đa chiều
 - Chấm điểm KPI cho từng **Phòng ban / PGD** theo đặc thù khối (KHDN, KHCN, PGD, Dịch vụ & hỗ trợ) và **Toàn chi nhánh**.
 - Chấm điểm trên **Điểm quy đổi thang 100**, giúp việc xếp hạng thi đua công bằng giữa các phòng ngay cả khi tổng trọng số giao khác nhau.
-- Thẻ điểm đơn vị chuẩn A4, hiển thị rõ số kế hoạch, thực hiện, tỷ lệ hoàn thành (%HT), điểm đạt được, điểm mất đi, kèm ô ghi nhận xét của Ban Giám đốc và giải pháp của đơn vị.
+- Thẻ điểm KPI phòng chuẩn A4, hiển thị rõ số kế hoạch, thực hiện, tỷ lệ hoàn thành (%HT), điểm đạt được, điểm mất đi, kèm ô ghi nhận xét của Ban Giám đốc và giải pháp của đơn vị.
 
 ### 3.2. Động cơ tính toán linh hoạt (AutoKPI Engine)
 - Tự động đọc và gom số liệu từ các file báo cáo thô (BCCV, BCNV, CSV...) xuất từ CoreBanking/MIS.
@@ -201,7 +206,7 @@ flowchart TD
 5. Ghi rõ **Lý do** và **Căn cứ văn bản** để phục vụ hậu kiểm. Bấm **"Lưu điều chỉnh"**.
 
 ### 5.4. Xuất báo cáo & In Thẻ điểm
-- **Thẻ điểm đơn vị:** Vào **Chi tiết phòng/PGD** -> Chọn phòng ban -> Bấm **"In thẻ điểm A4"** (Giao diện tối ưu chuẩn trang in, ẩn các nút bấm không cần thiết).
+- **Thẻ điểm KPI phòng:** Vào **Chi tiết phòng/PGD** -> Chọn phòng ban -> Bấm **"In thẻ điểm A4"** (Giao diện tối ưu chuẩn trang in, ẩn các nút bấm không cần thiết).
 - **Xuất Excel toàn diện:** Vào **Xem điểm KPI** hoặc **Ma trận chỉ tiêu** -> Bấm **"Xuất báo cáo Excel"**. File xuất ra chứa đầy đủ các Sheet:
   1. `DIEM_KPI`: Điểm tổng hợp và thứ hạng các phòng.
   2. `CHI_TIET_PHONG`: Toàn bộ chỉ tiêu của từng đơn vị.

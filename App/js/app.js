@@ -295,7 +295,7 @@
       renderSidebar(); renderTopbar();
       var view = document.getElementById('view'), fn = VIEWS[APP.route.id];
       var t0 = performance.now();
-      try { view.innerHTML = banner() + '<div class="page' + (doiTrang ? ' enter' : '') + '">' + fn.html(APP) + '</div>'; if (fn.mount) fn.mount(view, APP); if (root.KPI_ICONS) KPI_ICONS.decorate(view); UI.nutAnh(view); }
+      try { view.innerHTML = banner() + '<div class="page' + (doiTrang ? ' enter' : '') + '">' + fn.html(APP) + '</div>'; if (fn.mount) fn.mount(view, APP); if (root.KPI_ICONS) KPI_ICONS.decorate(view); var trang = view.firstElementChild; UI.nangBang(view).then(function () { if (view.firstElementChild === trang) UI.nutAnh(view); }); }
       catch (e) { console.error(e); view.innerHTML = '<div class="card"><h3>Lỗi hiển thị</h3><pre>' + esc(e.stack || e.message) + '</pre></div>'; }
       var b1 = document.getElementById('bn-xoa-mau'); if (b1) b1.onclick = function () { UI.confirm('Xoá dữ liệu mẫu', 'Xoá toàn bộ số liệu mẫu? Danh mục đơn vị, chỉ tiêu, trọng số được giữ lại để anh/chị chỉnh theo thực tế.', 'Xoá dữ liệu mẫu', true).then(function (ok) { if (ok) STORE.resetAll(true); }); };
       var b3 = document.getElementById('bn-saoluu'); if (b3) b3.onclick = function () { SAO_LUU_MAY.capQuyen().then(function (r) { UI.toast(r.ok ? 'Đã cấp quyền, sao lưu ra máy hoạt động.' : (r.loi || 'Chưa được cấp quyền.'), r.ok ? 'ok' : 'err'); render(); }); };

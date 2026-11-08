@@ -39,4 +39,5 @@ Thư viện bổ sung (phiên bản 2.10.0) — đều giấy phép MIT, đặt 
   - SortableJS 1.15.6 (Sortable.min.js) — Copyright Lebedev Konstantin và cộng sự
   - docx 9.5.0 (docx.umd.js) — Copyright Dolan Miu
   - SnapDOM 3.7.1 (snapdom.js; gói @zumer/snapdom) — Copyright Juan Martín Muda / Zumerlab
+  - Tabulator 6.3.0 (tabulator.min.js, tabulator.min.css) — Copyright Oliver Folkerd
 Toàn văn MIT: như phần Tabler Icons ở trên (cấp phép sử dụng, sao chép, sửa đổi, phân phối miễn phí; không bảo hành).

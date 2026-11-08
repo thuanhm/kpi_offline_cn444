@@ -68,7 +68,7 @@
   });
 
   root.KPI_CFG = {
-    PHIEN_BAN: '2.11.5',
+    PHIEN_BAN: '2.12.0',
     CT_MOI_25: CT_MOI_25.map(function (c) { return { ind: { ma: c[0], ten: c[1], ten_ngan: c[2], dvt: c[3], nhom: c[4], huong: c[5], tong_hop_cn: c[6], chi_tham_khao: true, trang_thai: 'active' }, w: c[9] }; }),
     KHOI_COT: KHOI_COT,
     NGAY_PHAT_HANH: '06/11/2026',

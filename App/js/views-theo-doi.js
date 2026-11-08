@@ -139,22 +139,27 @@
         .map(function (k) { var t = k ? (st.khoi.filter(function (x) { return x.ma === k; })[0] || {}).ten || k : 'Tất cả đơn vị'; return '<button class="pill' + ((A.khoi || '') === k ? ' on' : '') + '" data-khoi="' + k + '">' + esc(t) + '</button>'; }).join('') +
         '</div><div class="grow"></div>' + legend() + '</div>';
       if (!rk.some(function (c) { return c.co_so; })) return h + empty();
-      h += '<div class="card"><div class="tbl-wrap"><table class="tbl rank"><thead><tr><th>Hạng</th><th>Đơn vị</th><th>Khối</th><th class="r">Điểm / TS</th><th style="min-width:180px">Điểm quy đổi (thang 100)</th><th>Cơ cấu chỉ tiêu</th><th>Xu hướng ' + ky.nam + '</th><th>Mất điểm nhiều nhất</th><th class="c">So tháng trước</th></tr></thead><tbody>';
-      rk.forEach(function (c) {
-        var m = topMat(c, 1)[0];
-        h += '<tr data-dv="' + c.ma + '"><td><span class="medal m' + Math.min(c.hang, 4) + '">' + c.hang + '</span></td><td><b>' + esc(c.ten_ngan) + '</b>' + (c.ten !== c.ten_ngan ? '<small class="block muted">' + esc(c.ten) + '</small>' : '') + '</td><td><span class="tag">' + esc(c.khoi) + '</span></td>' +
-          '<td class="r num">' + num(c.diem, 2) + ' / ' + c.ts + '</td><td><div class="score-cell"><b class="txt-' + UI.htClass(c.ht_chung, ng()) + '">' + num(c.quy_doi, 1) + '</b>' + UI.bar(c.ht_chung, ng(), 1.3) + '</div></td>' +
-          '<td>' + stack(c) + '<small class="muted">' + c.so_dat + '/' + c.so_ct + ' đạt</small></td><td class="spark-cell">' + UI.spark(M.scoreSeries(c.ma, ky.nam)) + '</td>' +
-          '<td>' + (m ? esc(m.ind.ten_ngan) + ' <small class="muted">(-' + num(m.mat, 1) + ')</small>' : '<span class="muted">–</span>') + '</td><td class="c">' + rankMove(c) + '</td></tr>';
-      });
-      h += '</tbody></table></div></div>';
+      h += '<div class="card p0"><div id="tb-rank" class="tb-x"></div></div>';
       h += '<div class="card"><div class="card-head"><h3>So sánh điểm theo nhóm chỉ tiêu</h3><span class="muted">điểm đạt / trọng số của từng nhóm</span></div><div class="chart h320"><canvas id="c-nhom"></canvas></div></div>';
       return h;
     },
     mount: function (v, A) {
       v.querySelectorAll('[data-khoi]').forEach(function (b) { b.onclick = function () { A.khoi = b.dataset.khoi; APP.render(); }; });
-      v.querySelectorAll('tr[data-dv]').forEach(function (tr) { tr.onclick = function () { APP.go('phong', tr.dataset.dv); }; });
-      var M = STORE.model(), ky = A.ky, rk = M.ranking(ky.nam, ky.thang, A.khoi || null);
+      var M = STORE.model(), ky = A.ky, rk = M.ranking(ky.nam, ky.thang, A.khoi || null), elRk = v.querySelector('#tb-rank');
+      if (elRk) {
+        var dong = rk.map(function (c) { var m = topMat(c, 1)[0]; return { ma: c.ma, c: c, m: m, hang: c.hang, ten: c.ten_ngan, khoi: c.khoi, diem: c.diem, qd: c.quy_doi, mat: m ? m.mat : 0 }; });
+        UI.bang(elRk, [
+          { t: 'Hạng', f: 'hang', kieu: 'so', w: 70, c: true, g: 0, hien: function (r) { return '<span class="medal m' + Math.min(r.c.hang, 4) + '">' + r.c.hang + '</span>'; } },
+          { t: 'Đơn vị', f: 'ten', kieu: 'chu', w: 140, g: 2, hien: function (r) { var c = r.c; return '<b>' + esc(c.ten_ngan) + '</b>' + (c.ten !== c.ten_ngan ? '<small class="block muted">' + esc(c.ten) + '</small>' : ''); } },
+          { t: 'Khối', f: 'khoi', kieu: 'chu', w: 80, hien: function (r) { return '<span class="tag">' + esc(r.c.khoi) + '</span>'; } },
+          { t: 'Điểm / TS', f: 'diem', kieu: 'so', w: 100, r: true, hien: function (r) { return '<span class="num">' + num(r.c.diem, 2) + ' / ' + r.c.ts + '</span>'; } },
+          { t: 'Điểm quy đổi (thang 100)', f: 'qd', kieu: 'so', w: 180, g: 2, hien: function (r) { var c = r.c; return '<div class="score-cell"><b class="txt-' + UI.htClass(c.ht_chung, ng()) + '">' + num(c.quy_doi, 1) + '</b>' + UI.bar(c.ht_chung, ng(), 1.3) + '</div>'; } },
+          { t: 'Cơ cấu chỉ tiêu', f: 'co_cau', w: 160, g: 2, hien: function (r) { return stack(r.c) + '<small class="muted">' + r.c.so_dat + '/' + r.c.so_ct + ' đạt</small>'; } },
+          { t: 'Xu hướng ' + ky.nam, f: 'xu_huong', w: 110, hien: function (r) { return '<span class="spark-cell">' + UI.spark(M.scoreSeries(r.c.ma, ky.nam)) + '</span>'; } },
+          { t: 'Mất điểm nhiều nhất', f: 'mat', kieu: 'so', w: 150, g: 2, hien: function (r) { return r.m ? esc(r.m.ind.ten_ngan) + ' <small class="muted">(-' + num(r.m.mat, 1) + ')</small>' : '<span class="muted">–</span>'; } },
+          { t: 'So tháng trước', f: 'so_truoc', w: 110, c: true, hien: function (r) { return rankMove(r.c); } }
+        ], dong, { click: function (r) { APP.go('phong', r.ma); }, rowFmt: function (r, row) { row.classList.add('clk'); } }).then(function () { if (elRk.isConnected) UI.nutAnh(v); });
+      }
       var nhoms = []; M.inds.forEach(function (i) { if (!i.chi_tham_khao && nhoms.indexOf(i.nhom) < 0) nhoms.push(i.nhom); });
       var pal = ['#0E4C92', '#2F80ED', '#27AE60', '#F2994A', '#9B51E0', '#EB5757', '#56CCF2', '#6FCF97'];
       UI.chart(v.querySelector('#c-nhom'), { type: 'bar', data: { labels: rk.map(function (c) { return c.ten_ngan; }), datasets: nhoms.map(function (n, i) {

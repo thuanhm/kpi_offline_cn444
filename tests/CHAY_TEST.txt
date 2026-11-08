@@ -12,4 +12,5 @@ Chạy kiểm thử (cần Node.js):
 Mỗi bài in "TẤT CẢ ĐẠT" khi thành công.
   node tests\test-office.js     <đường dẫn>\App         (xuất PowerPoint/Word, Excel có màu)
   powershell -ExecutionPolicy Bypass -File tests\smoke-man-hinh.ps1   (duyệt 23 màn hình bằng Edge; thất bại nếu có "Lỗi hiển thị")
+  powershell -ExecutionPolicy Bypass -File tests\smoke-bang.ps1       (bảng Tabulator: sắp xếp 3 trạng thái, bấm dòng, xuất PNG, chuyển màn hình nhiều lần)
   node tests\test-so-ngay.js    <đường dẫn>\App\js      (gộp số theo ngày nhiều máy)

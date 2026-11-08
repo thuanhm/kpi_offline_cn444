@@ -123,9 +123,16 @@
     jszip: function () { return lib('pptx').then(function () { return root.JSZip; }); },   // JSZip đi kèm trong bản bundle của PptxGenJS
     sortable: function () { return nap('lib/Sortable.min.js').then(function () { return root.Sortable; }); },
     snapdom: function () { return nap('lib/snapdom.js').then(function () { return root.snapdom; }); },
-    docx: function () { return nap('lib/docx.umd.js').then(function () { return root.docx; }); }
+    docx: function () { return nap('lib/docx.umd.js').then(function () { return root.docx; }); },
+    tabulator: function () {
+      // CSS nạp xong rồi mới dựng bảng (để Tabulator đo đúng bề rộng); thiếu CSS thì vẫn dựng được
+      var css = document.createElement('link'); css.rel = 'stylesheet'; css.href = 'lib/tabulator.min.css';
+      var cssXong = new Promise(function (ok) { css.onload = css.onerror = ok; });
+      document.head.appendChild(css);
+      return Promise.all([nap('lib/tabulator.min.js'), cssXong]).then(function () { return root.Tabulator; });
+    }
   };
-  var GLOBAL = { xlsx: 'XLSX', 'xlsx-style': 'XLSX_STYLE', chart: 'Chart', pptx: 'PptxGenJS', sortable: 'Sortable', docx: 'docx', snapdom: 'snapdom', jszip: 'JSZip' };
+  var GLOBAL = { xlsx: 'XLSX', 'xlsx-style': 'XLSX_STYLE', chart: 'Chart', pptx: 'PptxGenJS', sortable: 'Sortable', docx: 'docx', snapdom: 'snapdom', jszip: 'JSZip', tabulator: 'Tabulator' };
   function lib(name) {
     if (!LIB[name]) return Promise.reject(new Error('Thư viện không có: ' + name));
     if (libs[name]) return libs[name];
@@ -222,7 +229,8 @@
     }).then(function () { toast('Đã tải ảnh PNG.', 'ok'); }, function (e) { toast('Không tạo được ảnh: ' + (e && e.message || e), 'err'); }).then(function () { btn.disabled = false; });
   }
   function nutAnh(view) {
-    var dich = [];   // [phần tử chụp, nơi gắn nút]
+    var dich = [];
+    [].forEach.call(view.querySelectorAll('.tabulator'), function (tb) { dich.push([tb, tb.closest('.card') || tb.parentNode]); });   // [phần tử chụp, nơi gắn nút]
     [].forEach.call(view.querySelectorAll('canvas'), function (cv) { var c = cv.closest('.card') || cv.parentNode; dich.push([c, c]); });
     [].forEach.call(view.querySelectorAll('table.tbl, table.heat'), function (tb) {
       if (tb.querySelector('input, select, textarea')) return;   // bảng nhập liệu: không chụp
@@ -237,6 +245,70 @@
       var hd = neo.querySelector(':scope > .card-head');
       if (hd) hd.appendChild(b); else { var rw = document.createElement('div'); rw.className = 'png-row'; rw.appendChild(b); neo.insertBefore(rw, neo.firstChild); }
     });
+  }
+
+  /* ---------- Bảng Tabulator: cột {t, f, kieu:'so'|'chu', r, c, w, g, hien(dòng)→HTML}. Không ảo hoá dòng để chụp ảnh/in đủ. ---------- */
+  function bang(el, cot, dong, opts) {
+    opts = opts || {};
+    return lib('tabulator').then(function (T) {
+      var cols = cot.map(function (c) {
+        var al = c.r ? 'right' : c.c ? 'center' : 'left';
+        var d = { title: c.t, field: c.f, headerSort: c.kieu === 'so' || c.kieu === 'chu', headerSortTristate: true, sorter: c.kieu === 'so' ? 'number' : 'string', sorterParams: { alignEmptyValues: 'bottom' }, hozAlign: al, headerHozAlign: al, minWidth: c.w || 80, widthGrow: c.g === undefined ? 1 : c.g };
+        if (c.hien) d.formatter = function (cell) { return c.hien(cell.getRow().getData()); };
+        return d;
+      });
+      var cfg = { data: dong, columns: cols, layout: 'fitColumns', renderVertical: 'basic', renderHorizontal: 'basic', placeholder: 'Không có dữ liệu' };
+      if (opts.rowFmt) cfg.rowFormatter = function (row) { opts.rowFmt(row.getData(), row.getElement()); };
+      var tb = new T(el, cfg);
+      if (opts.click) tb.on('rowClick', function (e, row) { opts.click(row.getData(), e); });
+      return new Promise(function (ok) { tb.on('tableBuilt', function () { ok(tb); }); });
+    });
+  }
+
+  /* ---------- Nâng cấp tự động các bảng chỉ xem (table.tbl) của màn hình sang Tabulator ----------
+     Chỉ bảng đơn giản: một dòng tiêu đề, không gộp ô, không ô nhập liệu / nút bấm, không chân bảng. Bảng còn lại giữ nguyên.
+     Sự kiện bấm dòng: gọi lại onclick đã gắn trên <tr> gốc (đã tách khỏi trang nhưng vẫn còn hàm xử lý). */
+  var BANG_LOAI = '.edit, .heat, .grid, .daily, .kv, .tb-x';
+  function soKhoa(t) {
+    var m = /^[+\-−]?\s*\d[\d.,]*/.exec(t); if (!m || /^\d+\/\d+/.test(t)) return null;
+    var x = parseFloat(m[0].replace('−', '-').replace(/\s/g, '').replace(/\./g, '').replace(',', '.')); return isFinite(x) ? x : null;
+  }
+  function duDieuKien(tb) {
+    if (tb.id || tb.matches(BANG_LOAI) || tb.closest('details, .modal, .modal-wrap, .preview, .tabulator') || !tb.offsetParent) return false;
+    if (tb.querySelector('input, select, textarea, button, a, tfoot, [colspan], [rowspan], [onclick], tbody th, tr.grp')) return false;
+    var hr = tb.tHead && tb.tHead.rows; if (!hr || hr.length !== 1 || tb.tBodies.length !== 1 || tb.tBodies[0].rows.length < 2) return false;
+    var n = hr[0].cells.length;
+    return [].every.call(tb.tBodies[0].rows, function (r) { return r.cells.length === n; });
+  }
+  function nangBang(view) {
+    var ds = [].filter.call(view.querySelectorAll('table.tbl'), duDieuKien);
+    if (!ds.length) return Promise.resolve();
+    return lib('tabulator').then(function () {
+      return Promise.all(ds.map(function (tb) {
+        if (!tb.isConnected) return null;
+        var ths = [].slice.call(tb.tHead.rows[0].cells), trs = [].slice.call(tb.tBodies[0].rows), el = document.createElement('div'), kieu = [], dong;
+        ths.forEach(function (th, i) {
+          var ks = trs.map(function (tr) { return tr.cells[i].textContent.trim(); }).filter(function (t) { return t && !/^[–—-]$/.test(t); });
+          kieu[i] = !th.textContent.trim() ? null : ks.length && ks.every(function (t) { return soKhoa(t) !== null; }) ? 'so' : 'chu';
+        });
+        dong = trs.map(function (tr, r) {
+          var o = { _i: r };
+          [].forEach.call(tr.cells, function (td, i) { var t = td.textContent.trim(); o['c' + i] = '<div class="' + td.className + '">' + td.innerHTML + '</div>'; o['k' + i] = kieu[i] === 'so' ? soKhoa(t) : t.toLowerCase(); });
+          return o;
+        });
+        el.className = 'tb-x' + (tb.classList.contains('compact') ? ' compact' : '');
+        tb.parentNode.insertBefore(el, tb);
+        var cot = ths.map(function (th, i) {
+          var td0 = trs[0].cells[i], cs = { t: th.innerHTML, f: 'k' + i, kieu: kieu[i], w: parseInt(th.style.minWidth, 10) || (th.textContent.trim().length <= 3 ? 50 : 90), g: th.textContent.trim().length <= 3 ? 0 : 1, hien: function (r) { return r['c' + i]; } };
+          if (th.classList.contains('r') || td0.classList.contains('r')) cs.r = true; else if (th.classList.contains('c') || td0.classList.contains('c')) cs.c = true;
+          return cs;
+        });
+        return bang(el, cot, dong, {
+          click: function (r, e) { var tr = trs[r._i]; if (tr.onclick) tr.onclick.call(tr, e); },
+          rowFmt: function (r, row) { var tr = trs[r._i]; tr.className.split(/\s+/).forEach(function (c) { if (c) row.classList.add(c); }); if (tr.onclick) row.classList.add('clk'); }
+        }).then(function () { tb.remove(); }, function () { el.remove(); });
+      }));
+    }, function () {});
   }
 
   function download(name, data, type) {
@@ -310,6 +382,6 @@
   function setHeatPal(k) { try { localStorage.setItem('KPI_CN444.heat', k); } catch (e) {} }
 
   root.UI = { getCompletionColor: getCompletionColor, htColor: htColor, heatStyleHT: heatStyleHT, heatStyle: heatStyle, htT: htT, heatLegend: heatLegend, setHeatPal: setHeatPal, esc: esc, num: num, pct: pct, val: val, signed: signed, parse: parse, isNum: isNum, chip: chip, ttClass: ttClass, htClass: htClass,
-    bar: bar, spark: spark, ring: ring, toast: toast, modal: modal, confirm: confirm, lib: lib, nutAnh: nutAnh, nguong: nguong, chart: chart, destroyCharts: destroyCharts,
+    bar: bar, spark: spark, ring: ring, toast: toast, modal: modal, confirm: confirm, lib: lib, bang: bang, nangBang: nangBang, nutAnh: nutAnh, nguong: nguong, chart: chart, destroyCharts: destroyCharts,
     cssVar: cssVar, download: download, pickFile: pickFile, debounce: debounce, slug: slug };
 })(window);

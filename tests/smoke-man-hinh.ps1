@@ -15,7 +15,7 @@ sessionStorage.setItem('KPI_CN444.user_ss','admin');sessionStorage.setItem('KPI_
 var routes=['tong-quan','dieu-hanh','xep-hang','ma-tran','phong/CN','phong/P.KHCN','the-diem-bgd','chi-tieu','so-ngay','du-bao','canh-bao','hanh-dong','bao-cao-giao-ban','nhap-so','kiem-tra','tinh-tu-file','nap-tu-dong','dieu-chinh','diem-kpi','danh-muc','bgd-quan-tri','du-lieu','huong-dan'];
 var i=0;
 function next(){
-  if(i>0){var v=document.getElementById('view'),bad=v.innerHTML.indexOf('Lỗi hiển thị')>=0;L((bad?'FAIL ':'OK ')+routes[i-1]+(bad?' :: '+((v.querySelector('pre')||{}).textContent||'').split('\n').slice(0,2).join(' | '):''))}
+  if(i>0){var v=document.getElementById('view'),bad=v.innerHTML.indexOf('Lỗi hiển thị')>=0||(routes[i-1]==='xep-hang'&&!v.querySelector('.tabulator-row'));L((bad?'FAIL ':'OK ')+routes[i-1]+' ['+v.querySelectorAll('.tabulator').length+' Tabulator / '+v.querySelectorAll('table').length+' bảng HTML]'+(bad?' :: '+((v.querySelector('pre')||{}).textContent||'').split('\n').slice(0,2).join(' | '):''))}
   if(i>=routes.length){L('DONE '+routes.length);return}
   location.hash='#/'+routes[i++];APP.render();setTimeout(next,400);
 }
