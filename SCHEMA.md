@@ -199,7 +199,8 @@ File trung tâm: `Data/KPI_CHI_NHANH.json`
   "nguong": {
     "dat": 1.0,
     "kha": 0.8,
-    "cct": 0.7
+    "cct": 0.7,
+    "diem_cao": 90
   },
   "so_thang_canh_bao": 2,
   "nap": {
@@ -224,6 +225,7 @@ File trung tâm: `Data/KPI_CHI_NHANH.json`
 | `nam` | `Integer` | `2026` | Năm tài chính / kỳ đánh giá KPI mặc định khi mở ứng dụng. |
 | `nguong.dat` | `Float` | `1.0` | Ngưỡng tỷ lệ hoàn thành đạt loại **Đạt** ($\ge 100\%$). |
 | `nguong.kha` | `Float` | `0.8` | Ngưỡng tỷ lệ hoàn thành đạt loại **Khá** ($\ge 80\%$). |
+| `nguong.diem_cao` | `Float` | `90` | **Ngưỡng điểm** (điểm quy đổi thang 100) để đếm "Đơn vị ≥ N điểm" ở màn Tổng quan (thay hằng số 90 cũ). Khác với `dat/kha/cct` (tỷ lệ hoàn thành). Dữ liệu cũ không có khoá này tự nhận 90; giá trị không hợp lệ (rỗng, ≤ 0, không phải số) cũng → 90. |
 | `nguong.cct` | `Float` | `0.7` | Ngưỡng tỷ lệ hoàn thành đạt loại **Cần cải thiện** ($\ge 70\%$). Dưới ngưỡng này là **Chưa đạt**. |
 | `so_thang_canh_bao` | `Integer` | `2` | Số tháng liên tiếp bị giảm điểm hoặc chưa đạt để phát tín hiệu cảnh báo điều hành. |
 | `nap.bat` | `Boolean` | `true` | Bật/tắt tiến trình tự động quét thư mục báo cáo thô. |

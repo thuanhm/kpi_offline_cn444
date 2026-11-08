@@ -353,6 +353,7 @@
         field('Tên chi nhánh', '<input id="s-ten" value="' + esc(s.ten_chi_nhanh) + '">') + field('Mã chi nhánh', '<input id="s-ma" value="' + esc(s.ma_chi_nhanh) + '" class="w120">') +
         field('Năm theo dõi mặc định', '<input id="s-nam" type="number" value="' + s.nam + '" class="w120">') +
         '<div class="row3">' + field('Ngưỡng Đạt (%)', '<input id="s-dat" type="number" value="' + Math.round(s.nguong.dat * 100) + '">') + field('Ngưỡng Khá (%)', '<input id="s-kha" type="number" value="' + Math.round(s.nguong.kha * 100) + '">') + field('Cần cải thiện (%)', '<input id="s-cct" type="number" value="' + Math.round(s.nguong.cct * 100) + '">') + '</div>' +
+        field('Ngưỡng điểm cao (điểm quy đổi, thang 100) — đếm "Đơn vị ≥ N điểm" ở Tổng quan', '<input id="s-diem" type="number" min="1" max="200" step="any" value="' + (STORE.model().ng.diem_cao) + '" class="w120">') +
         field('Cảnh báo khi điểm giảm liên tiếp (tháng)', '<input id="s-ct" type="number" min="1" max="6" value="' + (s.so_thang_canh_bao || 2) + '" class="w120">') +
         '<div class="right"><button class="btn primary" id="s-save">Lưu cài đặt chung</button></div></div>';
 
@@ -384,9 +385,10 @@
       var $$ = function (s) { return v.querySelectorAll(s); };
 
       $('#s-save').onclick = function () {
-        var d = +$('#s-dat').value / 100, k = +$('#s-kha').value / 100, c = +$('#s-cct').value / 100;
+        var d = +$('#s-dat').value / 100, k = +$('#s-kha').value / 100, c = +$('#s-cct').value / 100, dc = +$('#s-diem').value;
         if (!(d > k && k > c && c > 0)) { UI.toast('Ngưỡng phải giảm dần: Đạt > Khá > Cần cải thiện > 0.', 'err'); return; }
-        var p = { ten_chi_nhanh: $('#s-ten').value.trim() || 'Chi nhánh', ma_chi_nhanh: $('#s-ma').value.trim(), nam: +$('#s-nam').value || new Date().getFullYear(), nguong: { dat: d, kha: k, cct: c }, so_thang_canh_bao: Math.max(1, +$('#s-ct').value || 2) };
+        if (!(dc > 0 && dc <= 200)) { UI.toast('Ngưỡng điểm cao phải là số lớn hơn 0 và không quá 200.', 'err'); return; }
+        var p = { ten_chi_nhanh: $('#s-ten').value.trim() || 'Chi nhánh', ma_chi_nhanh: $('#s-ma').value.trim(), nam: +$('#s-nam').value || new Date().getFullYear(), nguong: { dat: d, kha: k, cct: c, diem_cao: dc }, so_thang_canh_bao: Math.max(1, +$('#s-ct').value || 2) };
         STORE.setSettings(p); STORE.log('Sửa cài đặt chi nhánh');
         UI.toast('Đã lưu cài đặt thông tin chi nhánh.', 'ok');
       };

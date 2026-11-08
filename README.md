@@ -14,6 +14,7 @@
 6. [Quy tắc chấm điểm & Công thức nghiệp vụ](#6-quy-tắc-chấm-điểm--công-thức-nghiệp-vụ)
 7. [Cơ chế đồng bộ đa máy & Bảo mật](#7-cơ-chế-đồng-bộ-đa-máy--bảo-mật)
 8. [Tài liệu Schema dữ liệu](#8-tài-liệu-schema-dữ-liệu)
+9. [Giao diện mới (Dual UI)](#9-giao-diện-mới-dual-ui)
 
 ---
 
@@ -280,3 +281,37 @@ Hệ thống phân loại theo ngưỡng cấu hình mặc định:
 ---
 **Bộ phận phát triển & Quản trị KPI — VietinBank Chi nhánh Bắc Nghệ An**  
 *Mọi ý kiến đóng góp hoặc yêu cầu hỗ trợ kỹ thuật, vui lòng liên hệ phòng Tổng hợp CN 444.*
+
+
+---
+
+## 9. GIAO DIỆN MỚI (DUAL UI)
+
+Ứng dụng có **hai giao diện dùng chung một nguồn dữ liệu và engine KPI**: **Giao diện cũ** (mặc định, giữ nguyên) và **Giao diện mới** (Design System VietinBank). Chi tiết: `IMPLEMENTATION_REPORT.md`, `DESIGN_SYSTEM.md`, `TEST_REPORT.md`.
+
+### 9.1. Chuyển đổi giao diện
+- Nút **Giao diện cũ | Giao diện mới** ở **header** (cả hai giao diện). Chuyển tức thì, không đăng nhập lại, không mất dữ liệu; **kỳ báo cáo, màn hình, đơn vị, chỉ tiêu, nhóm đơn vị** đang xem được giữ nguyên.
+- Lựa chọn được **ghi nhớ trên máy** (`localStorage`, khoá `KPI_CN444.giao_dien`); mở lại ứng dụng sẽ dùng giao diện đã chọn gần nhất. Lần đầu mặc định là giao diện cũ.
+- Nếu giao diện mới nạp lỗi hoặc gặp sự cố khi vẽ, ứng dụng tự quay về giao diện cũ và báo trên màn hình.
+- Chưa có tài khoản theo người dùng ở phía máy chủ nên lựa chọn lưu theo trình duyệt/máy.
+
+### 9.2. Giao diện mới
+- **Thiết kế lại:** Tổng quan chi nhánh · Điều hành Ban giám đốc · Phân tích chi tiết (Theo dõi chỉ tiêu) · Xếp hạng · Ma trận chỉ tiêu (ma trận trạng thái, không dùng thang cầu vồng) · Thẻ điểm KPI phòng · Nội dung cần xử lý.
+- **Các màn còn lại** (nhập liệu, quản trị, báo cáo…) hiển thị bản cũ trong khung mới với bảng màu mới.
+- Màu trạng thái KPI thống nhất: Đạt `#1c5cab` · Khá `#6da7ec` · Cần cải thiện `#ec835a` · Chưa đạt `#b02a2a` · GAP `#8996ab`, luôn kèm biểu tượng + chữ.
+- Mọi biểu đồ có nút **Bảng** (dạng bảng số thay thế). Đường **DỰ KIẾN** vẽ nét đứt có nhãn; chỉ hiển thị khi chức năng Dự báo của hệ thống có số.
+- Bấm một đơn vị ở xếp hạng → xuống chỉ tiêu của đơn vị; bấm một chỉ tiêu → biểu đồ kế hoạch/thực hiện và tăng trưởng.
+
+### 9.3. Presentation Mode (họp giao ban)
+Nút **Trình chiếu** (trên Tổng quan và Điều hành BGĐ): khung 16:9 tham chiếu 1920×1080, tự co giãn theo cửa sổ (hỗ trợ 1920×1080, 1440×900, 1366×768), chữ lớn, chỉ giữ số liệu quan trọng. **← / →** chuyển hai màn hình; **Esc** hoặc nút *Thoát trình chiếu* để thoát; F11 để toàn màn hình thật.
+
+### 9.4. Cấu hình ngưỡng điểm cao (D7)
+`settings.nguong.diem_cao` (mặc định **90**) quyết định số "Đơn vị ≥ N điểm" ở Tổng quan, dùng chung cho hai giao diện. Chỉnh trong **Dữ liệu & cài đặt → Ngưỡng điểm cao**. Dữ liệu cũ chưa có khoá này tự nhận 90 nên kết quả không đổi.
+
+### 9.5. Kiểm thử
+```
+node tests\test-nguong.js    <đường dẫn tuyệt đối>\App\js
+node tests\test-moi-data.js  <đường dẫn tuyệt đối>\App\js
+node tests\browser-dual-ui.mjs        (cần Edge/Chrome; hồ sơ tạm, dữ liệu mẫu)
+node tests\screenshots-dual-ui.mjs    (ảnh vào docs\screenshots)
+```

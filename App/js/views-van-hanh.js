@@ -159,4 +159,5 @@
     },
     mount: function (v) { var b = v.querySelector('#dh-in'); if (b) b.onclick = function () { window.print(); }; }
   };
+  VIEWS['canh-bao'].goiY = goiY; VIEWS['hanh-dong'].quaHan = quaHan; VIEWS['hanh-dong'].tenDv = tenDv;   // dùng chung với giao diện mới
 })(window);

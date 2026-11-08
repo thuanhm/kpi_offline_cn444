@@ -118,9 +118,10 @@
       '<h1>' + esc(title) + '</h1><div class="grow"></div>' +
       '<div class="period"><label>Kỳ</label><select id="sel-thang">' + thangOpts + '</select>' +
       '<select id="sel-nam">' + Object.keys(nams).sort().map(function (n) { return '<option' + (+n === nam ? ' selected' : '') + '>' + n + '</option>'; }).join('') + '</select></div>' + KPI_XUAT.html() +
-      '<span id="sync-dot"></span>' + (admin && root.NAP ? '<a class="nap-btn" href="#/nap-tu-dong" title="File báo cáo thô chờ duyệt">⚡<b id="nap-badge"' + (NAP.cho.length ? '' : ' style="display:none"') + '>' + NAP.cho.length + '</b></a>' : '') +
+      (root.UI_SWITCH ? UI_SWITCH.html() : '') + '<span id="sync-dot"></span>' + (admin && root.NAP ? '<a class="nap-btn" href="#/nap-tu-dong" title="File báo cáo thô chờ duyệt">⚡<b id="nap-badge"' + (NAP.cho.length ? '' : ' style="display:none"') + '>' + NAP.cho.length + '</b></a>' : '') +
       '<button class="btn ' + (admin ? 'admin' : 'ghost') + '" id="btn-mode" title="' + (admin ? 'Đang đăng nhập: ' + esc(STORE.nguoi() || 'Quản trị') + ' — bấm để đăng xuất' : 'Đăng nhập quản trị để chỉnh sửa') + '">' + icon(admin ? 'unlock' : 'lock') + '<span>' + (admin ? esc(STORE.nguoi() || 'Quản trị') : 'Chế độ xem') + '</span></button>';
     KPI_XUAT.bind();
+    if (root.UI_SWITCH) UI_SWITCH.bind(document.getElementById('topbar'));
     document.getElementById('sel-thang').onchange = function () { APP.ky = { nam: APP.ky.nam, thang: +this.value, chon: true }; render(); };
     document.getElementById('sel-nam').onchange = function () { var n = +this.value, k = STORE.model().kyMoiNhat(n); APP.ky = k ? { nam: n, thang: k.thang } : { nam: n, thang: 12, chon: true }; render(); };
     document.getElementById('btn-mode').onclick = toggleMode;
@@ -292,10 +293,12 @@
       if (r && r.admin && !STORE.isAdmin()) { APP.route = { id: 'tong-quan' }; history.replaceState(null, '', '#/tong-quan'); }
       UI.destroyCharts();
       var doiTrang = APP.lastRoute !== APP.route.id; APP.lastRoute = APP.route.id;   // hiệu ứng vào trang CHỈ khi đổi màn hình (không lặp lại mỗi lần số liệu đổi)
-      renderSidebar(); renderTopbar();
+      var moiMode = !!(root.UI_SWITCH && UI_SWITCH.laMoi());   // giao diện mới: UI_MOI tự vẽ khung + màn hình (dùng chung STORE/engine/APP)
+      if (!moiMode) { renderSidebar(); renderTopbar(); }
       var view = document.getElementById('view'), fn = VIEWS[APP.route.id];
       var t0 = performance.now();
-      try { view.innerHTML = banner() + '<div class="page' + (doiTrang ? ' enter' : '') + '">' + fn.html(APP) + '</div>'; if (fn.mount) fn.mount(view, APP); if (root.KPI_ICONS) KPI_ICONS.decorate(view); var trang = view.firstElementChild; UI.nangBang(view).then(function () { if (view.firstElementChild === trang) UI.nutAnh(view); }); }
+      if (moiMode) { try { UI_MOI.render(APP, banner(), doiTrang); } catch (e) { UI_SWITCH.suCo(e); } }
+      else try { view.innerHTML = banner() + '<div class="page' + (doiTrang ? ' enter' : '') + '">' + fn.html(APP) + '</div>'; if (fn.mount) fn.mount(view, APP); if (root.KPI_ICONS) KPI_ICONS.decorate(view); var trang = view.firstElementChild; UI.nangBang(view).then(function () { if (view.firstElementChild === trang) UI.nutAnh(view); }); }
       catch (e) { console.error(e); view.innerHTML = '<div class="card"><h3>Lỗi hiển thị</h3><pre>' + esc(e.stack || e.message) + '</pre></div>'; }
       var b1 = document.getElementById('bn-xoa-mau'); if (b1) b1.onclick = function () { UI.confirm('Xoá dữ liệu mẫu', 'Xoá toàn bộ số liệu mẫu? Danh mục đơn vị, chỉ tiêu, trọng số được giữ lại để anh/chị chỉnh theo thực tế.', 'Xoá dữ liệu mẫu', true).then(function (ok) { if (ok) STORE.resetAll(true); }); };
       var b3 = document.getElementById('bn-saoluu'); if (b3) b3.onclick = function () { SAO_LUU_MAY.capQuyen().then(function (r) { UI.toast(r.ok ? 'Đã cấp quyền, sao lưu ra máy hoạt động.' : (r.loi || 'Chưa được cấp quyền.'), r.ok ? 'ok' : 'err'); render(); }); };
@@ -306,6 +309,7 @@
     });
   }
   APP.render = render;
+  APP.toggleMode = toggleMode; APP.banner = banner; APP.NAV = NAV; APP.icon = icon;   // dùng chung với giao diện mới (ui-moi/)
 
   window.addEventListener('hashchange', function () { window.scrollTo(0, 0); render(); });
   window.addEventListener('pageshow', function (e) { if (e.persisted) location.reload(); });
@@ -321,7 +325,7 @@
       deb();
     });
     document.addEventListener('focusout', function () { if (choVe) setTimeout(function () { if (!dangGo()) { choVe = false; deb(); } }, 0); });
-    render();
+    (root.UI_SWITCH ? UI_SWITCH.khoiDong() : Promise.resolve()).then(function () { render(); });   // nếu lần trước dùng giao diện mới: nạp trước khi vẽ lần đầu
     dangKyLangNgheTuDong();
     STORE.initShared().then(function () {
       render();

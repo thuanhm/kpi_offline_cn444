@@ -14,3 +14,12 @@ Mỗi bài in "TẤT CẢ ĐẠT" khi thành công.
   powershell -ExecutionPolicy Bypass -File tests\smoke-man-hinh.ps1   (duyệt 23 màn hình bằng Edge; thất bại nếu có "Lỗi hiển thị")
   powershell -ExecutionPolicy Bypass -File tests\smoke-bang.ps1       (bảng Tabulator: sắp xếp 3 trạng thái, bấm dòng, xuất PNG, chuyển màn hình nhiều lần)
   node tests\test-so-ngay.js    <đường dẫn>\App\js      (gộp số theo ngày nhiều máy)
+
+--- Dual UI (giao diện cũ / mới) và D7 ---
+  node tests\test-nguong.js    <đường dẫn>\App\js      (D7: nguong.diem_cao = 90; biên bằng/cao hơn/thấp hơn; bảo toàn kết quả trước/sau; cấu hình dùng chung)
+  node tests\test-moi-data.js  <đường dẫn>\App\js      (số liệu giao diện mới = nguyên số của engine ở mọi kỳ; không tự tính điểm)
+  node tests\browser-dual-ui.mjs                          (65 kiểm thử trên ứng dụng thật bằng Edge/Chrome headless, hồ sơ sạch + dữ liệu mẫu: chuyển đổi, ghi nhớ, giữ trạng thái,
+                                                            đối chiếu KPI cũ↔mới, cách ly CSS, trình chiếu, bàn phím, 7 kích thước, mọi màn hình ở cả hai giao diện)
+  node tests\screenshots-dual-ui.mjs                      (chụp ảnh bàn giao vào docs\screenshots và đo hiệu năng vào tests\out\perf.json)
+  Lưu ý: smoke-man-hinh.ps1 / smoke-bang.ps1 hiện báo "chưa chạy hết (0 lỗi)" trong môi trường kiểm thử này, KỂ CẢ trên bản gốc (commit main) — xem TEST_REPORT.md.
+  Các bài .mjs dùng hồ sơ trình duyệt tạm nên KHÔNG đọc/ghi dữ liệu vận hành.

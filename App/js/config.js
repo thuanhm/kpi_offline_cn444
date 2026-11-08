@@ -79,7 +79,7 @@
       return {
         schema: 2,
         settings: { ten_chi_nhanh: 'VietinBank Chi nhánh Bắc Nghệ An', ma_chi_nhanh: '444', nam: 2026,
-          nguong: { dat: 1.0, kha: 0.8, cct: 0.7 }, so_thang_canh_bao: 2 },   // PIN: lưu băm ở settings.pin_hash (mặc định 1111 nếu chưa đặt)
+          nguong: { dat: 1.0, kha: 0.8, cct: 0.7, diem_cao: 90 }, so_thang_canh_bao: 2 },   // diem_cao: ngưỡng ĐIỂM quy đổi (thang 100) để đếm đơn vị nổi bật — mặc định 90   // PIN: lưu băm ở settings.pin_hash (mặc định 1111 nếu chưa đặt)
         khoi: JSON.parse(JSON.stringify(KHOI)),
         don_vi: DON_VI.map(function (d, i) { return Object.assign({ thu_tu: i + 1, trang_thai: 'active' }, d); }),
         indicators: JSON.parse(JSON.stringify(indicators)),

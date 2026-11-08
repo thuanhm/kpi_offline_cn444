@@ -61,6 +61,7 @@
       else mountKeHoach(v, M, A, ind);
     }
   };
+  VIEWS['chi-tieu'].soSanh = soSanh; VIEWS['chi-tieu'].dsSoSanh = dsSoSanh; VIEWS['chi-tieu'].giaTri = giaTri;   // dùng chung với giao diện mới
   function fmtD(x, ind, xau) { if (!isNum(x)) return '–'; var tot = xau ? x < 0 : x > 0; return '<span class="' + (Math.abs(x) < 1e-9 ? '' : tot ? 'txt-dat' : 'txt-chua') + '">' + UI.signed(r2(x), ind) + '</span>'; }
   function fmtP(x) { return isNum(x) ? (x > 0 ? '+' : '') + pct(x) : ''; }
 

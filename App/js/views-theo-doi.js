@@ -61,7 +61,7 @@
       if (!cn.co_so && !M.ranking(ky.nam, ky.thang).some(function (c) { return c.co_so; })) return empty('Chọn kỳ khác ở góc trên, hoặc nhập số cho ' + kyText(ky) + '.');
       var prev = ky.thang > 1 ? M.card(CN, ky.nam, ky.thang - 1) : null, rk = M.ranking(ky.nam, ky.thang), al = M.alerts(ky.nam, ky.thang), g = ng();
       var tb = rk.length ? rk.reduce(function (a, c) { return a + (c.quy_doi || 0); }, 0) / rk.length : null;
-      var dat90 = rk.filter(function (c) { return c.quy_doi >= 90; }).length, nghiem = al.filter(function (a) { return a.muc === 3; }).length;
+      var dat90 = KPI_ENGINE.demDiemCao(rk, g.diem_cao), nghiem = al.filter(function (a) { return a.muc === 3; }).length;
       var h = '<section class="hero card">' +
         '<div class="hero-ring ' + UI.htClass(cn.ht_chung, g) + '">' + UI.ring(cn.ht_chung, num(cn.quy_doi, 1)) + '</div>' +
         '<div class="hero-txt"><small>ĐIỂM KPI TOÀN CHI NHÁNH · LŨY KẾ ' + kyText(ky) + '</small><h2>' + esc(STORE.state.settings.ten_chi_nhanh) + '</h2>' +
@@ -70,7 +70,7 @@
         '<div class="hero-stats">' +
         stat('Dẫn đầu', rk[0] ? '<a href="#/phong/' + rk[0].ma + '">' + esc(rk[0].ten_ngan) + '</a>' : '–', rk[0] ? num(rk[0].quy_doi, 1) + ' điểm' : '') +
         stat('Bình quân các đơn vị', num(tb, 1), 'điểm / ' + rk.length + ' phòng, PGD') +
-        stat('Đơn vị ≥ 90 điểm', dat90 + '/' + rk.length, rk.length ? pct(dat90 / rk.length, 0) + ' số đơn vị' : '') +
+        stat('Đơn vị ≥ ' + num(g.diem_cao, 0) + ' điểm', dat90 + '/' + rk.length, rk.length ? pct(dat90 / rk.length, 0) + ' số đơn vị' : '') +
         stat('Cảnh báo nghiêm trọng', '<span class="' + (nghiem ? 'txt-chua' : 'txt-dat') + '">' + nghiem + '</span>', al.length + ' cảnh báo tổng') +
         '</div></section>';
 

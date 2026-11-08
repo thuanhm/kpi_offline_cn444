@@ -1,0 +1,171 @@
+/* GIAO DIỆN MỚI — bố cục. Mọi lớp có tiền tố moi-/vtb- hoặc nằm dưới body.ui-moi nên KHÔNG ảnh hưởng giao diện cũ.
+ * Không gradient, không animation, không đổ bóng nặng. Cỡ chữ đi qua --fs-* (chế độ trình chiếu đổi sang bậc present-*). */
+body.ui-moi { background: var(--surface-page); color: var(--ink); font-family: var(--font-sans); font-size: 14px; }
+body.ui-moi::before { display: none; }                      /* bỏ dải màu cố định của giao diện cũ */
+
+/* ---------- Khung ---------- */
+.moi-app { display: flex; min-height: 100vh; background: var(--surface-page); }
+.moi-side { width: 248px; flex: 0 0 248px; position: sticky; top: 0; height: 100vh; overflow-y: auto; background: var(--surface-card); border-right: 1px solid var(--line); display: flex; flex-direction: column; z-index: 30; }
+.moi-brand { display: flex; flex-direction: column; gap: var(--space-2); padding: var(--space-4); border-bottom: 1px solid var(--line); text-decoration: none; color: var(--ink); }
+.moi-brand img { height: 33px; width: auto; display: block; }
+.moi-brand-t { display: flex; flex-direction: column; line-height: 1.25; } .moi-brand-t b { color: var(--brand-blue); font-size: 15px; font-weight: 700; } .moi-brand-t small { color: var(--ink-muted); font-size: 12px; font-weight: 500; }
+.moi-side nav { padding: var(--space-3) var(--space-2); flex: 1; }
+.moi-nav-g { margin-bottom: var(--space-2); }
+.moi-nav-h { padding: var(--space-2) var(--space-3) 4px; font-size: 11px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase; color: var(--ink-muted); }
+.moi-nav-i { display: flex; align-items: center; gap: 10px; min-height: 36px; padding: 6px var(--space-3); border-radius: var(--radius-sm); color: var(--ink-2); text-decoration: none; font-weight: 600; font-size: 13.5px; }
+.moi-nav-i:hover { background: var(--brand-blue-tint); color: var(--brand-blue); }
+.moi-nav-i.is-on { background: var(--brand-blue); color: var(--on-brand); }
+.moi-nav-i:focus-visible, .moi-btn:focus-visible, .moi-pill:focus-visible, .moi-seg button:focus-visible, .moi-sel:focus-visible, .moi-ico-btn:focus-visible, .moi-linkbtn:focus-visible { outline: 2px solid var(--focus-ring); outline-offset: 2px; }
+.moi-nav-i .ic { width: 18px; height: 18px; flex: none; }
+.moi-side-foot { padding: var(--space-3) var(--space-4); font-size: 11.5px; line-height: 1.5; color: var(--ink-muted); border-top: 1px solid var(--line); }
+.moi-main { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+.moi-top { position: sticky; top: 0; z-index: 20; display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-2) var(--space-3); padding: var(--space-3) var(--space-6); background: var(--surface-card); border-bottom: 1px solid var(--line); }
+.moi-h1 { margin: 0; font-size: 20px; line-height: 28px; font-weight: 600; color: var(--ink); }
+.moi-grow { flex: 1; }
+.moi-period { display: flex; align-items: center; gap: 6px; } .moi-period label { font-size: 12px; font-weight: 600; color: var(--ink-2); }
+.moi-period select, .moi-sel { min-height: 34px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface-card); color: var(--ink); font: 600 13px var(--font-sans); padding: 0 var(--space-2); max-width: 100%; }
+.moi-upd { font-size: 12px; color: var(--ink-muted); }
+.moi-btn { display: inline-flex; align-items: center; gap: 6px; min-height: 34px; padding: 0 var(--space-3); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); background: var(--surface-card); color: var(--ink); font: 600 13px var(--font-sans); cursor: pointer; text-decoration: none; white-space: nowrap; }
+.moi-btn:hover { background: var(--brand-blue-tint); } .moi-btn.sm { min-height: 28px; font-size: 12px; padding: 0 var(--space-2); }
+.moi-btn.primary { background: var(--brand-blue); border-color: var(--brand-blue); color: var(--on-brand); } .moi-btn.primary:hover { background: var(--brand-blue-dark); }
+.moi-btn.admin { background: var(--tier-cct-tint); color: var(--tier-cct-ink); border-color: var(--tier-cct); }
+.moi-btn .ic { width: 16px; height: 16px; }
+.moi-ico-btn { border: 0; background: transparent; color: var(--ink-2); padding: 6px; border-radius: var(--radius-sm); cursor: pointer; } .moi-ico-btn .ic { width: 22px; height: 22px; }
+.moi-only-m { display: none; }
+.moi-nap { position: relative; display: inline-grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--line-strong); border-radius: var(--radius-sm); text-decoration: none; }
+.moi-nap b { position: absolute; top: -6px; right: -6px; background: var(--brand-red); color: #fff; font-size: 10.5px; min-width: 17px; height: 17px; border-radius: 9px; display: grid; place-items: center; padding: 0 4px; }
+.moi-top .xuat-wrap .btn, .moi-top .sync { font-size: 12.5px; }
+.moi-content { padding: var(--space-6); outline: none; max-width: var(--layout-max); width: 100%; margin: 0 auto; }
+.moi-page { display: flex; flex-direction: column; gap: var(--space-4); }
+.moi-legacy { max-width: none; }
+
+/* ---------- Lưới & thẻ ---------- */
+.moi-grid { display: grid; grid-template-columns: repeat(12, minmax(0, 1fr)); gap: var(--gap); align-items: start; }
+.moi-c3 { grid-column: span 3; } .moi-c4 { grid-column: span 4; } .moi-c5 { grid-column: span 5; } .moi-c6 { grid-column: span 6; } .moi-c7 { grid-column: span 7; } .moi-c9 { grid-column: span 9; } .moi-c12 { grid-column: span 12; }
+.moi-card { background: var(--surface-card); border: 1px solid var(--line); border-radius: var(--radius-md); box-shadow: var(--shadow-card); padding: var(--pad); min-width: 0; }
+.moi-empty { text-align: center; padding: 48px var(--space-4); } .moi-empty h2 { margin: 0 0 var(--space-2); font-size: 20px; }
+.moi-head { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: var(--space-2) var(--space-3); margin-bottom: var(--space-3); }
+.moi-head h2 { margin: 0; font-size: var(--fs-title); line-height: 1.3; font-weight: 600; }
+.moi-h3 { margin: var(--space-4) 0 var(--space-1); font-size: var(--fs-body); font-weight: 700; color: var(--ink-2); }
+.moi-scope { font-weight: 500; color: var(--brand-blue); }
+.moi-sub { margin: calc(var(--space-2) * -1) 0 var(--space-2); }
+.moi-sep { height: 1px; background: var(--line); margin: var(--space-4) 0; } .moi-mt { margin-top: var(--space-2); }
+.moi-link { color: var(--brand-blue); font-weight: 600; font-size: 13px; text-decoration: none; } .moi-link:hover { text-decoration: underline; }
+.moi-linkbtn { border: 0; background: none; padding: 2px 0; font: 600 13px var(--font-sans); color: var(--brand-blue); cursor: pointer; text-align: left; } .moi-linkbtn.is-on { text-decoration: underline; color: var(--ink); }
+.moi-toolbar { display: flex; align-items: center; flex-wrap: wrap; gap: var(--space-3); }
+.moi-fl { display: flex; flex-direction: column; gap: 2px; font-size: 12px; font-weight: 600; color: var(--ink-2); } .moi-fl.inline { flex-direction: row; align-items: center; gap: 6px; }
+.moi-pills, .moi-seg { display: inline-flex; flex-wrap: wrap; padding: 2px; gap: 2px; background: var(--surface-sunken); border-radius: var(--radius-sm); }
+.moi-pill, .moi-seg button { border: 0; background: transparent; min-height: 28px; padding: 0 var(--space-3); border-radius: 4px; font: 600 12px var(--font-sans); color: var(--ink-2); cursor: pointer; }
+.moi-pill[aria-pressed="true"], .moi-seg button[aria-pressed="true"] { background: var(--surface-card); color: var(--brand-blue); box-shadow: 0 0 0 1px var(--brand-blue); }
+.moi-legend { display: inline-flex; gap: var(--space-3); flex-wrap: wrap; font-size: 12px; font-weight: 600; } .moi-legend span { display: inline-flex; align-items: center; gap: 4px; }
+.moi-chips { display: flex; flex-wrap: wrap; gap: var(--space-2); }
+.moi-hint { margin: 0 0 var(--space-3); padding: var(--space-3); background: var(--brand-blue-tint); border-radius: var(--radius-sm); font-size: 12.5px; }
+.moi-vtable { display: none; } [data-view-card].is-table .moi-vchart { display: none; } [data-view-card].is-table .moi-vtable { display: block; }
+.moi-vtable .vtb-table { font-size: 12px; }
+.moi-ch { min-height: 120px; }
+.moi-nd { font-size: 14px; line-height: 1.7; max-width: 110ch; margin: 0 0 var(--space-2); } .moi-ta { width: 100%; padding: var(--space-2); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); font: 14px var(--font-sans); } .moi-right { text-align: right; margin-top: var(--space-2); } .moi-pre { white-space: pre-wrap; }
+
+/* ---------- Tổng quan ---------- */
+.moi-tq > .a-hero { align-self: stretch; display: flex; flex-direction: column; }
+.moi-tq .a-topright { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; align-self: stretch; }
+.moi-kpis { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); flex: 1; }
+.moi-stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.moi-stats .vtb-stat { padding: var(--space-2) var(--space-4); } .moi-stats .vtb-stat .vtb-display { font-size: calc(var(--fs-disp) * .8); }
+.moi-stats4 { display: grid; grid-template-columns: repeat(auto-fit, minmax(190px, 1fr)); gap: var(--gap); margin: var(--space-2) 0 var(--space-3); }
+.moi-tq .a-side, .moi-bgd .a-mid, .moi-bgd .a-right { display: flex; flex-direction: column; gap: var(--gap); min-width: 0; }
+.moi-grp { margin: var(--space-3) 0 0; padding: var(--space-1) var(--space-2); font-size: 12px; font-weight: 700; color: var(--brand-blue); background: var(--brand-blue-tint); border-radius: var(--radius-sm); }
+.moi-bl-head { display: grid; grid-template-columns: minmax(130px, 1.2fr) minmax(120px, 1.6fr) minmax(90px, auto) 76px minmax(110px, auto); gap: var(--space-3); padding: 0 var(--space-2) var(--space-2); border-bottom: 1px solid var(--line); font-weight: 600; }
+.moi-drill { display: flex; flex-wrap: wrap; align-items: center; gap: var(--space-3) var(--space-6); padding: var(--space-3); margin-bottom: var(--space-3); background: var(--surface-page); border-radius: var(--radius-sm); } .moi-drill .vtb-hero-num { font-size: 40px; } .moi-drill-bar { min-width: 240px; flex: 1; }
+.moi-ind-head { margin-bottom: var(--space-1); } .moi-ind-t { margin: 2px 0 var(--space-2); font-size: 20px; }
+
+/* ---------- Điều hành BGĐ ---------- */
+.moi-q3 { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: var(--space-6); }
+.moi-q-t { display: flex; align-items: center; gap: var(--space-2); font-size: 12px; font-weight: 700; color: var(--brand-blue); }
+.moi-q-n { display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: var(--radius-pill); background: var(--brand-blue); color: var(--on-brand); font-size: 12px; flex: none; }
+.moi-q-a { margin: var(--space-1) 0 0; font-size: calc(var(--fs-body) * 1.1); line-height: 1.5; font-weight: 500; } .moi-q-a b { font-weight: 700; }
+.moi-dukien { display: inline-block; padding: 0 6px; border: 1px solid var(--forecast); color: var(--forecast); border-radius: var(--radius-sm); font-size: .8em; font-weight: 700; letter-spacing: .04em; }
+.moi-dk { color: var(--forecast); font-weight: 700; letter-spacing: .04em; } .moi-fc { color: var(--forecast); }
+.moi-kpis4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--gap); }
+.moi-kpis4 .vtb-stat { padding: var(--space-4); gap: var(--space-2); height: 100%; } .moi-kpis4 .vtb-hero-num { font-size: calc(var(--fs-hero) * .78); }
+.moi-act b { font-weight: 600; } .moi-act small { display: block; color: var(--ink-muted); font-size: 12px; }
+.moi-tasks { list-style: none; margin: 0; padding: 0; } .moi-tasks li { display: flex; gap: var(--space-3); align-items: flex-start; padding: var(--space-2) 0; border-bottom: 1px solid var(--line); } .moi-tasks b { font-weight: 600; } .moi-tasks small { display: block; color: var(--ink-2); font-size: 12px; } .moi-tasks .vtb-chip { flex: none; }
+.moi-stage-only { display: none; }
+.moi-a-risk .vtb-bullet { grid-template-columns: minmax(90px, 1.1fr) minmax(60px, 1fr) auto; } .moi-a-risk .vtb-bl-gap, .moi-a-risk .vtb-bl-tier { display: none; } .moi-a-risk .vtb-bl-name small { white-space: normal; }
+.moi-bgd .a-rank .vtb-rk-head, .moi-bgd .a-rank .vtb-rk-row { grid-template-columns: 46px minmax(78px, .9fr) minmax(80px, 1.5fr) 64px 56px 118px; gap: var(--space-2); } .moi-bgd .a-rank .vtb-spark { display: none; }
+.a-fresh { padding: var(--space-3) var(--space-4); background: var(--surface-card); border: 1px solid var(--line); border-radius: var(--radius-md); }
+.moi-mx-wrap { max-height: 70vh; } .moi-mx-grp td { padding: 10px 8px 2px; font-size: 11px; font-weight: 700; color: var(--brand-blue); text-transform: uppercase; letter-spacing: .05em; background: var(--surface-card); }
+.vtb-matrix tfoot td, .vtb-matrix tfoot th { padding-top: 6px; } .vtb-matrix thead th a { color: var(--ink); text-decoration: none; } .vtb-matrix thead th small { display: block; font-weight: 500; color: var(--ink-muted); font-size: 11px; }
+.vtb-matrix th a { color: var(--ink); font-weight: 600; text-decoration: none; }
+
+/* ---------- Màn hình nhỏ ---------- */
+@media (max-width: 1280px) {
+  body.ui-moi:not(.moi-presenting) .moi-c3, body.ui-moi:not(.moi-presenting) .moi-c4, body.ui-moi:not(.moi-presenting) .moi-c5, body.ui-moi:not(.moi-presenting) .moi-c7, body.ui-moi:not(.moi-presenting) .moi-c9 { grid-column: span 12; }
+  .moi-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .moi-tq .a-side, .moi-bgd .a-mid, .moi-bgd .a-right { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); align-items: start; }
+}
+@media (max-width: 1100px) {
+  .moi-side { position: fixed; left: 0; top: 0; transform: translateX(-100%); } .moi-nav-open .moi-side { transform: none; box-shadow: var(--shadow-pop); } .moi-only-m { display: inline-flex; }
+  .moi-top { padding: var(--space-3) var(--space-4); } .moi-content { padding: var(--space-4); }
+}
+@media (max-width: 900px) {
+  body.ui-moi:not(.moi-presenting) .moi-c6 { grid-column: span 12; } .moi-kpis, .moi-kpis4 { grid-template-columns: repeat(2, minmax(0, 1fr)); } .moi-q3 { grid-template-columns: 1fr; gap: var(--space-3); }
+  .moi-bl-head { display: none; } .vtb-bullet { grid-template-columns: minmax(100px, 1fr) minmax(80px, 1fr); } .vtb-bullet > :nth-child(n+3) { display: none; }
+  .vtb-rk-head > :nth-child(n+4), .vtb-rk-row > :nth-child(n+4) { display: none; } .moi-bgd .a-rank .vtb-rk-head, .moi-bgd .a-rank .vtb-rk-row, .vtb-rk-head, .vtb-rk-row { grid-template-columns: 44px minmax(90px, 1fr) minmax(90px, 1.4fr); }
+  .moi-upd { display: none; }
+}
+@media (max-width: 560px) { .moi-kpis, .moi-kpis4, .moi-stats { grid-template-columns: minmax(0, 1fr); } .moi-vtable, .vtb-tablewrap { max-width: 100%; } }
+@media (max-width: 1100px) { .moi-loss-narrow .vtb-loss-r { grid-template-columns: minmax(0, 1.2fr) minmax(36px, 1fr) auto; } }
+body.ui-moi:not(.moi-presenting) .vtb-loss-r { grid-template-columns: minmax(110px, 1.1fr) minmax(70px, 1.4fr) 84px auto; }
+@media (max-width: 1280px) { body.ui-moi:not(.moi-presenting) .vtb-loss-r { grid-template-columns: minmax(0, 1.2fr) minmax(36px, 1fr) auto; } body.ui-moi:not(.moi-presenting) .vtb-loss-r .vtb-chip { grid-column: 1 / -1; justify-self: start; } }
+
+/* ---------- PRESENTATION MODE (khung 1920×1080, co giãn theo cửa sổ) ---------- */
+.moi-stage-root { position: fixed; inset: 0; z-index: 9000; background: var(--surface-page); overflow: hidden; }
+.moi-stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform: translate(-50%, -50%) scale(var(--s, 1)); transform-origin: center center; display: flex; flex-direction: column; padding: 0 var(--space-8) var(--space-6); background: var(--surface-page); overflow: hidden; }
+.moi-st-head { display: flex; align-items: center; gap: var(--space-4) var(--space-8); margin: 0 calc(var(--space-8) * -1) var(--space-4); padding: var(--space-3) var(--space-8); background: var(--surface-card); border-bottom: 1px solid var(--line); }
+.moi-st-brand { display: flex; align-items: center; gap: var(--space-3); } .moi-st-brand img { height: 42px; width: auto; } .moi-st-brand .moi-brand-t b { font-size: 22px; } .moi-st-brand .moi-brand-t small { font-size: 14px; }
+.moi-st-tabs { display: flex; gap: var(--space-1); padding: 3px; background: var(--surface-sunken); border-radius: var(--radius-md); }
+.moi-st-tabs button { border: 0; background: transparent; min-height: 44px; padding: 0 var(--space-6); border-radius: var(--radius-sm); font: 600 20px var(--font-sans); color: var(--ink-2); cursor: pointer; } .moi-st-tabs button[aria-pressed="true"] { background: var(--brand-blue); color: var(--on-brand); }
+.moi-stage .moi-btn { min-height: 44px; font-size: 18px; } .moi-stage .moi-sel { min-height: 44px; font-size: 18px; } .moi-stage .moi-fl span { font-size: 16px; }
+.moi-mock { padding: 2px 10px; border: 1px solid var(--ink-2); border-radius: var(--radius-sm); font-size: 14px; font-weight: 700; color: var(--ink-2); }
+.moi-st-body { flex: 1; min-height: 0; } .moi-st-body .moi-grid { height: 100%; align-items: stretch; }
+.moi-stage .moi-secondary, .moi-stage .moi-sub { display: none !important; } .moi-stage .moi-stage-only { display: block; } .moi-stage .moi-seg { display: none; }
+.moi-stage .moi-card { padding: var(--space-4) var(--space-6); } .moi-stage .moi-head { margin-bottom: var(--space-2); }
+.moi-stage .vtb-rk-name small, .moi-stage .vtb-bl-name small, .moi-stage .vtb-loss-n small { display: none; } .moi-stage .vtb-spark, .moi-stage .vtb-warn { display: none; } .moi-stage .vtb-rk-row { cursor: default; }
+.moi-stage .vtb-rk-head, .moi-stage .vtb-rk-row { grid-template-columns: 58px minmax(84px, .8fr) minmax(130px, 2fr) 76px 66px 150px; gap: var(--space-2); padding-top: 5px; padding-bottom: 5px; min-height: 0; } .moi-stage .vtb-rk-head { padding-top: 0; } .moi-stage .vtb-rk-name { white-space: nowrap; } .moi-stage .vtb-rk-name b { overflow: hidden; text-overflow: ellipsis; }
+.moi-stage .moi-tq { grid-template-columns: 560px minmax(0, 1fr) minmax(0, 1fr); grid-template-rows: auto minmax(0, 1fr); grid-template-areas: "hero kpis kpis" "rank rank side"; }
+.moi-stage .moi-tq .a-hero { grid-area: hero; } .moi-stage .moi-tq .a-topright { grid-area: kpis; } .moi-stage .moi-tq .a-rank { grid-area: rank; overflow: hidden; } .moi-stage .moi-tq .a-side { grid-area: side; display: flex; min-height: 0; } .moi-stage .moi-tq .a-side .moi-card { overflow: hidden; } .moi-stage .moi-tq .a-alerts { flex: 1 1 0; min-height: 0; }
+.moi-stage .moi-tq .moi-kpis { grid-template-rows: 1fr 1fr; } .moi-stage .moi-tq .moi-kpis .vtb-kpi { padding: var(--space-2) var(--space-4); gap: 2px; } .moi-stage .a-hero .vtb-hero-num { font-size: 80px; }
+.moi-stage .moi-tq .moi-stats { display: flex; gap: var(--space-3); } .moi-stage .moi-tq .moi-stats .vtb-stat { flex: 1; padding: 4px 14px; flex-direction: row; align-items: baseline; gap: 0 10px; flex-wrap: nowrap; } .moi-stage .moi-tq .moi-stats .vtb-label { flex: 0 1 auto; white-space: nowrap; font-size: 15px; } .moi-stage .moi-tq .moi-stats .vtb-caption { display: none; } .moi-stage .moi-tq .moi-stats .vtb-display { font-size: 28px; order: 2; margin-left: auto; }
+.moi-stage .moi-tq .a-alerts .moi-head { display: none; } .moi-stage .moi-tq .a-alerts .moi-h3 { margin: var(--space-1) 0; font-size: 16px; } .moi-stage .moi-tq .vtb-att-i { padding: 3px 4px; } .moi-stage .moi-tq .vtb-att-body { display: -webkit-box; -webkit-line-clamp: 1; -webkit-box-orient: vertical; overflow: hidden; } .moi-stage .moi-tq .vtb-att-i .vtb-chip { min-width: 0; } .moi-stage .moi-tq .a-trend .vtb-legend { display: none; }
+.moi-stage .moi-bgd { grid-template-columns: 5fr 4fr 3fr; grid-template-rows: auto auto minmax(0, 1fr); grid-template-areas: "q3 q3 q3" "k4 k4 k4" "rank mid right"; row-gap: var(--space-4); }
+.moi-stage .moi-bgd .a-3q { grid-area: q3; } .moi-stage .moi-bgd .a-kpis4 { grid-area: k4; } .moi-stage .moi-bgd .a-rank { grid-area: rank; overflow: hidden; } .moi-stage .moi-bgd .a-mid { grid-area: mid; min-height: 0; } .moi-stage .moi-bgd .a-right { grid-area: right; min-height: 0; gap: var(--space-4); }
+.moi-stage .moi-bgd .a-mid .moi-card, .moi-stage .moi-bgd .a-right .moi-card { overflow: hidden; flex: 1 1 0; min-height: 0; } .moi-stage .moi-bgd .a-right .moi-card { flex: 1 1 auto; }
+.moi-stage .moi-bgd .a-actions, .moi-stage .moi-bgd .a-fresh { display: none; }
+.moi-stage .moi-q-a { font-size: var(--fs-body); } .moi-stage .moi-a-risk .vtb-bullet { padding: 4px 6px; min-height: 0; }
+.moi-stage .vtb-loss-r { padding-top: 3px; padding-bottom: 3px; min-height: 0; grid-template-columns: minmax(100px, 1.2fr) minmax(50px, 1fr) 110px auto; }
+.moi-stage .moi-tasks li { padding: 6px 0; gap: var(--space-2); } .moi-stage .moi-tasks b { font-size: 18px; line-height: 1.25; display: block; } .moi-stage .moi-tasks small { font-size: 14px; } .moi-stage .moi-a-tasks .vtb-chip { font-size: 14px; }
+.moi-stage .moi-bgd .a-right .moi-head h2, .moi-stage .moi-bgd .a-mid .moi-head h2 { font-size: 24px; }
+
+/* ---------- Giao diện cũ đặt trong vỏ mới: áp bảng màu mới (D1) cho các màn chưa thiết kế lại ---------- */
+body.ui-moi { --primary: #005993; --primary-d: #004573; --primary-l: #e6f1f8; --accent: #d71249; --bg: #f4f6fa; --card: #fff; --line: #e3e9f2; --line-2: #eef2f7; --text: #15233b; --muted: #5a6881;
+  --c-dat: #1c5cab; --c-kha: #6da7ec; --c-cct: #ec835a; --c-chua: #b02a2a; --c-thieu: #8996ab; --t-dat: #e4ebf5; --t-kha: #edf4fd; --t-cct: #fdf0eb; --t-chua: #f6e5e5; --t-thieu: #f1f2f5; --r: 10px; }
+.moi-legacy .chip.dat, .moi-legacy .txt-dat { color: var(--tier-dat-ink); } .moi-legacy .chip.kha, .moi-legacy .txt-kha { color: var(--tier-kha-ink); } .moi-legacy .chip.cct, .moi-legacy .txt-cct { color: var(--tier-cct-ink); } .moi-legacy .chip.chua, .moi-legacy .txt-chua { color: var(--tier-chua-ink); } .moi-legacy .chip.thieu { color: var(--tier-gap-ink); }
+.moi-legacy .btn.primary { background: var(--brand-blue); border-color: var(--brand-blue); } .moi-legacy .card { box-shadow: var(--shadow-card); } .moi-legacy .hero { background: var(--surface-card); border-image: none; border-top: 0; } .moi-legacy .hero::after { display: none; }
+.moi-legacy .tile:hover, .moi-legacy .stat:hover { transform: none; box-shadow: var(--shadow-card); }
+
+/* ---------- In: A4 ngang ---------- */
+@media print {
+  @page { size: A4 landscape; margin: 8mm; }
+  body.ui-moi { -webkit-print-color-adjust: exact; print-color-adjust: exact; background: #fff; }
+  .moi-side, .moi-top, .moi-toolbar, .moi-seg, .moi-pills, .banner { display: none !important; }
+  .moi-content { padding: 0; max-width: none; } .moi-card { box-shadow: none; break-inside: avoid; }
+  body.moi-presenting .moi-app { display: none; } body.moi-presenting .moi-stage-root { position: static; background: #fff; } body.moi-presenting .moi-stage { position: static; transform: scale(.54); transform-origin: top left; margin: 0; }
+  .moi-btn, .moi-ico-btn { display: none !important; }
+}
+
+/* tinh chỉnh sau khi chạy thử thật */
+.moi-kpis .vtb-kpi-spark { display: none; } @media (min-width: 1750px) { .moi-kpis .vtb-kpi-spark { display: inline; } }
+.moi-kpis .vtb-kpi-foot { flex-wrap: wrap; } .moi-kpis .vtb-display { font-size: 24px; }
+@media (max-width: 1700px) { .moi-upd { display: none; } }
+.moi-stage .moi-kpis .vtb-kpi-spark { display: inline; } .moi-stage .moi-kpis .vtb-display { font-size: var(--fs-display, 40px); }
+.moi-stage .moi-bgd .a-rank .vtb-rk-head, .moi-stage .moi-bgd .a-rank .vtb-rk-row { grid-template-columns: 54px 132px minmax(80px, 1.3fr) 70px 62px 146px; }

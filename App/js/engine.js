@@ -52,7 +52,7 @@
   function Model(state, version) {
     this.s = state; this.v = version; this.cache = {};
     var ng = state.settings.nguong;
-    this.ng = { dat: +ng.dat || 1, kha: +ng.kha || 0.8, cct: +ng.cct || 0.7 };
+    this.ng = { dat: +ng.dat || 1, kha: +ng.kha || 0.8, cct: +ng.cct || 0.7, diem_cao: isNum(+ng.diem_cao) && +ng.diem_cao > 0 ? +ng.diem_cao : 90 };   // diem_cao: ngưỡng điểm (D7); thiếu/không hợp lệ → 90
     this.units = state.don_vi.filter(function (d) { return d.trang_thai !== 'inactive'; })
       .sort(function (a, b) { return (a.thu_tu || 0) - (b.thu_tu || 0); });
     this.inds = sapXepChiTieu(state.indicators.filter(function (i) { return i.trang_thai !== 'inactive'; }));
@@ -296,5 +296,7 @@
     if (/cuoi_ky|cuối kỳ|_bq\b|bình quân|mau\b|kích hoạt|nhận lương|hiện hữu|số dư/.test(t)) return 'so_du';
     return ind.dvt === 'Tr đồng' ? 'luy_ke' : 'so_du';
   }
-  root.KPI_ENGINE = { sapXepChiTieu: sapXepChiTieu, kieuSo: kieuSo, computeKpi: computeKpi, Model: Model, trangThai: trangThai };
+  /* Số đơn vị có điểm quy đổi >= ngưỡng điểm cao (settings.nguong.diem_cao, mặc định 90). Dùng chung cho mọi giao diện. */
+  function demDiemCao(list, diemCao) { var n = 0; (list || []).forEach(function (c) { if (c && isNum(c.quy_doi) && c.quy_doi >= diemCao) n++; }); return n; }
+  root.KPI_ENGINE = { sapXepChiTieu: sapXepChiTieu, kieuSo: kieuSo, computeKpi: computeKpi, Model: Model, trangThai: trangThai, demDiemCao: demDiemCao };
 })(window);
